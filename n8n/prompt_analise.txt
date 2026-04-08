@@ -1,0 +1,52 @@
+Você é um especialista em sales enablement e coaching de vendas B2B.
+Analise a transcrição abaixo e retorne APENAS um JSON válido (sem markdown, sem texto extra).
+
+INFORMAÇÕES DA CALL:
+- Vendedor: {vendorName}
+- Prospect: {prospectName}
+- Empresa: {company}
+- Data: {callDate}
+- Duração: {duration} minutos
+
+TRANSCRIÇÃO:
+{transcript}
+
+Retorne SOMENTE este JSON (sem nenhum texto antes ou depois):
+{
+  "score": <número de 0 a 100 — avaliação geral da qualidade da call>,
+  "summary": "<resumo executivo de 3-4 frases sobre o que aconteceu na call e o nível geral de execução>",
+  "strengths": [
+    "<ponto forte específico com exemplo da call>",
+    "<ponto forte 2>",
+    "<ponto forte 3>"
+  ],
+  "improvements": [
+    "<oportunidade de melhoria específica com sugestão prática>",
+    "<melhoria 2>",
+    "<melhoria 3>"
+  ],
+  "methodology": {
+    "rapport": <0-10, qualidade da conexão e abertura>,
+    "discovery": <0-10, profundidade das perguntas e entendimento do problema>,
+    "presentation": <0-10, clareza e relevância da apresentação de valor>,
+    "objectionHandling": <0-10, como as objeções foram tratadas>,
+    "closing": <0-10, iniciativa e clareza nos próximos passos>
+  },
+  "nextSteps": [
+    {
+      "action": "<ação concreta, mensurável e específica>",
+      "responsible": "vendedor|prospect|ambos",
+      "dueDate": "<prazo sugerido: '24 horas', '2 dias', '1 semana' ou null>",
+      "priority": "alta|media|baixa"
+    }
+  ],
+  "hubspotFields": {
+    "dealStage": "prospecting|appointment_scheduled|qualified_to_buy|presentation_scheduled|decision_maker_bought_in|contract_sent|closed_won|closed_lost",
+    "amount": <valor estimado do negócio em reais (número) ou null>,
+    "closeDate": "<data estimada de fechamento YYYY-MM-DD ou null>",
+    "notes": "<anotações para o CRM: o que foi discutido, interesse demonstrado, objeções levantadas — máx 3 linhas>",
+    "nextActivityDate": "<data da próxima atividade YYYY-MM-DD ou null>",
+    "nextActivityType": "call|email|meeting|task|null",
+    "leadStatus": "new|open|in_progress|open_deal|unqualified|attempted_to_contact|connected|bad_timing"
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "name": "Sales Call Analyzer - Google Drive → HubSpot",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "={{$env.GOOGLE_DRIVE_FOLDER_ID}}",
+          "mode": "id"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "node_trigger",
+      "name": "Google Drive Trigger",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "credentials": {
+        "googleDriveOAuth2Api": { "id": "CONFIGURE_ME", "name": "Google Drive OAuth2" }
+      },
+      "notes": "Monitora a pasta onde o Gemini salva as transcrições. Configure GOOGLE_DRIVE_FOLDER_ID com o ID da pasta."
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "node_get_file",
+      "name": "Baixar Transcrição",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [460, 300],
+      "credentials": {
+        "googleDriveOAuth2Api": { "id": "CONFIGURE_ME", "name": "Google Drive OAuth2" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse metadata from filename or file content\n// Gemini usually names the file: \"Transcrição de <Meeting Title> - <Date>\"\n// Adjust this parser to match your actual filename pattern\n\nconst fileName = $('Google Drive Trigger').item.json.name || '';\nconst fileContent = $input.item.binary?.data \n  ? Buffer.from($input.item.binary.data, 'base64').toString('utf-8')\n  : '';\n\n// Try to extract info from filename\n// Example: \"Transcrição - João Silva + ACME Corp - 2024-01-15.txt\"\nlet vendorName = 'Vendedor não identificado';\nlet prospectName = 'Prospect não identificado';\nlet company = 'Empresa não identificada';\nlet callDate = new Date().toISOString();\nlet duration = 60; // default 60 min\n\n// Look for duration in transcript (HH:MM or Xh Ymin patterns)\nconst durationMatch = fileContent.match(/(\\d+)h\\s*(\\d+)?\\s*min/i) || fileContent.match(/Duração[:\\s]+(\\d+):(\\d+)/i);\nif (durationMatch) {\n  duration = parseInt(durationMatch[1]) * 60 + parseInt(durationMatch[2] || '0');\n}\n\n// Extract date from filename if present\nconst dateMatch = fileName.match(/(\\d{4}-\\d{2}-\\d{2})/);\nif (dateMatch) {\n  callDate = new Date(dateMatch[1]).toISOString();\n}\n\n// You can also embed metadata in the first lines of the transcript\n// Format: \"Vendedor: [name]\" / \"Prospect: [name]\" / \"Empresa: [name]\"\nconst vendorMatch = fileContent.match(/Vendedor[:\\s]+([^\\n]+)/i);\nconst prospectMatch = fileContent.match(/Prospect[:\\s]+([^\\n]+)/i);\nconst companyMatch = fileContent.match(/Empresa[:\\s]+([^\\n]+)/i);\nconst dateMatch2 = fileContent.match(/Data[:\\s]+([^\\n]+)/i);\n\nif (vendorMatch) vendorName = vendorMatch[1].trim();\nif (prospectMatch) prospectName = prospectMatch[1].trim();\nif (companyMatch) company = companyMatch[1].trim();\nif (dateMatch2) {\n  const parsed = new Date(dateMatch2[1].trim());\n  if (!isNaN(parsed.getTime())) callDate = parsed.toISOString();\n}\n\nreturn {\n  vendorName,\n  prospectName,\n  company,\n  callDate,\n  duration,\n  fileName,\n  transcriptUrl: `https://drive.google.com/file/d/${$('Google Drive Trigger').item.json.id}/view`,\n  transcript: fileContent,\n};"
+      },
+      "id": "node_parse_metadata",
+      "name": "Extrair Metadados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "bodyParameters": {
+          "parameters": []
+        },
+        "jsonBody": "={\n  \"model\": \"claude-opus-4-6\",\n  \"max_tokens\": 4096,\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Você é um especialista em sales enablement e coaching de vendas B2B. Analise a transcrição abaixo e retorne APENAS um JSON válido (sem markdown, sem texto extra).\\n\\nINFORMAÇÕES DA CALL:\\n- Vendedor: {{ $json.vendorName }}\\n- Prospect: {{ $json.prospectName }}\\n- Empresa: {{ $json.company }}\\n- Data: {{ $json.callDate }}\\n- Duração: {{ $json.duration }} minutos\\n\\nTRANSCRIÇÃO:\\n{{ $json.transcript.substring(0, 80000) }}\\n\\nRetorne SOMENTE este JSON:\\n{\\n  \\\"score\\\": <0-100>,\\n  \\\"summary\\\": \\\"<resumo executivo de 3-4 frases sobre a qualidade da call e principais acontecimentos>\\\",\\n  \\\"strengths\\\": [\\\"<ponto forte 1>\\\", \\\"<ponto forte 2>\\\", \\\"<ponto forte 3>\\\"],\\n  \\\"improvements\\\": [\\\"<ponto de melhoria 1>\\\", \\\"<ponto de melhoria 2>\\\", \\\"<ponto de melhoria 3>\\\"],\\n  \\\"methodology\\\": {\\n    \\\"rapport\\\": <0-10>,\\n    \\\"discovery\\\": <0-10>,\\n    \\\"presentation\\\": <0-10>,\\n    \\\"objectionHandling\\\": <0-10>,\\n    \\\"closing\\\": <0-10>\\n  },\\n  \\\"nextSteps\\\": [\\n    {\\n      \\\"action\\\": \\\"<ação concreta e específica>\\\",\\n      \\\"responsible\\\": \\\"vendedor|prospect|ambos\\\",\\n      \\\"dueDate\\\": \\\"<prazo, ex: '2 dias', '1 semana', null>\\\",\\n      \\\"priority\\\": \\\"alta|media|baixa\\\"\\n    }\\n  ],\\n  \\\"hubspotFields\\\": {\\n    \\\"dealStage\\\": \\\"prospecting|appointment_scheduled|qualified_to_buy|presentation_scheduled|decision_maker_bought_in|contract_sent|closed_won|closed_lost\\\",\\n    \\\"amount\\\": <valor estimado em número ou null>,\\n    \\\"closeDate\\\": \\\"<YYYY-MM-DD ou null>\\\",\\n    \\\"notes\\\": \\\"<resumo para o CRM em 2-3 linhas>\\\",\\n    \\\"nextActivityDate\\\": \\\"<YYYY-MM-DD ou null>\\\",\\n    \\\"nextActivityType\\\": \\\"call|email|meeting|task|null\\\",\\n    \\\"leadStatus\\\": \\\"new|open|in_progress|open_deal|unqualified|attempted_to_contact|connected|bad_timing\\\"\\n  }\\n}\"\n    }\n  ]\n}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "node_ai_analysis",
+      "name": "Análise por IA (Claude)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 300],
+      "credentials": {
+        "httpHeaderAuth": { "id": "CONFIGURE_ME", "name": "Anthropic API Key" }
+      },
+      "notes": "Chama a API do Claude para análise da call. Configure a credencial com sua chave da Anthropic (header x-api-key)."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the AI response JSON\nconst aiResponse = $input.item.json;\nconst content = aiResponse.content?.[0]?.text || aiResponse.choices?.[0]?.message?.content || '';\n\nlet analysis;\ntry {\n  // Remove markdown code fences if present\n  const cleaned = content.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n  analysis = JSON.parse(cleaned);\n} catch (e) {\n  // Try to extract JSON from the text\n  const jsonMatch = content.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    analysis = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error('Could not parse AI response: ' + content.substring(0, 200));\n  }\n}\n\n// Validate and set defaults\nanalysis.score = Math.max(0, Math.min(100, Number(analysis.score) || 0));\nanalysis.strengths = Array.isArray(analysis.strengths) ? analysis.strengths : [];\nanalysis.improvements = Array.isArray(analysis.improvements) ? analysis.improvements : [];\nanalysis.nextSteps = Array.isArray(analysis.nextSteps) ? analysis.nextSteps : [];\n\n// Validate methodology scores (0-10)\nconst meth = analysis.methodology || {};\n['rapport', 'discovery', 'presentation', 'objectionHandling', 'closing'].forEach(k => {\n  meth[k] = Math.max(0, Math.min(10, Number(meth[k]) || 0));\n});\nanalysis.methodology = meth;\n\n// Validate hubspot fields\nanalysis.hubspotFields = analysis.hubspotFields || {};\n\nreturn { analysis };"
+      },
+      "id": "node_parse_ai",
+      "name": "Processar Resposta IA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.APP_URL }}/api/webhook",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "jsonBody": "={\n  \"secret\": \"{{ $env.WEBHOOK_SECRET }}\",\n  \"vendorName\": \"{{ $('Extrair Metadados').item.json.vendorName }}\",\n  \"prospectName\": \"{{ $('Extrair Metadados').item.json.prospectName }}\",\n  \"company\": \"{{ $('Extrair Metadados').item.json.company }}\",\n  \"callDate\": \"{{ $('Extrair Metadados').item.json.callDate }}\",\n  \"duration\": {{ $('Extrair Metadados').item.json.duration }},\n  \"transcriptUrl\": \"{{ $('Extrair Metadados').item.json.transcriptUrl }}\",\n  \"transcript\": {{ JSON.stringify($('Extrair Metadados').item.json.transcript) }},\n  \"hubspotDealId\": \"{{ $env.HUBSPOT_DEAL_ID || '' }}\",\n  \"analysis\": {{ JSON.stringify($json.analysis) }}\n}",
+        "options": {}
+      },
+      "id": "node_store_analysis",
+      "name": "Salvar Análise no App",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 300],
+      "notes": "Envia a análise para o app Next.js. Configure APP_URL e WEBHOOK_SECRET nos env vars do n8n."
+    },
+    {
+      "parameters": {
+        "resource": "deal",
+        "operation": "update",
+        "dealId": "={{ $env.HUBSPOT_DEAL_ID || $('Extrair Metadados').item.json.hubspotDealId || '' }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "dealstage",
+                "value": "={{ $('Processar Resposta IA').item.json.analysis.hubspotFields.dealStage || '' }}"
+              },
+              {
+                "property": "amount",
+                "value": "={{ $('Processar Resposta IA').item.json.analysis.hubspotFields.amount || '' }}"
+              },
+              {
+                "property": "closedate",
+                "value": "={{ $('Processar Resposta IA').item.json.analysis.hubspotFields.closeDate ? new Date($('Processar Resposta IA').item.json.analysis.hubspotFields.closeDate).getTime() : '' }}"
+              },
+              {
+                "property": "hs_next_step",
+                "value": "={{ $('Processar Resposta IA').item.json.analysis.nextSteps.map(s => s.action).join('\\n') }}"
+              },
+              {
+                "property": "hs_sales_email_last_replied",
+                "value": "={{ $('Processar Resposta IA').item.json.analysis.hubspotFields.notes || '' }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "node_hubspot_update",
+      "name": "Atualizar Deal no HubSpot",
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [1340, 480],
+      "credentials": {
+        "hubspotApi": { "id": "CONFIGURE_ME", "name": "HubSpot API" }
+      },
+      "notes": "Atualiza o deal no HubSpot. Configure a credencial com seu token do HubSpot. Ajuste os property names conforme seus campos customizados."
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $env.APP_URL }}/api/calls/{{ $('Salvar Análise no App').item.json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "jsonBody": "{\n  \"hubspotSynced\": true,\n  \"status\": \"synced\"\n}",
+        "options": {}
+      },
+      "id": "node_mark_synced",
+      "name": "Marcar como Sincronizado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 480]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log completion\nconst callId = $('Salvar Análise no App').item.json.id;\nconst score = $('Processar Resposta IA').item.json.analysis.score;\nconsole.log(`✅ Call ${callId} processada com score ${score}`);\nreturn { success: true, callId, score };"
+      },
+      "id": "node_done",
+      "name": "Concluído",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1780, 380]
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [[ { "node": "Baixar Transcrição", "type": "main", "index": 0 } ]]
+    },
+    "Baixar Transcrição": {
+      "main": [[ { "node": "Extrair Metadados", "type": "main", "index": 0 } ]]
+    },
+    "Extrair Metadados": {
+      "main": [[ { "node": "Análise por IA (Claude)", "type": "main", "index": 0 } ]]
+    },
+    "Análise por IA (Claude)": {
+      "main": [[ { "node": "Processar Resposta IA", "type": "main", "index": 0 } ]]
+    },
+    "Processar Resposta IA": {
+      "main": [[ { "node": "Salvar Análise no App", "type": "main", "index": 0 } ]]
+    },
+    "Salvar Análise no App": {
+      "main": [[ { "node": "Atualizar Deal no HubSpot", "type": "main", "index": 0 } ]]
+    },
+    "Atualizar Deal no HubSpot": {
+      "main": [[ { "node": "Marcar como Sincronizado", "type": "main", "index": 0 } ]]
+    },
+    "Marcar como Sincronizado": {
+      "main": [[ { "node": "Concluído", "type": "main", "index": 0 } ]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "last",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": ["sales", "ai", "hubspot"],
+  "pinData": {}
+}
