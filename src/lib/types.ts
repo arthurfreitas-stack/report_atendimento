@@ -35,7 +35,6 @@ export interface CallAnalysis {
   prospectName: string
   company: string
   transcriptUrl: string | null
-  transcript: string | null
   // AI output
   score: number             // 0–100
   summary: string
@@ -59,7 +58,6 @@ export interface WebhookPayload {
   callDate: string
   duration: number
   transcriptUrl?: string
-  transcript: string
   hubspotDealId?: string
   analysis: {
     score: number

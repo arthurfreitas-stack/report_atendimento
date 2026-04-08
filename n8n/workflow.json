@@ -112,7 +112,7 @@
         },
         "sendBody": true,
         "contentType": "json",
-        "jsonBody": "={\n  \"secret\": \"{{ $env.WEBHOOK_SECRET }}\",\n  \"vendorName\": \"{{ $('Extrair Metadados').item.json.vendorName }}\",\n  \"prospectName\": \"{{ $('Extrair Metadados').item.json.prospectName }}\",\n  \"company\": \"{{ $('Extrair Metadados').item.json.company }}\",\n  \"callDate\": \"{{ $('Extrair Metadados').item.json.callDate }}\",\n  \"duration\": {{ $('Extrair Metadados').item.json.duration }},\n  \"transcriptUrl\": \"{{ $('Extrair Metadados').item.json.transcriptUrl }}\",\n  \"transcript\": {{ JSON.stringify($('Extrair Metadados').item.json.transcript) }},\n  \"hubspotDealId\": \"{{ $env.HUBSPOT_DEAL_ID || '' }}\",\n  \"analysis\": {{ JSON.stringify($json.analysis) }}\n}",
+        "jsonBody": "={\n  \"secret\": \"{{ $env.WEBHOOK_SECRET }}\",\n  \"vendorName\": \"{{ $('Extrair Metadados').item.json.vendorName }}\",\n  \"prospectName\": \"{{ $('Extrair Metadados').item.json.prospectName }}\",\n  \"company\": \"{{ $('Extrair Metadados').item.json.company }}\",\n  \"callDate\": \"{{ $('Extrair Metadados').item.json.callDate }}\",\n  \"duration\": {{ $('Extrair Metadados').item.json.duration }},\n  \"transcriptUrl\": \"{{ $('Extrair Metadados').item.json.transcriptUrl }}\",\n  \"hubspotDealId\": \"{{ $env.HUBSPOT_DEAL_ID || '' }}\",\n  \"analysis\": {{ JSON.stringify($json.analysis) }}\n}",
         "options": {}
       },
       "id": "node_store_analysis",

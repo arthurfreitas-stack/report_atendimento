@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
       prospectName: body.prospectName,
       company: body.company,
       transcriptUrl: body.transcriptUrl ?? null,
-      transcript: body.transcript,
       score: body.analysis.score,
       summary: body.analysis.summary,
       strengths: body.analysis.strengths,

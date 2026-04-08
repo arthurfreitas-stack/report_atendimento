@@ -138,28 +138,28 @@ export default function CallDetailTabs({ call }: Props) {
 
       {active === 'transcricao' && (
         <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-gray-900">Transcrição da Call</h3>
-            {call.transcriptUrl && (
+          <h3 className="font-semibold text-gray-900 mb-4">Transcrição da Call</h3>
+          {call.transcriptUrl ? (
+            <div className="flex flex-col items-center gap-4 py-8">
+              <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center">
+                <FileText className="w-7 h-7 text-indigo-400" />
+              </div>
+              <p className="text-sm text-gray-500 text-center max-w-sm">
+                A transcrição completa está salva no Google Drive. Clique abaixo para abrir.
+              </p>
               <a
                 href={call.transcriptUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors"
               >
-                Abrir no Google Drive →
+                <FileText className="w-4 h-4" />
+                Abrir transcrição no Google Drive
               </a>
-            )}
-          </div>
-          {call.transcript
-            ? (
-              <div className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed font-mono bg-gray-50 p-4 rounded-xl border border-gray-100 max-h-[600px] overflow-y-auto">
-                {call.transcript}
-              </div>
-            )
-            : (
-              <p className="text-gray-400 text-sm">Transcrição não disponível.</p>
-            )}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm">Link da transcrição não disponível.</p>
+          )}
         </div>
       )}
     </div>
