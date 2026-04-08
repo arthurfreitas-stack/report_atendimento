@@ -6,7 +6,6 @@ export async function POST(req: NextRequest) {
   try {
     const body: WebhookPayload = await req.json()
 
-    // Validate webhook secret if configured
     const secret = process.env.WEBHOOK_SECRET
     if (secret && body.secret !== secret) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -37,7 +36,7 @@ export async function POST(req: NextRequest) {
       status: 'analyzed',
     }
 
-    saveCall(call)
+    await saveCall(call)
 
     return NextResponse.json({ id, success: true }, { status: 201 })
   } catch (err) {

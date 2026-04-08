@@ -1,53 +1,54 @@
-import fs from 'fs'
-import path from 'path'
+import { createClient } from '@supabase/supabase-js'
 import { CallAnalysis, DashboardStats } from './types'
 
-const DATA_DIR = path.join(process.cwd(), 'data', 'calls')
-
-function ensureDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true })
-  }
+function db() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
 }
 
-export function getAllCalls(): CallAnalysis[] {
-  ensureDir()
-  const files = fs.readdirSync(DATA_DIR).filter(f => f.endsWith('.json'))
-  return files
-    .map(f => JSON.parse(fs.readFileSync(path.join(DATA_DIR, f), 'utf-8')) as CallAnalysis)
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+export async function getAllCalls(): Promise<CallAnalysis[]> {
+  const { data, error } = await db()
+    .from('calls')
+    .select('data')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return (data ?? []).map(row => row.data as CallAnalysis)
 }
 
-export function getCall(id: string): CallAnalysis | null {
-  ensureDir()
-  const filePath = path.join(DATA_DIR, `${id}.json`)
-  if (!fs.existsSync(filePath)) return null
-  return JSON.parse(fs.readFileSync(filePath, 'utf-8')) as CallAnalysis
+export async function getCall(id: string): Promise<CallAnalysis | null> {
+  const { data, error } = await db()
+    .from('calls')
+    .select('data')
+    .eq('id', id)
+    .single()
+  if (error) return null
+  return data?.data as CallAnalysis
 }
 
-export function saveCall(call: CallAnalysis): void {
-  ensureDir()
-  fs.writeFileSync(path.join(DATA_DIR, `${call.id}.json`), JSON.stringify(call, null, 2))
+export async function saveCall(call: CallAnalysis): Promise<void> {
+  const { error } = await db()
+    .from('calls')
+    .upsert({ id: call.id, created_at: call.createdAt, data: call })
+  if (error) throw error
 }
 
-export function updateCall(id: string, updates: Partial<CallAnalysis>): CallAnalysis | null {
-  const call = getCall(id)
+export async function updateCall(id: string, updates: Partial<CallAnalysis>): Promise<CallAnalysis | null> {
+  const call = await getCall(id)
   if (!call) return null
   const updated = { ...call, ...updates }
-  saveCall(updated)
+  await saveCall(updated)
   return updated
 }
 
-export function deleteCall(id: string): boolean {
-  ensureDir()
-  const filePath = path.join(DATA_DIR, `${id}.json`)
-  if (!fs.existsSync(filePath)) return false
-  fs.unlinkSync(filePath)
-  return true
+export async function deleteCall(id: string): Promise<boolean> {
+  const { error } = await db().from('calls').delete().eq('id', id)
+  return !error
 }
 
-export function getStats(): DashboardStats {
-  const calls = getAllCalls()
+export async function getStats(): Promise<DashboardStats> {
+  const calls = await getAllCalls()
   const total = calls.length
 
   if (total === 0) {

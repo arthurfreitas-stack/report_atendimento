@@ -3,7 +3,7 @@ import { getAllCalls } from '@/lib/store'
 
 export async function GET() {
   try {
-    const calls = getAllCalls()
+    const calls = await getAllCalls()
     return NextResponse.json(calls)
   } catch (err) {
     console.error('GET /api/calls error:', err)
