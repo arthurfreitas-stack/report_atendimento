@@ -1,0 +1,215 @@
+<title>Roadmap Operacional Allu</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+  :root{
+    --bg:#0a1f18; --surface:#112a21; --surface-alt:#173727; --surface-sunken:#081a14; --border:#26493a;
+    --ink:#f3faf6; --ink-secondary:#c9ddd0; --ink-muted:#84a892;
+    --accent:#74f2b8; --accent-soft:rgba(116,242,184,.13); --accent-soft-ink:#a3f7d0;
+    --critical:#ff8f8f; --critical-soft:rgba(255,111,111,.16); --critical-ink:#ffb8b8;
+    --warn:#f2d074; --warn-soft:rgba(242,208,116,.14); --warn-ink:#f5dd9a;
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:14px;line-height:1.5;padding:0 18px;}
+  .wrap{max-width:1100px;margin:0 auto;padding-block:36px 70px;}
+  h1,h2,h3,h4{font-family:'Sora',system-ui,sans-serif;color:var(--ink);margin:0;text-wrap:balance;}
+  p{margin:0;color:var(--ink-secondary);}
+  code,.field{font-family:'IBM Plex Mono',monospace;font-size:.85em;background:var(--surface-sunken);padding:.05em .35em;border-radius:4px;color:var(--accent-soft-ink);}
+  b{color:var(--ink);}
+  a{color:var(--accent-soft-ink);}
+
+  .masthead{padding-block:4px 24px;border-bottom:1px solid var(--border);margin-bottom:28px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  .masthead h1{font-size:30px;font-weight:800;margin-top:8px;}
+  .masthead p{margin-top:10px;font-size:13.5px;max-width:640px;line-height:1.55;}
+
+  section{margin-bottom:36px;}
+  .section-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+  .section-head h2{font-size:18px;font-weight:700;}
+  .section-head .n{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-muted);}
+
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:100px;white-space:nowrap;}
+  .badge .sq{width:6px;height:6px;border-radius:2px;flex:none;}
+  .badge.crit{background:var(--critical-soft);color:var(--critical-ink);} .badge.crit .sq{background:var(--critical);}
+  .badge.alto{background:var(--warn-soft);color:var(--warn-ink);} .badge.alto .sq{background:var(--warn);}
+  .badge.aberto{background:var(--surface-alt);color:var(--ink-muted);} .badge.aberto .sq{background:var(--ink-muted);}
+
+  .priolist{display:flex;flex-direction:column;gap:2px;background:var(--border);border-radius:10px;overflow:hidden;}
+  .priorow{background:var(--surface);padding:13px 16px;display:flex;align-items:center;gap:14px;}
+  .priorow .pn{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-muted);width:20px;}
+  .priorow .pt{font-weight:700;font-size:14px;flex:1;}
+  .priorow .ps{font-size:11px;color:var(--ink-muted);}
+
+  .subhead{font-size:11.5px;font-weight:700;color:var(--accent-soft-ink);text-transform:uppercase;letter-spacing:.05em;margin:22px 0 10px;}
+  .subhead:first-child{margin-top:0;}
+
+  .statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;background:var(--border);border-radius:10px;overflow:hidden;margin-bottom:8px;}
+  .stat{background:var(--surface);padding:13px 15px;}
+  .stat .l{font-size:10.5px;color:var(--ink-muted);margin-bottom:5px;}
+  .stat .v{font-family:'IBM Plex Mono',monospace;font-size:19px;font-weight:700;}
+  .stat .v.crit{color:var(--critical-ink);}
+
+  .frentes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;}
+  .frente{background:var(--surface);border-radius:10px;padding:14px 16px;}
+  .frente h4{font-size:12.5px;color:var(--accent-soft-ink);text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px;}
+  .frente ul{margin:0;padding-left:15px;display:flex;flex-direction:column;gap:8px;}
+  .frente li{font-size:12px;color:var(--ink-secondary);line-height:1.45;}
+  .frente li b{color:var(--ink);}
+
+  .flow{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:4px;}
+  .flowstep{background:var(--surface);border-radius:8px;padding:11px 13px;min-width:150px;flex:none;}
+  .flowstep .fk{font-size:9.5px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px;}
+  .flowstep .ft{font-size:12px;font-weight:600;color:var(--ink);}
+  .flowarrow{display:flex;align-items:center;justify-content:center;min-width:26px;color:var(--ink-muted);font-size:16px;flex:none;}
+  .flowstep.new{border:1px dashed var(--accent);}
+
+  .crosstable{width:100%;border-collapse:collapse;font-size:12px;background:var(--surface);border-radius:10px;overflow:hidden;}
+  .crosstable th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted);font-weight:700;padding:9px 10px;border-bottom:1px solid var(--border);}
+  .crosstable td{padding:9px 10px;border-bottom:1px solid var(--surface-alt);color:var(--ink-secondary);vertical-align:top;}
+  .crosstable tr:last-child td{border-bottom:none;}
+  .crosstable td.metric{color:var(--ink);font-weight:600;white-space:nowrap;}
+
+  .mockslot{background:var(--surface-alt);border:1px dashed var(--border);border-radius:10px;padding:22px;text-align:center;}
+  .mockslot .mt{font-size:12px;color:var(--ink-muted);}
+  .mockslot code{margin-top:6px;display:inline-block;}
+  .mockgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;}
+  .mockgrid img{width:100%;border-radius:10px;display:block;}
+  .mockgrid figure{margin:0;background:var(--surface);border-radius:10px;overflow:hidden;}
+  .mockgrid figcaption{font-size:11px;color:var(--ink-muted);padding:8px 10px;}
+
+  .insight{background:var(--surface);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 16px;font-size:12.5px;color:var(--ink-secondary);margin-top:4px;}
+  .insight b{color:var(--ink);}
+  .insight.crit{border-left-color:var(--critical);}
+  .insight.warn{border-left-color:var(--warn);}
+
+  .placeholder{background:var(--surface);border-radius:10px;padding:16px 18px;}
+  .placeholder p{font-size:12.5px;}
+
+  .foot{font-size:10.5px;color:var(--ink-muted);border-top:1px solid var(--border);padding-top:14px;margin-top:6px;}
+  .foot a{color:var(--ink-muted);}
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="eyebrow">Produto · Growth · App · Site · Alluwave</div>
+    <h1>Roadmap operacional — Allu</h1>
+    <p>Mudanças de processo pra operação ficar mais eficiente, organizadas por tema. Cada tema mapeia o que muda no site/app, no Alluwave (disparo ativo), na IA/prompt de atendimento e na central de ajuda — porque essas frentes precisam andar juntas, não isoladas.</p>
+  </div>
+
+  <!-- ============ PRIORIZACAO ============ -->
+  <section>
+    <div class="section-head"><h2>Priorização</h2><span class="n">atualizado 23/09</span></div>
+    <div class="priolist">
+      <div class="priorow"><span class="pn">1</span><span class="pt">Cancelamento</span><span class="badge crit"><span class="sq"></span>crítico</span><span class="ps">detalhado abaixo</span></div>
+      <div class="priorow"><span class="pn">2</span><span class="pt">Upgrade</span><span class="badge alto"><span class="sq"></span>alto</span><span class="ps">aguardando detalhamento</span></div>
+      <div class="priorow"><span class="pn">3</span><span class="pt">AT (assistência técnica)</span><span class="badge alto"><span class="sq"></span>alto</span><span class="ps">aguardando detalhamento</span></div>
+      <div class="priorow"><span class="pn">4</span><span class="pt">A definir</span><span class="badge aberto"><span class="sq"></span>aberto</span><span class="ps">próximo tema a classificar</span></div>
+    </div>
+  </section>
+
+  <!-- ============ 1. CANCELAMENTO ============ -->
+  <section>
+    <div class="section-head"><h2>1 · Cancelamento</h2><span class="badge crit"><span class="sq"></span>crítico</span></div>
+
+    <div class="subhead">O problema, com número</div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">Retenção (ago→set)</div><div class="v crit">14,1%→7,1%</div></div>
+      <div class="stat"><div class="l">Cancela no dia 0 (mesmo dia do pagamento)</div><div class="v">54,8%</div></div>
+      <div class="stat"><div class="l">Retenção no dia 0</div><div class="v crit">14,1%</div></div>
+      <div class="stat"><div class="l">"Mudei de ideia" + "dificuldades no processo"</div><div class="v">40,1%</div></div>
+    </div>
+    <p style="font-size:11.5px;margin-top:4px;">Fonte: diagnóstico CX ago-set, seção 03. A maior parte do cancelamento não é insatisfação com o produto — é decisão rápida de checkout ou trava de documentação, antes da entrega.</p>
+
+    <div class="subhead">O que já existe (não precisa reconstruir)</div>
+    <div class="insight">O formulário de cancelamento já captura <b>motivo</b> (obrigatório) + <b>submotivo</b> (condicional ao motivo) + <b>observação em texto livre</b> (obrigatória). É a mesma estrutura que benchmark de mercado recomenda pra pesquisa de saída — o dado certo já existe, o que falta é usar esse dado pra acionar retenção automática.</p></div>
+
+    <div class="subhead">Mudanças propostas, por frente</div>
+    <div class="frentes">
+      <div class="frente">
+        <h4>Site / App</h4>
+        <ul>
+          <li><b>Oferecer pausa</b> como alternativa ao cancelamento, pros motivos "mudei de ideia" e "não é o momento" (49,5% do maior motivo) — hoje aparentemente só existe cancelar ou manter. <span style="color:var(--warn-ink)">Preciso confirmar se pausa já existe em algum formato.</span></li>
+          <li>Se o motivo for "escolhi o modelo errado" ou "quero trocar de modelo", oferecer <b>troca direta</b> na mesma tela, sem precisar cancelar e reassinar.</li>
+          <li>Mostrar o prazo e a condição de saída (multa, se houver) <b>antes</b> de confirmar o pedido, não só no contrato — achado real: cliente reclamou de descobrir multa de 100% só lendo o contrato depois.</li>
+        </ul>
+      </div>
+      <div class="frente">
+        <h4>Alluwave (disparo ativo)</h4>
+        <ul>
+          <li>Disparo automático pro cliente que <b>abriu</b> o cancelamento mas não confirmou (abandono no meio do fluxo).</li>
+          <li>Disparo <b>segmentado pelo motivo</b> selecionado no formulário — mensagem de "financeiro" é diferente de mensagem de "dificuldade no processo". Hoje a retenção parece depender só do atendente humano puxar o caso.</li>
+          <li>Handoff pro atendente humano só se o disparo automático não resolver em X tempo — hoje não está claro se esse critério existe.</li>
+        </ul>
+      </div>
+      <div class="frente">
+        <h4>IA / Prompt (Intercom)</h4>
+        <ul>
+          <li>Quando o cliente chega pedindo cancelamento, IA pergunta o motivo <b>antes</b> de confirmar/processar — pra já poder oferecer pausa ou troca de modelo na conversa, sem esperar o formulário.</li>
+          <li>Prompt precisa saber a regra de arrependimento (7 dias da entrega) pra explicar corretamente quando o cliente pergunta sobre multa.</li>
+        </ul>
+      </div>
+      <div class="frente">
+        <h4>Central de ajuda</h4>
+        <ul>
+          <li>Artigo claro: "o que acontece se eu cancelar antes do prazo" — com valor de multa explícito, não só linguagem de contrato.</li>
+          <li>Artigo separado: diferença entre período de arrependimento (7 dias) e o resto da assinatura.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="subhead">Fluxo proposto</div>
+    <div class="flow">
+      <div class="flowstep"><div class="fk">hoje</div><div class="ft">Cliente pede cancelamento</div></div>
+      <div class="flowarrow">→</div>
+      <div class="flowstep"><div class="fk">hoje</div><div class="ft">Preenche motivo + submotivo + texto</div></div>
+      <div class="flowarrow">→</div>
+      <div class="flowstep new"><div class="fk">novo</div><div class="ft">Alluwave dispara oferta por motivo</div></div>
+      <div class="flowarrow">→</div>
+      <div class="flowstep new"><div class="fk">novo</div><div class="ft">Site oferece pausa ou troca, se aplicável</div></div>
+      <div class="flowarrow">→</div>
+      <div class="flowstep"><div class="fk">hoje</div><div class="ft">Se não resolve: cancelamento processa</div></div>
+    </div>
+
+    <div class="subhead">Cruzamento de impacto</div>
+    <div class="tw" style="overflow-x:auto;">
+    <table class="crosstable">
+      <thead><tr><th>Mudança</th><th>Dispara alteração em</th></tr></thead>
+      <tbody>
+        <tr><td class="metric">Oferecer pausa</td><td>Site/app (tela nova) · Alluwave (mensagem de oferta) · IA (saber oferecer na conversa) · Central de ajuda (explicar como pausa funciona)</td></tr>
+        <tr><td class="metric">Troca de modelo direto</td><td>Site/app (fluxo de troca) · IA (reconhecer o pedido) · Time de dados (o campo já existe: <span class="field">cancellation_subreasons</span>)</td></tr>
+        <tr><td class="metric">Disparo segmentado por motivo</td><td>Alluwave (templates por motivo) · Site (expor o motivo escolhido pro Alluwave)</td></tr>
+        <tr><td class="metric">Prazo/multa visível antes de confirmar</td><td>Site/app (tela) · Central de ajuda (artigo) · IA (explicar corretamente)</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="subhead">Telas / mockups</div>
+    <div class="mockslot">
+      <div class="mt">Aguardando imagens — suba aqui no chat conforme for desenhando</div>
+      <code>roadmap-produto/assets/cancelamento-*.png</code>
+    </div>
+
+    <div class="insight warn"><b>Benchmark:</b> fluxo de cancelamento bem desenhado recupera 10-34% das tentativas (Churnkey). Pausa aumenta em 337% quando oferecida, e ~25% de quem cancelaria opta por ela. Oferta genérica não funciona — tem que ser específica ao motivo. <a href="https://www.subscriptionindex.com/guides/cancellation-flow">Subscription Index</a>, <a href="https://blog.funnelfox.com/cancellation-flows-examples-and-best-practices/">FunnelFox</a>.</div>
+  </section>
+
+  <!-- ============ 2. UPGRADE ============ -->
+  <section>
+    <div class="section-head"><h2>2 · Upgrade</h2><span class="badge alto"><span class="sq"></span>alto</span></div>
+    <div class="placeholder"><p>Aguardando detalhamento. No diagnóstico CX, resolução do intent <span class="field">upgrade</span> está em 20,2% de não-resolvido (pior da base com volume relevante) — ponto de partida quando entrarmos nesse tema.</p></div>
+  </section>
+
+  <!-- ============ 3. AT ============ -->
+  <section>
+    <div class="section-head"><h2>3 · AT (assistência técnica)</h2><span class="badge alto"><span class="sq"></span>alto</span></div>
+    <div class="placeholder"><p>Aguardando detalhamento.</p></div>
+  </section>
+
+  <!-- ============ 4. A DEFINIR ============ -->
+  <section>
+    <div class="section-head"><h2>4 · A definir</h2><span class="badge aberto"><span class="sq"></span>aberto</span></div>
+    <div class="placeholder"><p>Próximo tema entra aqui conforme você for mandando.</p></div>
+  </section>
+
+  <div class="foot">Fontes de benchmark linkadas em cada seção. Site e central de ajuda da allu bloqueados pra acesso direto neste ambiente — itens marcados "preciso confirmar" dependem de validação sua.</div>
+
+</div>
