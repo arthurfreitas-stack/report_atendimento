@@ -152,6 +152,38 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .badge.med{background:rgba(242,201,76,.15);color:var(--warn);}
 .badge.low{background:rgba(116,242,184,.15);color:var(--accent);}
 
+/* ---------- journey / process steps ---------- */
+.journey{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px 26px 22px;margin:22px 0;}
+.journey-head{display:flex;align-items:baseline;gap:10px;}
+.journey-num{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:13px;font-weight:600;}
+.journey-title{font-family:'Sora',sans-serif;font-size:19px;font-weight:700;color:var(--ink);}
+.journey-elig{font-size:13.5px;color:var(--ink-muted);margin:10px 0 26px;line-height:1.6;}
+.journey-elig b{color:var(--ink-secondary);}
+.steps{display:flex;flex-direction:column;}
+.step{display:flex;gap:16px;}
+.step-rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.step-num{width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;}
+.step-line{flex:1;width:2px;background:var(--border);min-height:18px;margin:4px 0;}
+.step:last-child .step-line{display:none;}
+.step-body{padding-bottom:26px;font-size:14.5px;line-height:1.6;color:var(--ink-secondary);}
+.step:last-child .step-body{padding-bottom:4px;}
+.step-body b{color:var(--ink);}
+.step-body .btnlabel{display:inline-block;background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;padding:1px 8px;font-size:13px;font-family:'IBM Plex Mono',monospace;color:var(--ink);}
+.branchgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
+@media(max-width:640px){.branchgrid{grid-template-columns:1fr;}}
+.branch{border-radius:10px;padding:14px 16px;font-size:13.5px;line-height:1.55;border:1px solid var(--border);background:var(--surface-sunken);}
+.branch.go{border-left:3px solid var(--accent);}
+.branch.stop{border-left:3px solid var(--ink-muted);}
+.branch .bt{font-weight:600;color:var(--ink);margin-bottom:6px;font-size:13px;}
+.branch .bt.go{color:var(--accent);}
+.subbranch{margin-top:10px;padding-top:10px;border-top:1px solid var(--border-soft);font-size:13px;color:var(--ink-muted);}
+.subbranch b{color:var(--ink-secondary);}
+.sysrules{margin-top:24px;padding-top:20px;border-top:1px solid var(--border-soft);}
+.sysrules h5{font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin-bottom:10px;}
+.sysrules ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-secondary);line-height:1.65;}
+.sysrules li{margin-bottom:8px;}
+.tbc{color:var(--warn);font-weight:600;font-size:11.5px;letter-spacing:.03em;}
+
 /* ---------- delta pill ---------- */
 .delta{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12.5px;}
 .delta.up{color:var(--critical);}
@@ -447,6 +479,57 @@ footer a{color:var(--ink-muted);}
         <li>Uma oferta, gerada pelo motivo escolhido — nada de sequência de telas.</li>
         <li>"Cancelar mesmo assim" tem o mesmo peso visual do botão de oferta — cumpre o requisito de 1 clique da FTC por construção, não como adaptação forçada depois.</li>
         <li>Nenhum humano é necessário pra esse fluxo acontecer.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-size:18px;margin:36px 0 6px;">Jornada detalhada, etapa por etapa</h3>
+  <p class="section-sub">A matriz acima mostra a oferta. Aqui está a tela a tela — regra de negócio, ramificação e o que muda no sistema. Começando pela etapa com maior volume de chegada (11.362 pedidos em agosto): pagamento aprovado, documentação ainda não enviada.</p>
+
+  <div class="journey">
+    <div class="journey-head"><span class="journey-num">01</span><span class="journey-title">Cancelamento com pagamento aprovado, sem documentação enviada</span></div>
+    <p class="journey-elig"><b>Validação de elegibilidade:</b> esse fluxo se aplica a pedidos com status "Pagamento aprovado" e nenhuma documentação enviada ainda.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>
+        <div class="step-body">Cliente pede para cancelar um pedido nessa condição.</div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
+        <div class="step-body"><b>Modal 1 — aviso de perda</b> (o modal já existente hoje): reforça o que o cliente perde ao cancelar — reativação bloqueada por 180 dias, ofertas exclusivas, suporte prioritário em trocas, seguro do aparelho. <span class="btnlabel">Manter assinatura</span> <span class="btnlabel">Sim, quero cancelar</span></div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
+        <div class="step-body"><b>Modal 2 — validação de troca:</b> "Você assinou o produto ou plano errado? Talvez você só precise trocar, não cancelar." <span class="btnlabel">Isso, assinei um produto mas quero outro</span> <span class="btnlabel">Não, quero cancelar mesmo</span></div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">4</div></div>
+        <div class="step-body">
+          <b>Ramifica conforme a resposta:</b>
+          <div class="branchgrid">
+            <div class="branch go">
+              <div class="bt go">→ Quer trocar</div>
+              "Entendi! Então, ao invés de cancelar, vamos te chamar pra fazer um novo pedido e trocar o produto e plano pro que você realmente quer assinar. Vamos te chamar em até 1 dia útil pra fazer essa alteração, combinado?" — fluxo encerra aqui, sem cancelamento.
+            </div>
+            <div class="branch stop">
+              <div class="bt">→ Não, quer cancelar mesmo</div>
+              Abre o formulário de motivo, submotivo e observação.
+              <div class="subbranch"><b>Motivo = confuso ou inseguro</b> → mostra FAQ de dúvidas / opção de falar com suporte antes de confirmar.</div>
+              <div class="subbranch"><b>Motivo = encontrou opção melhor</b> → segue direto pro envio da solicitação, sem oferta adicional.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sysrules">
+      <h5>Regras de sistema</h5>
+      <ul>
+        <li>Escolher "quero trocar" não revoga nem cancela o pedido original — abre uma nova intenção de compra tratada pelo time comercial. O pedido original continua com status "pagamento aprovado" até o novo pedido ser confirmado com o cliente.</li>
+        <li><span class="tbc">A confirmar</span> — prazo de retorno se o cliente não responder o contato em até 1 dia útil: hoje não existe uma regra definida pra isso. Proposta: o pedido original segue no fluxo normal (nenhum cancelamento automático), e reabre o convite pra troca no próximo contato.</li>
+        <li><span class="tbc">A confirmar</span> — o formulário de cancelamento atual mostra multa de 20% pra qualquer etapa. Nessa etapa específica não houve documentação enviada nem produto despachado, então não deveria haver "tempo remanescente do serviço" a cobrar. Precisa ajuste na regra de cálculo antes de liberar esse fluxo.</li>
+        <li>Acessar o FAQ ou o suporte a partir do motivo "confuso"/"inseguro" não cancela nada sozinho. Se o cliente ficar satisfeito com a resposta, ele decide entre voltar pro passo 3 (trocar) ou seguir com o cancelamento.</li>
       </ul>
     </div>
   </div>
