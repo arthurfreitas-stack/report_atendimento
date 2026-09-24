@@ -1,0 +1,664 @@
+<title>Retenção Sem Fricção</title>
+<meta name="description" content="Defesa de CRO para redesenhar a retenção de cancelamento da allu: self-service por padrão, chat como exceção, com dados de setembro/2026 e benchmark de mercado.">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  color-scheme: dark;
+  --bg:#0a1f18;
+  --surface:#112a21;
+  --surface-alt:#173727;
+  --surface-sunken:#081a14;
+  --border:#26493a;
+  --border-soft:#1c3529;
+  --ink:#f3faf6;
+  --ink-secondary:#c9ddd0;
+  --ink-muted:#84a892;
+  --accent:#74f2b8;
+  --accent-dim:#3f8f6c;
+  --critical:#ff8f8f;
+  --critical-dim:#8a4a4a;
+  --warn:#f2c94c;
+  --warn-dim:#8a7a3a;
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'IBM Plex Sans',system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:'Sora',system-ui,sans-serif;text-wrap:balance;margin:0;}
+.mono{font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums;}
+a{color:var(--accent);}
+
+.wrap{max-width:980px;margin:0 auto;padding:0 20px;}
+
+/* ---------- nav ---------- */
+.topnav{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:50;
+  background:rgba(10,31,24,0.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--border-soft);
+}
+.topnav-inner{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;gap:18px;overflow-x:auto;white-space:nowrap;}
+.topnav a{color:var(--ink-muted);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.02em;}
+.topnav a:hover{color:var(--accent);}
+
+/* ---------- masthead ---------- */
+.masthead{padding:56px 0 40px;border-bottom:1px solid var(--border-soft);}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px;}
+.masthead h1{font-size:clamp(32px,5vw,48px);font-weight:800;line-height:1.05;max-width:16ch;}
+.thesis{font-size:18px;color:var(--ink-secondary);max-width:56ch;margin-top:18px;}
+.meta-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:24px;font-size:13px;color:var(--ink-muted);}
+
+/* ---------- sections ---------- */
+section{padding:52px 0;border-bottom:1px solid var(--border-soft);}
+section:last-of-type{border-bottom:none;}
+.section-label{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;}
+.section-num{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:14px;font-weight:500;}
+.section-tag{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);}
+h2{font-size:clamp(24px,3.4vw,32px);margin-bottom:6px;}
+.section-sub{color:var(--ink-secondary);max-width:64ch;margin-top:10px;font-size:15.5px;}
+
+/* ---------- stat row ---------- */
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:28px 0;}
+.stat{background:var(--surface);padding:20px 18px;}
+.stat .v{font-family:'Sora',sans-serif;font-size:30px;font-weight:700;color:var(--ink);}
+.stat .v.crit{color:var(--critical);}
+.stat .v.acc{color:var(--accent);}
+.stat .l{font-size:12.5px;color:var(--ink-muted);margin-top:4px;line-height:1.4;}
+@media(max-width:720px){.statgrid{grid-template-columns:repeat(2,1fr);}}
+
+/* ---------- callout ---------- */
+.callout{border-radius:12px;padding:18px 20px;margin:22px 0;font-size:14.5px;line-height:1.6;border:1px solid var(--border);}
+.callout.crit{background:rgba(255,143,143,0.06);border-color:var(--critical-dim);}
+.callout.acc{background:rgba(116,242,184,0.06);border-color:var(--accent-dim);}
+.callout.warn{background:rgba(242,201,76,0.06);border-color:var(--warn-dim);}
+.callout b{color:var(--ink);}
+.callout .k{font-family:'IBM Plex Mono',monospace;font-weight:500;}
+
+/* ---------- chart card ---------- */
+.chartcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 22px 12px;margin:24px 0;}
+.chartcard h4{font-size:15px;font-weight:600;color:var(--ink);}
+.chartcard .chart-desc{font-size:13px;color:var(--ink-muted);margin-top:4px;}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0 4px;font-size:12.5px;color:var(--ink-secondary);}
+.legend span{display:inline-flex;align-items:center;gap:6px;}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block;}
+svg{display:block;width:100%;height:auto;overflow:visible;}
+.bar-hit{fill:transparent;cursor:pointer;}
+.tooltip{
+  position:absolute; pointer-events:none; background:var(--surface-alt);
+  border:1px solid var(--border); border-radius:8px; padding:8px 10px;
+  font-size:12.5px; color:var(--ink); box-shadow:0 8px 24px rgba(0,0,0,.4);
+  transform:translate(-50%,-115%); white-space:nowrap; opacity:0; transition:opacity .1s;
+  z-index:10;
+}
+.tooltip.show{opacity:1;}
+.tooltip .tt-title{color:var(--ink-muted);font-size:11px;margin-bottom:2px;}
+.chart-wrap{position:relative;}
+
+/* ---------- tables ---------- */
+.tblwrap{overflow-x:auto;margin:20px 0;border:1px solid var(--border);border-radius:12px;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px;}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border-soft);vertical-align:top;}
+th{background:var(--surface-alt);color:var(--ink-muted);font-weight:600;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;position:sticky;top:0;}
+tr:last-child td{border-bottom:none;}
+td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;font-weight:600;}
+.tag.self{background:rgba(116,242,184,.12);color:var(--accent);}
+.tag.chat{background:rgba(255,143,143,.12);color:var(--critical);}
+.tag.watch{background:rgba(242,201,76,.12);color:var(--warn);}
+
+/* ---------- offer map ---------- */
+.offergrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:22px 0;}
+.offercard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.offercard .m{font-size:13px;font-weight:600;color:var(--ink);}
+.offercard .o{font-size:12.5px;color:var(--accent);margin-top:6px;font-weight:500;}
+.offercard .r{font-size:12px;color:var(--ink-muted);margin-top:6px;line-height:1.5;}
+
+/* ---------- phone mock ---------- */
+.mockrow{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;margin:26px 0;}
+.phone{width:300px;background:var(--surface-sunken);border:1px solid var(--border);border-radius:22px;padding:16px;flex-shrink:0;}
+.phone .pill{font-size:10px;color:var(--ink-muted);text-align:center;margin-bottom:10px;letter-spacing:.08em;text-transform:uppercase;}
+.phone .stagebanner{background:var(--surface-alt);border-radius:8px;padding:8px 10px;font-size:11.5px;color:var(--ink-secondary);margin-bottom:12px;}
+.phone .qtitle{font-size:14px;font-weight:600;margin-bottom:10px;}
+.phone .motivo{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:12.5px;color:var(--ink-secondary);margin-bottom:8px;}
+.phone .motivo.sel{border-color:var(--accent);color:var(--ink);}
+.phone .offercard2{background:rgba(116,242,184,.08);border:1px solid var(--accent-dim);border-radius:10px;padding:12px;margin:14px 0;}
+.phone .offercard2 .ot{font-size:12px;color:var(--accent);font-weight:600;margin-bottom:4px;}
+.phone .offercard2 .od{font-size:12.5px;color:var(--ink-secondary);line-height:1.5;}
+.phone .btnrow{display:flex;gap:8px;margin-top:14px;}
+.phone .btn{flex:1;text-align:center;padding:10px 8px;border-radius:8px;font-size:12px;font-weight:600;}
+.phone .btn.primary{background:var(--accent);color:#06180f;}
+.phone .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--ink-secondary);}
+.mocknote{flex:1;min-width:240px;font-size:13.5px;color:var(--ink-secondary);}
+.mocknote h5{font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:0 0 8px;}
+.mocknote li{margin-bottom:6px;}
+
+/* ---------- priority list ---------- */
+.priolist{display:flex;flex-direction:column;gap:10px;margin:22px 0;}
+.priorow{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+.priorow .pn{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--accent);width:28px;flex-shrink:0;}
+.priorow .pt{font-size:14.5px;font-weight:600;color:var(--ink);}
+.priorow .pd{font-size:13px;color:var(--ink-muted);margin-top:4px;line-height:1.5;}
+.badge{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-left:8px;vertical-align:1px;}
+.badge.high{background:rgba(255,143,143,.15);color:var(--critical);}
+.badge.med{background:rgba(242,201,76,.15);color:var(--warn);}
+.badge.low{background:rgba(116,242,184,.15);color:var(--accent);}
+
+/* ---------- source note / footer ---------- */
+.srcnote{font-size:12px;color:var(--ink-muted);margin-top:6px;}
+footer{padding:40px 0 60px;font-size:12.5px;color:var(--ink-muted);}
+footer a{color:var(--ink-muted);}
+</style>
+
+<nav class="topnav"><div class="topnav-inner">
+  <a href="#problema">01 · O problema hoje</a>
+  <a href="#mercado">02 · Como o mercado faz</a>
+  <a href="#modelo">03 · O modelo ideal</a>
+  <a href="#aplicar">04 · Como aplicar</a>
+</div></nav>
+
+<div class="masthead"><div class="wrap">
+  <div class="eyebrow">Defesa de CRO · Retenção de cancelamento</div>
+  <h1>Retenção sem fricção</h1>
+  <p class="thesis">Hoje a allu retém cancelamento segurando pedido sem avisar o cliente. Isso não reduz cancelamento de verdade e concentra risco regulatório. A proposta: self-service resolve por padrão, chat vira exceção reservada pra alto valor ou risco real.</p>
+  <div class="meta-row">
+    <span>Base: solicitações de cancelamento, setembro/2026</span>
+    <span>Fonte: BigQuery, v3_raw_alluoffice.order_cancellation_requests</span>
+    <span>Preparo: Arthur Freitas, gestão comercial</span>
+  </div>
+</div></div>
+
+<!-- ============ 01 · PROBLEMA ============ -->
+<section id="problema"><div class="wrap">
+  <div class="section-label"><span class="section-num">01</span><span class="section-tag">Como está hoje</span></div>
+  <h2>A retenção que aparece no relatório não é a retenção real</h2>
+  <p class="section-sub">2.862 solicitações de cancelamento em setembro/2026. Cruzando cada uma com o histórico do pedido, dá pra ver exatamente em que etapa o cliente estava, quem revogou e quantos voltaram a pedir depois.</p>
+
+  <div class="statgrid">
+    <div class="stat"><div class="v">2.862</div><div class="l">solicitações de cancelamento em setembro</div></div>
+    <div class="stat"><div class="v crit">55,6%</div><div class="l">das revogações em doc. aprovada foram feitas pela allu, sem o cliente pedir</div></div>
+    <div class="stat"><div class="v crit">62,9%</div><div class="l">desses casos, o cliente volta a pedir cancelamento depois</div></div>
+    <div class="stat"><div class="v acc">13,4%</div><div class="l">retenção líquida real em doc. aprovada — não os 36,2% que o relatório de status mostra</div></div>
+  </div>
+
+  <div class="chartcard">
+    <h4>Volume de solicitações por etapa do pedido</h4>
+    <p class="chart-desc">Setembro/2026 · onde exatamente o cliente estava quando pediu cancelar</p>
+    <div class="chart-wrap" id="c1wrap">
+      <svg viewBox="0 0 640 300" id="chart1" role="img" aria-label="Volume de solicitações de cancelamento por etapa do pedido">
+        <line x1="40" y1="250" x2="600" y2="250" stroke="#26493a" stroke-width="1"/>
+        <!-- bars drawn by data below -->
+        <g id="c1bars"></g>
+      </svg>
+    </div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>solicitações</span></div>
+  </div>
+
+  <div class="tblwrap"><table>
+    <thead><tr><th>Etapa</th><th class="num">Volume</th><th class="num">% do total</th></tr></thead>
+    <tbody>
+      <tr><td>Pagamento aprovado</td><td class="num">376</td><td class="num">13,1%</td></tr>
+      <tr><td>Documentação em análise</td><td class="num">524</td><td class="num">18,3%</td></tr>
+      <tr><td>Documentação aprovada</td><td class="num">685</td><td class="num">23,9%</td></tr>
+      <tr><td>Pedido enviado</td><td class="num">56</td><td class="num">2,0%</td></tr>
+      <tr><td>Pedido entregue</td><td class="num">827</td><td class="num">28,9%</td></tr>
+      <tr><td>Sem etapa identificada</td><td class="num">394</td><td class="num">13,8%</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="chartcard">
+    <h4>Retenção bruta vs. retenção líquida, por etapa</h4>
+    <p class="chart-desc">Bruta = % revogado. Líquida = % revogado que <b>não</b> voltou a pedir depois. A diferença entre as duas barras é retenção fantasma.</p>
+    <div class="chart-wrap" id="c2wrap">
+      <svg viewBox="0 0 640 300" id="chart2" role="img" aria-label="Retenção bruta comparada a retenção líquida por etapa">
+        <line x1="40" y1="230" x2="600" y2="230" stroke="#26493a" stroke-width="1"/>
+        <g id="c2bars"></g>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--ink-muted)"></i>bruta (% revogado, métrica hoje)</span>
+      <span><i style="background:var(--accent)"></i>líquida (% que ficou de verdade)</span>
+    </div>
+  </div>
+
+  <div class="callout crit">
+    <b>O maior gap é exatamente onde a allu mais "retém":</b> em doc. aprovada, a métrica bruta (<span class="k">36,2%</span>) é quase <span class="k">3x</span> a líquida (<span class="k">13,4%</span>). É a etapa com mais volume de revogação por analista — e mais reincidência.
+  </div>
+
+  <div class="chartcard">
+    <h4>Quem revogou o cancelamento — etapa "documentação aprovada"</h4>
+    <p class="chart-desc">248 revogações em setembro. Mais da metade não partiu do cliente.</p>
+    <div class="chart-wrap" id="c3wrap">
+      <svg viewBox="0 0 640 170" id="chart3" role="img" aria-label="Quem revogou o cancelamento em documentação aprovada">
+        <g id="c3bars"></g>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--ink-secondary)"></i>cliente (110 · 44,4%)</span>
+      <span><i style="background:var(--critical)"></i>analista / sistema, sem o cliente pedir (138 · 55,6%)</span>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    Dos 138 casos revogados pela allu sem o cliente pedir: <b>92 (66,7%) o próprio cliente voltou e abriu nova solicitação depois</b>, pela área do assinante. Não é retenção — é adiamento que o cliente paga com mais um contato.
+  </div>
+
+  <div class="chartcard">
+    <h4>Setembro dia a dia — doc. aprovada: revogado, finalizado e em aberto</h4>
+    <p class="chart-desc">O salto de "em aberto" a partir do dia 17 é esperado (solicitação recente ainda não processada), não é acúmulo real.</p>
+    <div class="chart-wrap" id="c4wrap">
+      <svg viewBox="0 0 640 280" id="chart4" role="img" aria-label="Volume diário de solicitações revogadas, finalizadas e em aberto em documentação aprovada, setembro 2026">
+        <line x1="40" y1="230" x2="620" y2="230" stroke="#26493a" stroke-width="1"/>
+        <line x1="40" y1="20" x2="40" y2="230" stroke="#26493a" stroke-width="1"/>
+        <g id="c4lines"></g>
+        <g id="c4hit"></g>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--accent)"></i>revoked</span>
+      <span><i style="background:var(--critical)"></i>finished</span>
+      <span><i style="background:var(--warn)"></i>em aberto</span>
+    </div>
+  </div>
+
+  <div class="tblwrap"><table>
+    <thead><tr><th>Etapa</th><th class="num">Ret. bruta</th><th class="num">Reincidência</th><th class="num">Ret. líquida</th></tr></thead>
+    <tbody>
+      <tr><td>Pagamento aprovado</td><td class="num">19,4%</td><td class="num">57,5%</td><td class="num">8,2%</td></tr>
+      <tr><td>Documentação em análise</td><td class="num">22,1%</td><td class="num">35,3%</td><td class="num">14,3%</td></tr>
+      <tr><td>Documentação aprovada</td><td class="num">36,2%</td><td class="num">62,9%</td><td class="num">13,4%</td></tr>
+      <tr><td>Pedido enviado</td><td class="num">41,1%</td><td class="num">43,5%</td><td class="num">23,2%</td></tr>
+      <tr><td>Pedido entregue</td><td class="num">19,3%</td><td class="num">43,1%</td><td class="num">11,0%</td></tr>
+    </tbody>
+  </table></div>
+
+  <p class="section-sub">Reincidência em cima de reincidência: dos pedidos que tiveram revogação em doc. aprovada, <b class="mono" style="color:var(--ink)">61,9%</b> pediram cancelamento de novo em algum momento (média de <b class="mono" style="color:var(--ink)">2,07</b> solicitações por pedido, máximo de <b class="mono" style="color:var(--ink)">8</b> no mesmo pedido). O processo atual não resolve a intenção do cliente, só a adia — e cada rodada consome um analista.</p>
+</div></section>
+
+<!-- ============ 02 · MERCADO ============ -->
+<section id="mercado"><div class="wrap">
+  <div class="section-label"><span class="section-num">02</span><span class="section-tag">Como o mercado faz</span></div>
+  <h2>Fluxo bem desenhado retém sem prender ninguém no chat</h2>
+  <p class="section-sub">Benchmarks de assinatura/DTC nos EUA e a direção regulatória da FTC apontam pro mesmo lugar: menos fricção na tela, uma oferta só, chat reservado.</p>
+
+  <div class="statgrid">
+    <div class="stat"><div class="v">10–34%</div><div class="l">taxa de salvamento em fluxo de cancelamento bem desenhado (média 15%, melhores 20%+)</div></div>
+    <div class="stat"><div class="v">337%</div><div class="l">crescimento no uso de pausa quando oferecida como alternativa ao cancelamento</div></div>
+    <div class="stat"><div class="v">3 em 4</div><div class="l">clientes que pausam acabam voltando depois — é a oferta de maior retorno</div></div>
+    <div class="stat"><div class="v">2,5x</div><div class="l">mais salvamentos com fluxo estruturado (motivo + 1 oferta) vs. desconto genérico solto</div></div>
+  </div>
+
+  <div class="callout acc">
+    <b>Regra da FTC "click-to-cancel"</b> (reaberta em 2026): o cliente cancela em tantos cliques quanto levou pra assinar. Pode existir <b>uma</b> oferta de retenção, mas o cliente precisa poder recusar e seguir em um clique — sem múltiplas telas, sem forçar contato humano pra completar o cancelamento. Prender cancelamento atrás de atendimento é exatamente o padrão que a regra mira.
+  </div>
+
+  <div class="offergrid">
+    <div class="offercard"><div class="m">Pausa</div><div class="o">maior alavanca do mercado</div><div class="r">Segura o processo/produto por N dias sem perder condição. Não existe hoje na allu — é a lacuna mais óbvia.</div></div>
+    <div class="offercard"><div class="m">Downgrade</div><div class="o">plano/produto menor</div><div class="r">Pra "modelo errado" ou "muito caro" — trocar em vez de cancelar.</div></div>
+    <div class="offercard"><div class="m">Desconto temporário</div><div class="o">sensibilidade a preço</div><div class="r">Só quando o motivo é claramente financeiro. Genérico converte pior que oferta direcionada.</div></div>
+    <div class="offercard"><div class="m">Uma oferta só</div><div class="o">nunca em sequência</div><div class="r">Empilhar ofertas reduz conversão e é o padrão que reguladores miram.</div></div>
+  </div>
+</div></section>
+
+<!-- ============ 03 · MODELO IDEAL ============ -->
+<section id="modelo"><div class="wrap">
+  <div class="section-label"><span class="section-num">03</span><span class="section-tag">Como deveríamos fazer</span></div>
+  <h2>Self-service resolve a tela. Chat é reservado.</h2>
+  <p class="section-sub">Princípio único: a tela de cancelamento sempre tem um botão de "cancelar mesmo assim" funcional. Chat só entra quando o valor de reter justifica o esforço, ou quando existe risco real que exige checagem humana — nunca como pedágio padrão.</p>
+
+  <h3 style="font-size:18px;margin:32px 0 6px;">O que aparece pro cliente, por etapa e por motivo</h3>
+  <p class="section-sub">A tela muda pouco entre motivos — o que muda é a <b>oferta</b> dentro dela. Tudo abaixo acontece sem abrir chat.</p>
+
+  <div class="tblwrap"><table>
+    <thead><tr>
+      <th>Etapa</th><th>Mudei de ideia</th><th>Financeiro</th><th>Modelo errado / quer outro</th><th>Confuso / inseguro</th><th>Achou opção melhor</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Pagamento aprovado</b><div class="srcnote">ret. líquida 8,2%</div></td>
+        <td>Pausar processo 60d, mantém aprovação</td>
+        <td>Pausar sem cobrança</td>
+        <td>Trocar modelo, sem custo</td>
+        <td>Card explicativo do modelo (não é oferta, é FAQ)</td>
+        <td>Sem oferta — motivo pouco reversível, deixa ir</td>
+      </tr>
+      <tr>
+        <td><b>Doc. em análise</b><div class="srcnote">ret. líquida 14,3%</div></td>
+        <td>Pausar processo 60d</td>
+        <td>Trocar pra plano 36m, parcela menor</td>
+        <td>Trocar modelo direto na tela</td>
+        <td>FAQ + reforço RA1000/prova social</td>
+        <td>Reancoragem de valor (depreciação) uma vez</td>
+      </tr>
+      <tr>
+        <td><b>Doc. aprovada</b><div class="srcnote">ret. líquida 13,4%</div></td>
+        <td>Pausar processo, não perde aprovação</td>
+        <td>Trocar pra plano 36m, simulação na tela</td>
+        <td>Trocar modelo direto, antes do envio</td>
+        <td>FAQ + prova social</td>
+        <td>Reancoragem uma vez, sem insistir</td>
+      </tr>
+      <tr>
+        <td><b>Enviado</b><div class="srcnote">ret. líquida 23,2%, volume baixo</div></td>
+        <td colspan="5">Nudge único: "chega em até X dias, aguarda ou cancela agora?" — mesma tela pra qualquer motivo, volume não justifica oferta segmentada</td>
+      </tr>
+      <tr>
+        <td><b>Entregue</b><div class="srcnote">ret. líquida 11,0%, maior volume</div></td>
+        <td>Sem oferta pesada — motivo migra pra campanha pós-cancelamento</td>
+        <td>Renegociação temporária de valor, uma vez</td>
+        <td>Sem troca de modelo pós-entrega — só desconto ou nada</td>
+        <td>FAQ leve</td>
+        <td>Sem oferta — cancela em 1 clique</td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <div class="mockrow">
+    <div class="phone">
+      <div class="pill">Área do assinante · self-service</div>
+      <div class="stagebanner">Sua documentação já foi aprovada. Falta pouco pro seu pedido ser enviado.</div>
+      <div class="qtitle">Por que você quer cancelar?</div>
+      <div class="motivo">Mudei de ideia</div>
+      <div class="motivo sel">Minha situação financeira mudou</div>
+      <div class="motivo">Encontrei uma opção melhor</div>
+      <div class="offercard2">
+        <div class="ot">Antes de confirmar</div>
+        <div class="od">Dá pra trocar pro plano de 36 meses agora — sua parcela cai e você mantém a aprovação. Quer ver o novo valor?</div>
+      </div>
+      <div class="btnrow">
+        <div class="btn primary">Ver novo valor</div>
+        <div class="btn ghost">Cancelar mesmo assim</div>
+      </div>
+    </div>
+    <div class="mocknote">
+      <h5>Por que essa tela funciona</h5>
+      <ul>
+        <li>Motivo e submotivo já existem na base — a tela só precisa reagir a eles, não é feature nova de captura de dado.</li>
+        <li>Uma oferta, gerada pelo motivo escolhido — nada de sequência de telas.</li>
+        <li>"Cancelar mesmo assim" tem o mesmo peso visual do botão de oferta — cumpre o requisito de 1 clique da FTC por construção, não como adaptação forçada depois.</li>
+        <li>Nenhum humano é necessário pra esse fluxo acontecer.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-size:18px;margin:36px 0 6px;">Quando o chat é necessário</h3>
+  <p class="section-sub">Duas famílias bem diferentes: chat por <span style="color:var(--accent)">valor</span> (vale o esforço de tentar reter melhor) e chat por <span style="color:var(--critical)">risco</span> (o cancelamento não pode ser efetivado sem checagem). Só a segunda bloqueia o self-service.</p>
+
+  <div class="tblwrap"><table>
+    <thead><tr><th>Situação</th><th>Chat necessário?</th><th>Por quê</th><th>Quem trata</th></tr></thead>
+    <tbody>
+      <tr><td>Qualquer motivo, oferta de self-service recusada</td><td><span class="tag self">Não bloqueia</span></td><td>Cancelamento é efetivado na hora. Sem exceção.</td><td>Ninguém — automático</td></tr>
+      <tr><td>Doc. aprovada, motivo financeiro, recusou oferta</td><td><span class="tag watch">Opcional, assíncrono</span></td><td>Maior retenção líquida do funil — vale uma tentativa a mais, mas depois do cancelamento já confirmado na tela</td><td>IA manda mensagem no WhatsApp em até 1h, sem travar nada</td></tr>
+      <tr><td>Documento recusado sem explicação clara</td><td><span class="tag chat">Obrigatório</span></td><td>Não é objeção de retenção, é erro operacional que precisa de correção</td><td>Time de documentação, prioridade</td></tr>
+      <tr><td>Chargeback / disputa de pagamento</td><td><span class="tag chat">Obrigatório</span></td><td>Risco financeiro, decisão não pode ser automática</td><td>Humano, financeiro/antifraude</td></tr>
+      <tr><td>Suspeita de fraude</td><td><span class="tag chat">Obrigatório</span></td><td>Risco de segurança</td><td>Humano, antifraude</td></tr>
+      <tr><td>Inadimplência / bloqueio</td><td><span class="tag chat">Obrigatório</span></td><td>Precisa de checagem, mas <b>sempre comunicado ao cliente</b> — nunca silencioso</td><td>Humano, com status visível pro cliente</td></tr>
+      <tr><td>Motivo = insatisfação com atendimento</td><td><span class="tag chat">Obrigatório</span></td><td>Sintoma de outro processo quebrado, não é objeção comercial</td><td>Humano, prioridade alta</td></tr>
+      <tr><td>Pedido já teve 1+ revogação anterior (reincidência)</td><td><span class="tag chat">Obrigatório</span></td><td>Self-service/IA já tentaram uma vez e não resolveram — insistir de novo sozinho é o padrão que gera os 62,9% de reincidência</td><td>Humano, revisão de caso</td></tr>
+      <tr><td>Cliente pede humano explicitamente</td><td><span class="tag chat">Obrigatório</span></td><td>Direito do cliente, sempre atendido</td><td>Humano</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout acc">
+    Resultado esperado: a esmagadora maioria das <span class="k">2.862</span> solicitações de setembro nunca precisaria tocar em atendimento humano. Pelas regras acima, só chargeback, fraude, inadimplência, documento recusado, insatisfação e reincidência forçam chat — o resto é tela.
+  </div>
+</div></section>
+
+<!-- ============ 04 · APLICAR ============ -->
+<section id="aplicar"><div class="wrap">
+  <div class="section-label"><span class="section-num">04</span><span class="section-tag">Como aplicar</span></div>
+  <h2>Ordem de execução</h2>
+  <p class="section-sub">Prioridade por impacto imediato e menor dependência de construir algo novo.</p>
+
+  <div class="priolist">
+    <div class="priorow">
+      <div class="pn">1</div>
+      <div style="flex:1">
+        <div class="pt">Parar a revogação silenciosa por analista<span class="badge high">Alto impacto</span></div>
+        <div class="pd">Zero dependência técnica nova — é mudança de processo/regra interna. Corta a fonte dos 62,9% de reincidência em doc. aprovada e o maior ponto de exposição regulatória hoje.</div>
+      </div>
+    </div>
+    <div class="priorow">
+      <div class="pn">2</div>
+      <div style="flex:1">
+        <div class="pt">Trocar a métrica de retenção pra líquida<span class="badge high">Alto impacto</span></div>
+        <div class="pd">Sem isso, qualquer melhoria feita a partir daqui vai ser avaliada com o número errado. É só reprocessar o que já existe.</div>
+      </div>
+    </div>
+    <div class="priorow">
+      <div class="pn">3</div>
+      <div style="flex:1">
+        <div class="pt">Tela de self-service com oferta condicional ao motivo<span class="badge med">Médio esforço</span></div>
+        <div class="pd">Começar por doc. análise e doc. aprovada — maior retenção líquida combinada com maior volume. Motivo/submotivo já existem na base, é reaproveitar dado que já é coletado.</div>
+      </div>
+    </div>
+    <div class="priorow">
+      <div class="pn">4</div>
+      <div style="flex:1">
+        <div class="pt">Lançar pausa como oferta<span class="badge med">Médio esforço</span></div>
+        <div class="pd">Maior alavanca do mercado (337% de adoção onde existe) e não existe hoje na allu. Versão pré-entrega (pausar processo) é simples; versão pós-entrega precisa de desenho de custódia/logística à parte.</div>
+      </div>
+    </div>
+    <div class="priorow">
+      <div class="pn">5</div>
+      <div style="flex:1">
+        <div class="pt">Campanha pós-cancelamento automatizada<span class="badge low">Baixo esforço, usa Alluwave</span></div>
+        <div class="pd">Sequência 7/30/90 dias personalizada pelo motivo, disparada via Alluwave. É onde a retenção pós-entrega deveria acontecer, em vez de segurar na hora do pedido.</div>
+      </div>
+    </div>
+    <div class="priorow">
+      <div class="pn">6</div>
+      <div style="flex:1">
+        <div class="pt">Chat reservado, só nos gatilhos definidos<span class="badge low">Depende dos itens 1 e 3</span></div>
+        <div class="pd">Última etapa — só faz sentido depois que a tela resolve o volume padrão. Reduz carga de analista naturalmente, sem precisar de meta de produtividade.</div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <p>Dados internos: BigQuery, <span class="mono">v3_raw_alluoffice.order_cancellation_requests</span> + <span class="mono">v3_gold_alluoffice.tri_orders__current_state</span>, setembro/2026. Etapa do pedido reconstruída comparando o timestamp da solicitação contra os marcos de status do pedido.</p>
+  <p>Benchmarks: Subscription Index, Churnkey, Chargebee, Loopwork/SubJolt (dados de 441 mil tentativas de cancelamento, 87 marcas DTC), FTC (Negative Option Rule / Click-to-Cancel, reaberta em 2026).</p>
+</div></footer>
+
+<script>
+(function(){
+  var svgNS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){
+    var e = document.createElementNS(svgNS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function ensureTooltip(wrapId){
+    var wrap = document.getElementById(wrapId);
+    var tt = document.createElement('div');
+    tt.className = 'tooltip';
+    wrap.appendChild(tt);
+    return tt;
+  }
+  function showTip(tt, wrap, x, y, title, val){
+    var r = wrap.getBoundingClientRect();
+    tt.innerHTML = '<div class="tt-title">'+title+'</div><div class="mono" style="font-weight:600">'+val+'</div>';
+    tt.style.left = x + 'px';
+    tt.style.top = y + 'px';
+    tt.classList.add('show');
+  }
+  function hideTip(tt){ tt.classList.remove('show'); }
+
+  /* ---- Chart 1: volume by stage ---- */
+  (function(){
+    var data = [
+      ["Pagamento\naprovado",376],
+      ["Doc.\nanálise",524],
+      ["Doc.\naprovada",685],
+      ["Enviado",56],
+      ["Entregue",827]
+    ];
+    var g = document.getElementById('c1bars');
+    var tt = ensureTooltip('c1wrap');
+    var wrap = document.getElementById('c1wrap');
+    var max = 827, baseline = 250, top = 30, plotH = baseline-top;
+    var bandW = 112, barW = 78, left = 40;
+    data.forEach(function(d,i){
+      var h = (d[1]/max)*plotH;
+      var x = left + i*bandW + (bandW-barW)/2;
+      var y = baseline - h;
+      var bar = el('rect',{x:x,y:y,width:barW,height:h,rx:4,fill:'var(--accent)',opacity:0.9});
+      g.appendChild(bar);
+      var label = el('text',{x:x+barW/2,y:y-10,'text-anchor':'middle',fill:'#f3faf6','font-size':'13',
+        'font-family':'IBM Plex Mono, monospace','font-weight':'500'});
+      label.textContent = d[1];
+      g.appendChild(label);
+      var lines = d[0].split('\n');
+      lines.forEach(function(ln, li){
+        var cat = el('text',{x:x+barW/2,y:baseline+16+li*13,'text-anchor':'middle',fill:'#84a892','font-size':'11'});
+        cat.textContent = ln;
+        g.appendChild(cat);
+      });
+      var hit = el('rect',{x:x-6,y:top-10,width:barW+12,height:baseline-top+10,class:'bar-hit'});
+      hit.addEventListener('mousemove', function(e){
+        var r = wrap.getBoundingClientRect();
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0].replace('\n',' '), d[1]+' solicitações');
+      });
+      hit.addEventListener('mouseleave', function(){ hideTip(tt); });
+      g.appendChild(hit);
+    });
+  })();
+
+  /* ---- Chart 2: retenção bruta vs líquida ---- */
+  (function(){
+    var data = [
+      ["Pagamento aprovado",19.4,8.2],
+      ["Doc. análise",22.1,14.3],
+      ["Doc. aprovada",36.2,13.4],
+      ["Enviado",41.1,23.2],
+      ["Entregue",19.3,11.0]
+    ];
+    var g = document.getElementById('c2bars');
+    var tt = ensureTooltip('c2wrap');
+    var wrap = document.getElementById('c2wrap');
+    var maxv = 45, baseline = 230, top = 20, plotH = baseline-top;
+    var bandW = 112, left = 40, barW = 30, gap = 4;
+    data.forEach(function(d,i){
+      var gx = left + i*bandW;
+      var offset = (bandW - (barW*2+gap))/2;
+      var x1 = gx+offset, x2 = gx+offset+barW+gap;
+      var h1 = (d[1]/maxv)*plotH, h2 = (d[2]/maxv)*plotH;
+      var y1 = baseline-h1, y2 = baseline-h2;
+      var b1 = el('rect',{x:x1,y:y1,width:barW,height:h1,rx:3,fill:'var(--ink-muted)',opacity:0.55});
+      var b2 = el('rect',{x:x2,y:y2,width:barW,height:h2,rx:3,fill:'var(--accent)'});
+      g.appendChild(b1); g.appendChild(b2);
+      [[x1,y1,d[1]],[x2,y2,d[2]]].forEach(function(v){
+        var t = el('text',{x:v[0]+barW/2,y:v[1]-8,'text-anchor':'middle',fill:'#c9ddd0','font-size':'11.5',
+          'font-family':'IBM Plex Mono, monospace'});
+        t.textContent = v[2].toFixed(1)+'%';
+        g.appendChild(t);
+      });
+      var cat = el('text',{x:gx+bandW/2,y:baseline+18,'text-anchor':'middle',fill:'#84a892','font-size':'10.5'});
+      cat.textContent = d[0];
+      g.appendChild(cat);
+      var hit = el('rect',{x:gx,y:top-10,width:bandW,height:baseline-top+10,class:'bar-hit'});
+      hit.addEventListener('mousemove', function(e){
+        var r = wrap.getBoundingClientRect();
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0], 'bruta '+d[1].toFixed(1)+'% · líquida '+d[2].toFixed(1)+'%');
+      });
+      hit.addEventListener('mouseleave', function(){ hideTip(tt); });
+      g.appendChild(hit);
+    });
+  })();
+
+  /* ---- Chart 3: quem revogou (horizontal) ---- */
+  (function(){
+    var data = [["Cliente",110,'var(--ink-secondary)'],["Analista / sistema",138,'var(--critical)']];
+    var g = document.getElementById('c3bars');
+    var tt = ensureTooltip('c3wrap');
+    var wrap = document.getElementById('c3wrap');
+    var max = 138, left = 150, right = 600, plotW = right-left;
+    data.forEach(function(d,i){
+      var y = 20 + i*70;
+      var w = (d[1]/max)*plotW;
+      var label = el('text',{x:left-12,y:y+22,'text-anchor':'end',fill:'#f3faf6','font-size':'13'});
+      label.textContent = d[0];
+      g.appendChild(label);
+      var bar = el('rect',{x:left,y:y,width:w,height:34,rx:5,fill:d[2]});
+      g.appendChild(bar);
+      var val = el('text',{x:left+w+10,y:y+22,fill:'#f3faf6','font-size':'13','font-family':'IBM Plex Mono, monospace','font-weight':'600'});
+      val.textContent = d[1];
+      g.appendChild(val);
+      var hit = el('rect',{x:left-6,y:y-6,width:plotW+40,height:46,class:'bar-hit'});
+      hit.addEventListener('mousemove', function(e){
+        var r = wrap.getBoundingClientRect();
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0], d[1]+' revogações');
+      });
+      hit.addEventListener('mouseleave', function(){ hideTip(tt); });
+      g.appendChild(hit);
+    });
+  })();
+
+  /* ---- Chart 4: line chart, day by day ---- */
+  (function(){
+    var days = [
+      [14,17,0],[8,14,1],[6,11,0],[4,10,0],[6,7,1],[10,1,0],[12,9,0],[3,15,1],[10,14,3],[12,20,2],
+      [15,20,1],[9,10,0],[8,13,1],[11,25,2],[16,18,0],[11,19,1],[21,16,6],[12,6,30],[8,0,10],[11,1,25],
+      [15,4,24],[13,8,19],[11,9,31],[2,2,10]
+    ];
+    var g = document.getElementById('c4lines');
+    var hitG = document.getElementById('c4hit');
+    var tt = ensureTooltip('c4wrap');
+    var wrap = document.getElementById('c4wrap');
+    var left=40, right=620, top=20, baseline=230, maxv=35;
+    var n = days.length;
+    var stepX = (right-left)/(n-1);
+    function xy(i, v){
+      return [left+i*stepX, baseline - (v/maxv)*(baseline-top)];
+    }
+    var seriesColors = ['var(--accent)','var(--critical)','var(--warn)'];
+    for (var s=0;s<3;s++){
+      var pts = days.map(function(d,i){ return xy(i,d[s]); });
+      var pathD = pts.map(function(p,i){ return (i===0?'M':'L')+p[0].toFixed(1)+' '+p[1].toFixed(1); }).join(' ');
+      var path = el('path',{d:pathD, fill:'none', stroke:seriesColors[s], 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round'});
+      g.appendChild(path);
+    }
+    // y-axis ticks
+    [0,10,20,30].forEach(function(v){
+      var y = baseline - (v/maxv)*(baseline-top);
+      var t = el('text',{x:32,y:y+4,'text-anchor':'end',fill:'#84a892','font-size':'10','font-family':'IBM Plex Mono, monospace'});
+      t.textContent = v;
+      g.appendChild(t);
+      var gridline = el('line',{x1:40,y1:y,x2:620,y2:y,stroke:'#1c3529','stroke-width':1});
+      g.insertBefore(gridline, g.firstChild);
+    });
+    // x-axis day labels (every 3rd day)
+    days.forEach(function(d,i){
+      if (i%3===0 || i===n-1){
+        var x = xy(i,0)[0];
+        var t = el('text',{x:x,y:248,'text-anchor':'middle',fill:'#84a892','font-size':'10'});
+        t.textContent = (i+1);
+        g.appendChild(t);
+      }
+    });
+    // hover hit columns + crosshair
+    var crosshair = el('line',{x1:0,y1:top,x2:0,y2:baseline,stroke:'#c9ddd0','stroke-width':1,'stroke-dasharray':'3,3',opacity:0});
+    hitG.appendChild(crosshair);
+    days.forEach(function(d,i){
+      var x = xy(i,0)[0];
+      var hit = el('rect',{x:x-stepX/2,y:top,width:stepX,height:baseline-top,class:'bar-hit'});
+      hit.addEventListener('mousemove', function(e){
+        var r = wrap.getBoundingClientRect();
+        crosshair.setAttribute('x1',x); crosshair.setAttribute('x2',x); crosshair.setAttribute('opacity',1);
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, 'dia '+(i+1)+' de setembro',
+          'revoked '+d[0]+' · finished '+d[1]+' · aberto '+d[2]);
+      });
+      hit.addEventListener('mouseleave', function(){ hideTip(tt); crosshair.setAttribute('opacity',0); });
+      hitG.appendChild(hit);
+    });
+  })();
+})();
+</script>
