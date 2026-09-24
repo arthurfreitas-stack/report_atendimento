@@ -160,6 +160,7 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .modalmock-close{position:absolute;top:14px;right:16px;color:#9ca3af;font-size:18px;line-height:1;font-family:system-ui,sans-serif;}
 .modalmock-icon{width:44px;height:44px;border-radius:50%;background:#eef2ff;color:#4f46e5;display:flex;align-items:center;justify-content:center;font-size:20px;margin:4px auto 14px;}
 .modalmock-icon.ok{background:#dcfce7;color:#16a34a;}
+.modalmock-icon.warn{background:#fef3c7;color:#b45309;}
 .modalmock-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:#111827;line-height:1.35;margin-bottom:8px;}
 .modalmock-body{font-size:12.5px;color:#6b7280;line-height:1.5;margin-bottom:16px;}
 .modalmock-btn{border-radius:10px;padding:11px 10px;font-size:12.5px;font-weight:600;margin-bottom:8px;font-family:'IBM Plex Sans',sans-serif;}
@@ -638,6 +639,119 @@ footer a{color:var(--ink-muted);}
       </div>
     </div>
     <p class="srcnote">"Ainda quero cancelar" no modal de FAQ leva pro mesmo resultado do modal ao lado. Hoje esse caminho cai em "aguarde contato em até 5 dias úteis" — aqui não há motivo pra isso: nada foi enviado, nada foi analisado, não há multa, o cancelamento pode ser efetivado na hora.</p>
+  </div>
+
+  <div class="journey">
+    <div class="journey-head"><span class="journey-num">02</span><span class="journey-title">Cancelamento com documentação em análise</span></div>
+    <p class="journey-elig"><b>Validação de elegibilidade:</b> esse fluxo se aplica a pedidos com status "Documentação em análise" — documento já enviado, resultado ainda não saiu.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>
+        <div class="step-body">Cliente pede para cancelar um pedido nessa condição.</div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
+        <div class="step-body"><b>Modal 1 — aviso de perda</b> (o mesmo de sempre): reativação bloqueada por 180 dias, ofertas exclusivas, suporte prioritário em trocas, seguro do aparelho. <span class="btnlabel">Manter assinatura</span> <span class="btnlabel">Sim, quero cancelar</span></div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
+        <div class="step-body"><b>Modal 2 — validação de troca</b> (o mesmo de sempre): "Você assinou o produto ou plano errado? Talvez você só precise trocar, não cancelar." <span class="btnlabel">Isso, assinei um produto mas quero outro</span> <span class="btnlabel">Não, quero cancelar mesmo</span></div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">4</div></div>
+        <div class="step-body">
+          <b>Ramifica conforme a resposta:</b>
+          <div class="branchgrid">
+            <div class="branch go">
+              <div class="bt go">→ Quer trocar</div>
+              <b>Modal 3 — escolha self-service</b> (igual à etapa 1): cliente troca produto e plano na hora. A documentação já enviada continua em análise normalmente — é sobre o cliente, não sobre o item.
+            </div>
+            <div class="branch stop">
+              <div class="bt">→ Não, quer cancelar mesmo</div>
+              <b>Modal 4 — aviso específico da etapa</b> (novo, só existe aqui): reforça o que está em jogo nesse momento e oferece saída pelo FAQ ou suporte antes de confirmar.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sysrules">
+      <h5>Regras de sistema</h5>
+      <ul>
+        <li>Escolher "quero trocar" não cancela nem reinicia a análise — só troca o produto/plano do pedido. A documentação (identidade, análise de crédito) é do cliente, não do item, então não precisa ser reenviada.</li>
+        <li><span class="tbc">A confirmar</span> — se a análise for concluída (aprovada ou reprovada) enquanto o cliente está nesse fluxo de cancelamento, qual status prevalece? Proposta: se aprovar antes do cliente confirmar o cancelamento, avisar na hora ("sua documentação acabou de ser aprovada, quer mesmo cancelar?") em vez de processar os dois em paralelo.</li>
+        <li><span class="tbc">A confirmar</span> — mesma dúvida da etapa 1: sem multa aqui também, já que o produto ainda não foi enviado nem entregue? Precisa confirmar com o time.</li>
+        <li>"Cancelar mesmo assim" no modal 4 leva ao formulário de motivo/submotivo/observação e, na sequência, à confirmação — sem esperar retorno da análise, sem os 5 dias úteis do fluxo atual.</li>
+      </ul>
+    </div>
+
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:20px 0 4px;">Fluxo 1 — cliente quer trocar</h5>
+    <div class="flowrow">
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon">🔁</div>
+        <div class="modalmock-title">Você assinou o produto ou plano errado?</div>
+        <div class="modalmock-body">Talvez você só precise trocar, não cancelar.</div>
+        <div class="modalmock-btn primary">Isso, assinei um produto mas quero outro</div>
+        <div class="modalmock-btn outline">Não, quero cancelar mesmo</div>
+      </div>
+      <div class="flowarrow">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-title" style="text-align:left">Escolha o produto e plano certos</div>
+        <div class="modalmock-body" style="text-align:left">Sua documentação continua em análise normalmente.</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item sel"><span>iPhone 16 128GB · 36 meses</span><span class="mm-price">R$ 199/mês</span></div>
+          <div class="modalmock-item"><span>iPhone 16 Pro 256GB · 36 meses</span><span class="mm-price">R$ 289/mês</span></div>
+          <div class="modalmock-item"><span>MacBook Air M4 · 36 meses</span><span class="mm-price">R$ 249/mês</span></div>
+        </div>
+        <div class="modalmock-btn primary">Confirmar troca</div>
+      </div>
+      <div class="flowarrow">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon ok">✓</div>
+        <div class="modalmock-title">Troca feita!</div>
+        <div class="modalmock-body">Seu novo pedido é o iPhone 16 128GB no plano de 36 meses. Sua documentação segue em análise, sem precisar reenviar nada.</div>
+        <div class="modalmock-btn primary">Entendi</div>
+      </div>
+    </div>
+
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:34px 0 4px;">Fluxo 2 — cliente quer cancelar mesmo assim</h5>
+    <p class="chart-desc" style="margin-bottom:16px;">Sai do modal 2, botão "Não, quero cancelar mesmo" — mas aqui existe algo em jogo (documento enviado, análise rodando), então entra um aviso antes de ir pro formulário.</p>
+    <div class="flowcol">
+      <div class="modalmock" style="width:270px;">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon warn">⏳</div>
+        <div class="modalmock-title">Sua documentação já está em análise</div>
+        <div class="modalmock-body">O prazo é de até 1 dia útil — você recebe o retorno pelo WhatsApp e e-mail. Se cancelar agora, todo o progresso é perdido e você precisa enviar tudo de novo se quiser assinar depois.<br><br>Recomendamos aguardar: se for reprovada, o estorno é automático na hora; se for aprovada, seu pedido já vai direto pra fila de envio.</div>
+        <div class="modalmock-btn outline">Ver dúvidas frequentes</div>
+        <div class="modalmock-btn outline">Falar com o suporte</div>
+        <div class="modalmock-btn primary">Cancelar mesmo assim</div>
+      </div>
+      <div class="flowarrow down">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-title" style="text-align:left">Cancelar assinatura</div>
+        <div class="modalmock-body" style="text-align:left">Selecione o motivo do cancelamento:</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item"><span>Motivo</span><span class="mm-price">▾</span></div>
+          <div class="modalmock-item"><span>Submotivo</span><span class="mm-price">▾</span></div>
+          <div class="modalmock-item"><span>Observação (opcional)</span><span></span></div>
+        </div>
+        <div class="modalmock-btn primary">Solicitar cancelamento</div>
+      </div>
+      <div class="flowarrow down">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon ok">✓</div>
+        <div class="modalmock-title">Cancelamento confirmado</div>
+        <div class="modalmock-body">Sua assinatura foi cancelada agora. A análise em andamento foi encerrada. Você não será cobrado.</div>
+        <div class="modalmock-btn primary">OK, fechar</div>
+      </div>
+    </div>
+    <p class="srcnote">"Ver dúvidas frequentes" e "Falar com o suporte" não cancelam nada — só ajudam antes da decisão. "Cancelar mesmo assim" segue pro formulário e resolve na hora, sem esperar o resultado da análise.</p>
   </div>
 
   <h3 style="font-size:18px;margin:36px 0 6px;">Quando o chat é necessário</h3>
