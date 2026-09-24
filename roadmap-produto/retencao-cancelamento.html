@@ -169,6 +169,13 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .modalmock-item{display:flex;justify-content:space-between;align-items:center;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#374151;text-align:left;}
 .modalmock-item.sel{border-color:#22c55e;background:#f0fdf4;}
 .modalmock-item .mm-price{font-family:'IBM Plex Mono',monospace;font-weight:600;color:#111827;font-size:11px;}
+.flowrow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:26px 0;}
+.flowarrow{font-size:22px;color:var(--accent);flex-shrink:0;font-family:'IBM Plex Mono',monospace;}
+.flowarrow.down{transform:rotate(90deg);}
+.flowcol{display:flex;flex-direction:column;align-items:center;gap:4px;margin:26px 0;}
+.forkrow{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin:4px 0;}
+.forkcolitem{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.forklabel{background:var(--surface-alt);border:1px solid var(--border);color:var(--ink-secondary);font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;text-align:center;max-width:220px;line-height:1.35;}
 
 /* ---------- journey / process steps ---------- */
 .journey{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px 26px 22px;margin:22px 0;}
@@ -555,7 +562,8 @@ footer a{color:var(--ink-muted);}
       </ul>
     </div>
 
-    <div class="mockrow" style="margin-top:26px;">
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:0 0 4px;">Fluxo 1 — cliente quer trocar</h5>
+    <div class="flowrow">
       <div class="modalmock">
         <div class="modalmock-close">×</div>
         <div class="modalmock-icon">🔁</div>
@@ -564,6 +572,7 @@ footer a{color:var(--ink-muted);}
         <div class="modalmock-btn primary">Isso, assinei um produto mas quero outro</div>
         <div class="modalmock-btn outline">Não, quero cancelar mesmo</div>
       </div>
+      <div class="flowarrow">→</div>
       <div class="modalmock">
         <div class="modalmock-close">×</div>
         <div class="modalmock-title" style="text-align:left">Escolha o produto e plano certos</div>
@@ -575,6 +584,7 @@ footer a{color:var(--ink-muted);}
         </div>
         <div class="modalmock-btn primary">Confirmar troca</div>
       </div>
+      <div class="flowarrow">→</div>
       <div class="modalmock">
         <div class="modalmock-close">×</div>
         <div class="modalmock-icon ok">✓</div>
@@ -583,7 +593,51 @@ footer a{color:var(--ink-muted);}
         <div class="modalmock-btn primary">Entendi</div>
       </div>
     </div>
-    <p class="srcnote">Da esquerda pra direita: modal 2 (validação) → modal 3 (escolha self-service, substitui o "te chamamos em 1 dia útil") → confirmação. Nenhuma das três precisa de humano.</p>
+
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:34px 0 4px;">Fluxo 2 — cliente quer cancelar mesmo assim</h5>
+    <p class="chart-desc" style="margin-bottom:16px;">Sai do mesmo modal 2, botão "Não, quero cancelar mesmo". Sem multa, sem espera — resolve na hora, igual ao fluxo de troca.</p>
+    <div class="flowcol">
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-title" style="text-align:left">Cancelar assinatura</div>
+        <div class="modalmock-body" style="text-align:left">Selecione o motivo do cancelamento:</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item"><span>Motivo</span><span class="mm-price">▾</span></div>
+          <div class="modalmock-item"><span>Submotivo</span><span class="mm-price">▾</span></div>
+          <div class="modalmock-item"><span>Observação (opcional)</span><span></span></div>
+        </div>
+        <div class="modalmock-btn primary">Solicitar cancelamento</div>
+      </div>
+      <div class="flowarrow down">→</div>
+      <div class="forkrow">
+        <div class="forkcolitem">
+          <div class="forklabel">se motivo = confuso ou inseguro</div>
+          <div class="flowarrow down">→</div>
+          <div class="modalmock" style="width:230px;">
+            <div class="modalmock-close">×</div>
+            <div class="modalmock-icon">💬</div>
+            <div class="modalmock-title">Antes de cancelar, isso ajuda?</div>
+            <div class="modalmock-body">Central de dúvidas ou fale com o suporte agora.</div>
+            <div class="modalmock-btn outline">Ver dúvidas frequentes</div>
+            <div class="modalmock-btn outline">Falar com o suporte</div>
+            <div class="modalmock-btn primary">Ainda quero cancelar</div>
+          </div>
+          <div class="flowarrow down">→</div>
+        </div>
+        <div class="forkcolitem">
+          <div class="forklabel">se motivo = outro (ex: opção melhor)</div>
+          <div class="flowarrow down">→</div>
+        </div>
+      </div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon ok">✓</div>
+        <div class="modalmock-title">Cancelamento confirmado</div>
+        <div class="modalmock-body">Sua assinatura foi cancelada agora. Você não será cobrado novamente. Sem multa nessa etapa.</div>
+        <div class="modalmock-btn primary">OK, fechar</div>
+      </div>
+    </div>
+    <p class="srcnote">Hoje esse caminho cai em "aguarde contato em até 5 dias úteis". Aqui não há motivo pra isso: nada foi enviado, nada foi analisado, não há multa — o cancelamento pode ser efetivado na hora.</p>
   </div>
 
   <h3 style="font-size:18px;margin:36px 0 6px;">Quando o chat é necessário</h3>
