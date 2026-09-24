@@ -1,5 +1,5 @@
 <title>Retenção Sem Fricção</title>
-<meta name="description" content="Defesa de CRO para redesenhar a retenção de cancelamento da allu: self-service por padrão, chat como exceção, com dados de setembro/2026 e benchmark de mercado.">
+<meta name="description" content="Defesa de CRO para redesenhar a retenção de cancelamento da allu: taxa por etapa comparada com agosto, self-service por padrão, chat como exceção.">
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -53,7 +53,7 @@ a{color:var(--accent);}
 .masthead{padding:56px 0 40px;border-bottom:1px solid var(--border-soft);}
 .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px;}
 .masthead h1{font-size:clamp(32px,5vw,48px);font-weight:800;line-height:1.05;max-width:16ch;}
-.thesis{font-size:18px;color:var(--ink-secondary);max-width:56ch;margin-top:18px;}
+.thesis{font-size:18px;color:var(--ink-secondary);max-width:58ch;margin-top:18px;}
 .meta-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:24px;font-size:13px;color:var(--ink-muted);}
 
 /* ---------- sections ---------- */
@@ -152,6 +152,11 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .badge.med{background:rgba(242,201,76,.15);color:var(--warn);}
 .badge.low{background:rgba(116,242,184,.15);color:var(--accent);}
 
+/* ---------- delta pill ---------- */
+.delta{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12.5px;}
+.delta.up{color:var(--critical);}
+.delta.down{color:var(--accent);}
+
 /* ---------- source note / footer ---------- */
 .srcnote{font-size:12px;color:var(--ink-muted);margin-top:6px;}
 footer{padding:40px 0 60px;font-size:12.5px;color:var(--ink-muted);}
@@ -159,65 +164,96 @@ footer a{color:var(--ink-muted);}
 </style>
 
 <nav class="topnav"><div class="topnav-inner">
-  <a href="#problema">01 · O problema hoje</a>
-  <a href="#mercado">02 · Como o mercado faz</a>
-  <a href="#modelo">03 · O modelo ideal</a>
-  <a href="#aplicar">04 · Como aplicar</a>
+  <a href="#problema">01 · A tendência</a>
+  <a href="#saves">02 · O que acontece depois</a>
+  <a href="#mercado">03 · Como o mercado faz</a>
+  <a href="#modelo">04 · O modelo ideal</a>
+  <a href="#aplicar">05 · Como aplicar</a>
 </div></nav>
 
 <div class="masthead"><div class="wrap">
   <div class="eyebrow">Defesa de CRO · Retenção de cancelamento</div>
   <h1>Retenção sem fricção</h1>
-  <p class="thesis">A allu já retém por conversa — isso não é o problema. O problema é tratar cancelamento (ainda na janela de arrependimento) e churn (cliente que já decidiu, depois de usar o produto) como a mesma coisa, nem sempre cumprir o prazo de 5 dias úteis prometido, e não conseguir separar quem foi convencido de quem só teve o pedido segurado. A proposta: separar os dois, blindar o prazo, self-service por padrão.</p>
+  <p class="thesis">A taxa de cancelamento em documentação aprovada subiu mês a mês, e a taxa de churn mensal quase dobrou. Não é ruído de um mês — é tendência. A allu já retém por conversa, isso não é o problema; o problema é não medir por etapa, tratar cancelamento (janela de arrependimento) e churn (cliente que já decidiu) como a mesma coisa, e não sempre cumprir o prazo prometido ao cliente.</p>
   <div class="meta-row">
-    <span>Base: solicitações de cancelamento, setembro/2026</span>
-    <span>Fonte: BigQuery, v3_raw_alluoffice.order_cancellation_requests</span>
+    <span>Base: solicitações de cancelamento, agosto (fechado) e setembro/2026 (parcial, até dia 24)</span>
+    <span>Fonte: BigQuery, v3_raw_alluoffice + v3_gold_alluoffice</span>
     <span>Preparo: Arthur Freitas, gestão comercial</span>
   </div>
 </div></div>
 
-<!-- ============ 01 · PROBLEMA ============ -->
+<!-- ============ 01 · A TENDÊNCIA ============ -->
 <section id="problema"><div class="wrap">
-  <div class="section-label"><span class="section-num">01</span><span class="section-tag">Como está hoje</span></div>
-  <h2>A retenção que aparece no relatório não é a retenção real</h2>
-  <p class="section-sub">2.862 solicitações de cancelamento em setembro/2026. Cruzando cada uma com o histórico do pedido, dá pra separar quem ainda estava na janela de arrependimento de quem já era churn de verdade, ver quem revogou e quantos voltaram a pedir depois.</p>
-  <p class="section-sub">Definição usada daqui pra frente: <b style="color:var(--ink)">cancelamento</b> é toda solicitação até 7 dias depois da entrega — a janela de arrependimento. Depois disso, é <b style="color:var(--critical)">churn</b>: o cliente já teve o produto na mão e decidiu mesmo assim. São dois comportamentos diferentes.</p>
+  <div class="section-label"><span class="section-num">01</span><span class="section-tag">A tendência, não a foto de um mês</span></div>
+  <h2>Volume não mostra vazamento. Taxa mostra.</h2>
+  <p class="section-sub">Etapa com mais gente sempre vai ter mais solicitações em número absoluto — isso não diz se aquela etapa está pior. O que importa é: de cada 100 pedidos que chegaram numa etapa naquele mês, quantos pediram cancelamento enquanto estavam nela. Comparando agosto (mês fechado) com setembro (parcial, até dia 24).</p>
+  <p class="section-sub">Definição usada em todo o relatório: <b style="color:var(--ink)">cancelamento</b> é toda solicitação até 7 dias depois da entrega — a janela de arrependimento. Depois disso, é <b style="color:var(--critical)">churn</b>: o cliente já teve o produto na mão e decidiu mesmo assim. São dois fenômenos diferentes, e por isso são medidos com bases diferentes: cancelamento é taxa sobre quem <i>chegou</i> na etapa naquele mês (funil); churn é taxa sobre a base ativa <i>elegível</i> naquele mês (estoque de clientes).</p>
 
   <div class="statgrid">
-    <div class="stat"><div class="v">2.862</div><div class="l">solicitações de cancelamento em setembro</div></div>
-    <div class="stat"><div class="v crit">30,3%</div><div class="l">desse volume já passou da janela de 7 dias — é churn de verdade, não cancelamento</div></div>
-    <div class="stat"><div class="v warn">12,4%</div><div class="l">das solicitações passam do prazo de 5 dias úteis prometido ao cliente</div></div>
-    <div class="stat"><div class="v crit">71,3%</div><div class="l">das revogações em pedidos de churn partem do time, não do cliente pela área do assinante</div></div>
+    <div class="stat"><div class="v crit">14,97%</div><div class="l">taxa de cancelamento em doc. aprovada, setembro — subiu de 13,07% em agosto</div></div>
+    <div class="stat"><div class="v crit">0,85%</div><div class="l">taxa de churn mensal, setembro — quase o dobro de agosto (0,57%)</div></div>
+    <div class="stat"><div class="v acc">4,20%</div><div class="l">pagamento aprovado melhorou — vinha de 5,52% em agosto</div></div>
+    <div class="stat"><div class="v">2.862</div><div class="l">solicitações de cancelamento totais em setembro</div></div>
   </div>
 
   <div class="chartcard">
-    <h4>Volume de solicitações por etapa do pedido</h4>
-    <p class="chart-desc">Setembro/2026 · onde exatamente o cliente estava quando pediu cancelar</p>
+    <h4>Taxa de solicitação de cancelamento por etapa — agosto vs. setembro</h4>
+    <p class="chart-desc">% de quem chegou naquela etapa no mês e pediu cancelamento enquanto estava nela. Cancelamento só — churn tem gráfico próprio abaixo, porque a base de comparação é diferente.</p>
     <div class="chart-wrap" id="c1wrap">
-      <svg viewBox="0 0 640 300" id="chart1" role="img" aria-label="Volume de solicitações de cancelamento por etapa do pedido, separando cancelamento e churn">
+      <svg viewBox="0 0 640 300" id="chart1" role="img" aria-label="Taxa de solicitação de cancelamento por etapa, agosto comparado a setembro">
         <line x1="40" y1="250" x2="600" y2="250" stroke="#26493a" stroke-width="1"/>
-        <!-- bars drawn by data below -->
         <g id="c1bars"></g>
       </svg>
     </div>
     <div class="legend">
-      <span><i style="background:var(--accent)"></i>cancelamento (até 7 dias pós-entrega)</span>
-      <span><i style="background:var(--critical)"></i>churn (depois de 7 dias)</span>
+      <span><i style="background:var(--ink-muted)"></i>agosto (fechado)</span>
+      <span><i style="background:var(--accent)"></i>setembro (parcial, até dia 24)</span>
     </div>
   </div>
 
   <div class="tblwrap"><table>
-    <thead><tr><th>Etapa</th><th class="num">Volume</th><th class="num">% do total</th><th>Categoria</th></tr></thead>
+    <thead><tr>
+      <th>Etapa</th><th class="num">Chegaram (ago)</th><th class="num">Pediram (ago)</th><th class="num">Taxa (ago)</th>
+      <th class="num">Chegaram (set*)</th><th class="num">Pediram (set*)</th><th class="num">Taxa (set*)</th><th class="num">Δ pp</th>
+    </tr></thead>
     <tbody>
-      <tr><td>Pagamento aprovado</td><td class="num">380</td><td class="num">13,2%</td><td>Cancelamento</td></tr>
-      <tr><td>Documentação em análise</td><td class="num">523</td><td class="num">18,2%</td><td>Cancelamento</td></tr>
-      <tr><td>Documentação aprovada</td><td class="num">692</td><td class="num">24,1%</td><td>Cancelamento</td></tr>
-      <tr><td>Pedido enviado</td><td class="num">56</td><td class="num">1,9%</td><td>Cancelamento</td></tr>
-      <tr><td>Entregue, até 7 dias</td><td class="num">78</td><td class="num">2,7%</td><td>Cancelamento</td></tr>
-      <tr><td>Entregue, depois de 7 dias</td><td class="num">752</td><td class="num">26,1%</td><td style="color:var(--critical);font-weight:600">Churn</td></tr>
-      <tr><td>Sem etapa identificada</td><td class="num">396</td><td class="num">13,8%</td><td>—</td></tr>
+      <tr><td>Pagamento aprovado</td><td class="num">11.362</td><td class="num">627</td><td class="num">5,52%</td><td class="num">8.612</td><td class="num">362</td><td class="num">4,20%</td><td class="num"><span class="delta down">-1,32</span></td></tr>
+      <tr><td>Documentação em análise</td><td class="num">12.657</td><td class="num">901</td><td class="num">7,12%</td><td class="num">9.571</td><td class="num">474</td><td class="num">4,95%</td><td class="num"><span class="delta down">-2,17</span></td></tr>
+      <tr><td><b>Documentação aprovada</b></td><td class="num">3.811</td><td class="num">498</td><td class="num">13,07%</td><td class="num">3.146</td><td class="num">471</td><td class="num">14,97%</td><td class="num"><span class="delta up">+1,90</span></td></tr>
+      <tr><td>Pedido enviado</td><td class="num">3.511</td><td class="num">62</td><td class="num">1,77%</td><td class="num">2.193</td><td class="num">28</td><td class="num">1,28%</td><td class="num"><span class="delta down">-0,49</span></td></tr>
+      <tr><td>Entregue, até 7 dias</td><td class="num">3.672</td><td class="num">98</td><td class="num">2,67%</td><td class="num">2.365</td><td class="num">60</td><td class="num">2,54%</td><td class="num"><span class="delta down">-0,13</span></td></tr>
     </tbody>
   </table></div>
+  <p class="srcnote">*Setembro parcial (até 24/09) tende a <b style="color:var(--ink)">subestimar</b> a taxa real: quem chegou numa etapa nos últimos dias do mês teve menos tempo de pedir cancelamento antes do corte. Mesmo assim, doc. aprovada já aparece pior que agosto — o problema real é provavelmente maior do que esse número mostra.</p>
+
+  <div class="callout crit">
+    <b>Doc. aprovada é a única etapa do funil que piorou.</b> Todas as outras melhoraram de agosto pra setembro — inclusive apesar do viés de subestimar setembro. É o ponto exato onde vale investigar o que mudou no processo entre os dois meses.
+  </div>
+
+  <div class="chartcard">
+    <h4>Taxa de churn mensal — base ativa, não funil</h4>
+    <p class="chart-desc">% da base ativa elegível (cliente com produto entregue há mais de 7 dias) que pediu cancelamento naquele mês.</p>
+    <div class="chart-wrap" id="c6wrap">
+      <svg viewBox="0 0 640 200" id="chart6" role="img" aria-label="Taxa de churn mensal, agosto comparado a setembro">
+        <g id="c6bars"></g>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--ink-muted)"></i>agosto (fechado)</span>
+      <span><i style="background:var(--critical)"></i>setembro (parcial, até dia 24)</span>
+    </div>
+  </div>
+
+  <div class="callout crit">
+    Agosto: 289 churns sobre base de 51.023 clientes elegíveis (<span class="k">0,57%</span>). Setembro, ainda com 6 dias faltando: 455 sobre 53.571 (<span class="k">0,85%</span>). Normalizando pelos dias corridos (setembro tem 24 de 30 dias observados), a taxa equivalente do mês fecha perto de <b>1,06%</b> — quase o dobro de agosto. Base ativa também cresceu (mais gente exposta ao risco), o que torna o aumento da taxa ainda mais relevante do que pareceria só olhando o número absoluto de churns.
+  </div>
+</div></section>
+
+<!-- ============ 02 · O QUE ACONTECE DEPOIS ============ -->
+<section id="saves"><div class="wrap">
+  <div class="section-label"><span class="section-num">02</span><span class="section-tag">Setembro/2026, detalhado</span></div>
+  <h2>De quem pede, quantos ficam de verdade</h2>
+  <p class="section-sub">A seção anterior mostra quem entra pedindo cancelamento. Esta mostra o que a allu faz com esse pedido — e se o que "fica" realmente fica.</p>
 
   <div class="chartcard">
     <h4>Retenção bruta vs. retenção líquida, por etapa</h4>
@@ -235,7 +271,7 @@ footer a{color:var(--ink-muted);}
   </div>
 
   <div class="callout crit">
-    O maior gap bruta-vs-líquida continua em doc. aprovada: métrica bruta de <span class="k">36,3%</span> — quase <span class="k">2,7x</span> a líquida (<span class="k">13,5%</span>). Isso não significa má-fé: muita revogação aqui é conversa real que convenceu o cliente a ficar. Mas o gap mostra que o número que sobe no relatório de status não é o número que fica.
+    O maior gap bruta-vs-líquida continua em doc. aprovada: métrica bruta de <span class="k">36,3%</span> — quase <span class="k">2,7x</span> a líquida (<span class="k">13,5%</span>). Isso não significa má-fé: muita revogação aqui é conversa real que convenceu o cliente a ficar. Mas o gap mostra que o número que sobe no relatório de status não é o número que fica — e é justamente a etapa cuja taxa de solicitação está piorando.
   </div>
 
   <div class="chartcard">
@@ -305,9 +341,9 @@ footer a{color:var(--ink-muted);}
   </div>
 </div></section>
 
-<!-- ============ 02 · MERCADO ============ -->
+<!-- ============ 03 · MERCADO ============ -->
 <section id="mercado"><div class="wrap">
-  <div class="section-label"><span class="section-num">02</span><span class="section-tag">Como o mercado faz</span></div>
+  <div class="section-label"><span class="section-num">03</span><span class="section-tag">Como o mercado faz</span></div>
   <h2>Fluxo bem desenhado retém sem prender ninguém no chat</h2>
   <p class="section-sub">Benchmarks de assinatura/DTC nos EUA e a direção regulatória da FTC apontam pro mesmo lugar: menos fricção na tela, uma oferta só, chat reservado.</p>
 
@@ -330,9 +366,9 @@ footer a{color:var(--ink-muted);}
   </div>
 </div></section>
 
-<!-- ============ 03 · MODELO IDEAL ============ -->
+<!-- ============ 04 · MODELO IDEAL ============ -->
 <section id="modelo"><div class="wrap">
-  <div class="section-label"><span class="section-num">03</span><span class="section-tag">Como deveríamos fazer</span></div>
+  <div class="section-label"><span class="section-num">04</span><span class="section-tag">Como deveríamos fazer</span></div>
   <h2>Self-service resolve a tela. Chat é reservado.</h2>
   <p class="section-sub">Princípio único: a tela de cancelamento sempre tem um botão de "cancelar mesmo assim" funcional. Chat só entra quando o valor de reter justifica o esforço, ou quando existe risco real que exige checagem humana — nunca como pedágio padrão.</p>
 
@@ -345,7 +381,7 @@ footer a{color:var(--ink-muted);}
     </tr></thead>
     <tbody>
       <tr>
-        <td><b>Pagamento aprovado</b><div class="srcnote">ret. líquida 8,2%</div></td>
+        <td><b>Pagamento aprovado</b><div class="srcnote">taxa 4,20% · ret. líquida 8,2%</div></td>
         <td>Pausar processo 60d, mantém aprovação</td>
         <td>Pausar sem cobrança</td>
         <td>Trocar modelo, sem custo</td>
@@ -353,7 +389,7 @@ footer a{color:var(--ink-muted);}
         <td>Sem oferta — motivo pouco reversível, deixa ir</td>
       </tr>
       <tr>
-        <td><b>Doc. em análise</b><div class="srcnote">ret. líquida 14,3%</div></td>
+        <td><b>Doc. em análise</b><div class="srcnote">taxa 4,95% · ret. líquida 14,5%</div></td>
         <td>Pausar processo 60d</td>
         <td>Trocar pra plano 36m, parcela menor</td>
         <td>Trocar modelo direto na tela</td>
@@ -361,7 +397,7 @@ footer a{color:var(--ink-muted);}
         <td>Reancoragem de valor (depreciação) uma vez</td>
       </tr>
       <tr>
-        <td><b>Doc. aprovada</b><div class="srcnote">ret. líquida 13,4%</div></td>
+        <td><b>Doc. aprovada</b><div class="srcnote" style="color:var(--critical)">taxa 14,97% (subindo) · ret. líquida 13,5%</div></td>
         <td>Pausar processo, não perde aprovação</td>
         <td>Trocar pra plano 36m, simulação na tela</td>
         <td>Trocar modelo direto, antes do envio</td>
@@ -369,11 +405,11 @@ footer a{color:var(--ink-muted);}
         <td>Reancoragem uma vez, sem insistir</td>
       </tr>
       <tr>
-        <td><b>Enviado</b><div class="srcnote">ret. líquida 23,2%, volume baixo</div></td>
+        <td><b>Enviado</b><div class="srcnote">taxa 1,28% · ret. líquida 23,2%, volume baixo</div></td>
         <td colspan="5">Nudge único: "chega em até X dias, aguarda ou cancela agora?" — mesma tela pra qualquer motivo, volume não justifica oferta segmentada</td>
       </tr>
       <tr>
-        <td><b>Entregue, até 7 dias</b><div class="srcnote">cancelamento, ret. líquida 14,1%</div></td>
+        <td><b>Entregue, até 7 dias</b><div class="srcnote">cancelamento, taxa 2,54% · ret. líquida 14,1%</div></td>
         <td>Nudge leve — ainda pode ser mudança de ideia</td>
         <td>Renegociação temporária de valor, uma vez</td>
         <td>Sem troca de modelo pós-entrega — só desconto ou nada</td>
@@ -381,7 +417,7 @@ footer a{color:var(--ink-muted);}
         <td>Sem oferta — cancela em 1 clique</td>
       </tr>
       <tr>
-        <td><b>Entregue, depois de 7 dias</b><div class="srcnote" style="color:var(--critical)">CHURN, ret. líquida 10,6%</div></td>
+        <td><b>Entregue, depois de 7 dias</b><div class="srcnote" style="color:var(--critical)">CHURN, taxa mensal 0,85% (quase dobrou) · ret. líquida 10,6%</div></td>
         <td colspan="5">Sem oferta condicionada a ficar — o cliente já decidiu depois de usar o produto de verdade. Cancela em 1 clique. O esforço de retenção migra inteiro pra campanha pós-cancelamento (item 6 do roadmap), não pra hora do pedido</td>
       </tr>
     </tbody>
@@ -422,7 +458,7 @@ footer a{color:var(--ink-muted);}
     <thead><tr><th>Situação</th><th>Chat necessário?</th><th>Por quê</th><th>Quem trata</th></tr></thead>
     <tbody>
       <tr><td>Qualquer motivo, oferta de self-service recusada</td><td><span class="tag self">Não bloqueia</span></td><td>Cancelamento é efetivado na hora. Sem exceção.</td><td>Ninguém — automático</td></tr>
-      <tr><td>Doc. aprovada, motivo financeiro, recusou oferta</td><td><span class="tag watch">Opcional, assíncrono</span></td><td>Maior retenção líquida do funil — vale uma tentativa a mais, mas depois do cancelamento já confirmado na tela</td><td>IA manda mensagem no WhatsApp em até 1h, sem travar nada</td></tr>
+      <tr><td>Doc. aprovada, motivo financeiro, recusou oferta</td><td><span class="tag watch">Opcional, assíncrono</span></td><td>Maior taxa de solicitação do funil e ela está subindo — vale uma tentativa a mais, mas depois do cancelamento já confirmado na tela</td><td>IA manda mensagem no WhatsApp em até 1h, sem travar nada</td></tr>
       <tr><td>Documento recusado sem explicação clara</td><td><span class="tag chat">Obrigatório</span></td><td>Não é objeção de retenção, é erro operacional que precisa de correção</td><td>Time de documentação, prioridade</td></tr>
       <tr><td>Chargeback / disputa de pagamento</td><td><span class="tag chat">Obrigatório</span></td><td>Risco financeiro, decisão não pode ser automática</td><td>Humano, financeiro/antifraude</td></tr>
       <tr><td>Suspeita de fraude</td><td><span class="tag chat">Obrigatório</span></td><td>Risco de segurança</td><td>Humano, antifraude</td></tr>
@@ -439,9 +475,9 @@ footer a{color:var(--ink-muted);}
   </div>
 </div></section>
 
-<!-- ============ 04 · APLICAR ============ -->
+<!-- ============ 05 · APLICAR ============ -->
 <section id="aplicar"><div class="wrap">
-  <div class="section-label"><span class="section-num">04</span><span class="section-tag">Como aplicar</span></div>
+  <div class="section-label"><span class="section-num">05</span><span class="section-tag">Como aplicar</span></div>
   <h2>Ordem de execução</h2>
   <p class="section-sub">Prioridade por impacto imediato e menor dependência de construir algo novo.</p>
 
@@ -449,49 +485,56 @@ footer a{color:var(--ink-muted);}
     <div class="priorow">
       <div class="pn">1</div>
       <div style="flex:1">
-        <div class="pt">Registrar motivo em toda revogação de churn feita pelo time<span class="badge high">Alto impacto</span></div>
-        <div class="pd">Não é proibir a revogação — muita é retenção genuína que convence o cliente. É parar de fazer sem deixar rastro. Hoje não dá pra distinguir conversa real de decisão unilateral, e isso é justamente o que protege a allu se questionada. Zero dependência técnica nova, é regra de processo.</div>
+        <div class="pt">Investigar o que mudou em doc. aprovada entre agosto e setembro<span class="badge high">Alto impacto</span></div>
+        <div class="pd">É a única etapa do funil cuja taxa de cancelamento piorou, e piorou apesar do viés que deveria subestimar setembro. Antes de desenhar qualquer solução nova, vale entender a causa: mudança de processo, de time, de política de aprovação de documento?</div>
       </div>
     </div>
     <div class="priorow">
       <div class="pn">2</div>
+      <div style="flex:1">
+        <div class="pt">Registrar motivo em toda revogação de churn feita pelo time<span class="badge high">Alto impacto</span></div>
+        <div class="pd">Não é proibir a revogação — muita é retenção genuína que convence o cliente. É parar de fazer sem deixar rastro. A taxa de churn mensal quase dobrou; sem esse registro, não dá pra saber se a resposta da allu está ajudando ou represando.</div>
+      </div>
+    </div>
+    <div class="priorow">
+      <div class="pn">3</div>
       <div style="flex:1">
         <div class="pt">Cumprir o prazo de 5 dias úteis já comunicado ao cliente<span class="badge high">Alto impacto</span></div>
         <div class="pd">12,4% das solicitações furam o prazo prometido, com casos de até 17 dias úteis. É o risco mais concreto e mais fácil de transformar em meta operacional com dono direto.</div>
       </div>
     </div>
     <div class="priorow">
-      <div class="pn">3</div>
-      <div style="flex:1">
-        <div class="pt">Trocar a métrica de retenção pra líquida<span class="badge high">Alto impacto</span></div>
-        <div class="pd">Sem isso, qualquer melhoria feita a partir daqui vai ser avaliada com o número errado. É só reprocessar o que já existe.</div>
-      </div>
-    </div>
-    <div class="priorow">
       <div class="pn">4</div>
       <div style="flex:1">
-        <div class="pt">Tela de self-service com oferta condicional ao motivo<span class="badge med">Médio esforço</span></div>
-        <div class="pd">Começar por doc. análise e doc. aprovada — maior retenção líquida combinada com maior volume. Motivo/submotivo já existem na base, é reaproveitar dado que já é coletado.</div>
+        <div class="pt">Acompanhar taxa por etapa e retenção líquida como métrica mensal fixa<span class="badge high">Alto impacto</span></div>
+        <div class="pd">Esse relatório não pode ser um evento único — é assim que se pega uma etapa piorando a tempo de agir, como aconteceu aqui com doc. aprovada. Sem isso, qualquer melhoria feita a partir daqui também vai ser avaliada com o número errado.</div>
       </div>
     </div>
     <div class="priorow">
       <div class="pn">5</div>
+      <div style="flex:1">
+        <div class="pt">Tela de self-service com oferta condicional ao motivo<span class="badge med">Médio esforço</span></div>
+        <div class="pd">Começar por doc. análise e doc. aprovada — maior taxa de solicitação combinada com maior volume. Motivo/submotivo já existem na base, é reaproveitar dado que já é coletado.</div>
+      </div>
+    </div>
+    <div class="priorow">
+      <div class="pn">6</div>
       <div style="flex:1">
         <div class="pt">Lançar pausa como oferta<span class="badge med">Médio esforço</span></div>
         <div class="pd">Maior alavanca do mercado (337% de adoção onde existe) e não existe hoje na allu. Versão pré-entrega (pausar processo) é simples; versão pós-entrega precisa de desenho de custódia/logística à parte.</div>
       </div>
     </div>
     <div class="priorow">
-      <div class="pn">6</div>
+      <div class="pn">7</div>
       <div style="flex:1">
         <div class="pt">Campanha pós-cancelamento automatizada<span class="badge low">Baixo esforço, usa Alluwave</span></div>
         <div class="pd">Sequência 7/30/90 dias personalizada pelo motivo, disparada via Alluwave. É onde a retenção de churn deveria acontecer, em vez de segurar na hora do pedido.</div>
       </div>
     </div>
     <div class="priorow">
-      <div class="pn">7</div>
+      <div class="pn">8</div>
       <div style="flex:1">
-        <div class="pt">Chat reservado, só nos gatilhos definidos<span class="badge low">Depende dos itens 1 e 4</span></div>
+        <div class="pt">Chat reservado, só nos gatilhos definidos<span class="badge low">Depende dos itens 2 e 5</span></div>
         <div class="pd">Última etapa — só faz sentido depois que a tela resolve o volume padrão. Reduz carga de analista naturalmente, sem precisar de meta de produtividade.</div>
       </div>
     </div>
@@ -499,7 +542,7 @@ footer a{color:var(--ink-muted);}
 </div></section>
 
 <footer><div class="wrap">
-  <p>Dados internos: BigQuery, <span class="mono">v3_raw_alluoffice.order_cancellation_requests</span> + <span class="mono">v3_gold_alluoffice.tri_orders__current_state</span>, setembro/2026. Etapa do pedido reconstruída comparando o timestamp da solicitação contra os marcos de status do pedido. Cancelamento vs. churn definido pela janela de 7 dias corridos após a entrega. Prazo de resolução calculado em dias úteis (segunda a sexta) entre a solicitação e a data de revogação/finalização.</p>
+  <p>Dados internos: BigQuery, <span class="mono">v3_raw_alluoffice.order_cancellation_requests</span> + <span class="mono">v3_gold_alluoffice.tri_orders__current_state</span>, agosto (fechado) e setembro/2026 (até 24/09). Taxa por etapa = solicitações de cancelamento enquanto o pedido estava naquela etapa ÷ total de pedidos que chegaram naquela etapa no mesmo mês (cohort por data do marco de status). Taxa de churn = solicitações de churn no mês ÷ base ativa elegível (entregue há mais de 7 dias) durante o mês. Cancelamento vs. churn definido pela janela de 7 dias corridos após a entrega. Prazo de resolução calculado em dias úteis (segunda a sexta) entre a solicitação e a data de revogação/finalização.</p>
   <p>Benchmarks: Subscription Index, Churnkey, Chargebee, Loopwork/SubJolt (dados de 441 mil tentativas de cancelamento, 87 marcas DTC), FTC (Negative Option Rule / Click-to-Cancel, reaberta em 2026).</p>
 </div></footer>
 
@@ -519,7 +562,6 @@ footer a{color:var(--ink-muted);}
     return tt;
   }
   function showTip(tt, wrap, x, y, title, val){
-    var r = wrap.getBoundingClientRect();
     tt.innerHTML = '<div class="tt-title">'+title+'</div><div class="mono" style="font-weight:600">'+val+'</div>';
     tt.style.left = x + 'px';
     tt.style.top = y + 'px';
@@ -527,41 +569,73 @@ footer a{color:var(--ink-muted);}
   }
   function hideTip(tt){ tt.classList.remove('show'); }
 
-  /* ---- Chart 1: volume by stage, cancelamento vs churn ---- */
+  /* ---- Chart 1: taxa por etapa, ago vs set ---- */
   (function(){
     var data = [
-      ["Pagamento\naprovado",380,'var(--accent)',false],
-      ["Doc.\nanálise",523,'var(--accent)',false],
-      ["Doc.\naprovada",692,'var(--accent)',false],
-      ["Enviado",56,'var(--accent)',false],
-      ["Entregue\n≤7d",78,'var(--accent)',false],
-      ["Entregue\n>7d",752,'var(--critical)',true]
+      ["Pagamento\naprovado",5.52,4.20],
+      ["Doc.\nanálise",7.12,4.95],
+      ["Doc.\naprovada",13.07,14.97],
+      ["Enviado",1.77,1.28],
+      ["Entregue\n≤7d",2.67,2.54]
     ];
     var g = document.getElementById('c1bars');
     var tt = ensureTooltip('c1wrap');
     var wrap = document.getElementById('c1wrap');
-    var max = 752, baseline = 250, top = 30, plotH = baseline-top;
-    var bandW = 560/6, barW = 58, left = 40;
+    var maxv = 16, baseline = 250, top = 20, plotH = baseline-top;
+    var bandW = 560/5, left = 40, barW = 30, gap = 6;
     data.forEach(function(d,i){
-      var h = (d[1]/max)*plotH;
-      var x = left + i*bandW + (bandW-barW)/2;
-      var y = baseline - h;
-      var bar = el('rect',{x:x,y:y,width:barW,height:h,rx:4,fill:d[2],opacity:0.9});
-      g.appendChild(bar);
-      var label = el('text',{x:x+barW/2,y:y-10,'text-anchor':'middle',fill:'#f3faf6','font-size':'13',
-        'font-family':'IBM Plex Mono, monospace','font-weight':'500'});
-      label.textContent = d[1];
-      g.appendChild(label);
+      var gx = left + i*bandW;
+      var offset = (bandW - (barW*2+gap))/2;
+      var x1 = gx+offset, x2 = gx+offset+barW+gap;
+      var h1 = (d[1]/maxv)*plotH, h2 = (d[2]/maxv)*plotH;
+      var y1 = baseline-h1, y2 = baseline-h2;
+      var b1 = el('rect',{x:x1,y:y1,width:barW,height:h1,rx:3,fill:'var(--ink-muted)',opacity:0.55});
+      var b2 = el('rect',{x:x2,y:y2,width:barW,height:h2,rx:3,fill:'var(--accent)'});
+      g.appendChild(b1); g.appendChild(b2);
+      [[x1,y1,d[1]],[x2,y2,d[2]]].forEach(function(v){
+        var t = el('text',{x:v[0]+barW/2,y:v[1]-8,'text-anchor':'middle',fill:'#c9ddd0','font-size':'11.5',
+          'font-family':'IBM Plex Mono, monospace'});
+        t.textContent = v[2].toFixed(1)+'%';
+        g.appendChild(t);
+      });
       var lines = d[0].split('\n');
       lines.forEach(function(ln, li){
-        var cat = el('text',{x:x+barW/2,y:baseline+16+li*13,'text-anchor':'middle',fill:'#84a892','font-size':'11'});
+        var cat = el('text',{x:gx+bandW/2,y:baseline+18+li*13,'text-anchor':'middle',fill:'#84a892','font-size':'11'});
         cat.textContent = ln;
         g.appendChild(cat);
       });
-      var hit = el('rect',{x:x-6,y:top-10,width:barW+12,height:baseline-top+10,class:'bar-hit'});
+      var hit = el('rect',{x:gx,y:top-10,width:bandW,height:baseline-top+10,class:'bar-hit'});
       hit.addEventListener('mousemove', function(e){
         var r = wrap.getBoundingClientRect();
-        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0].replace('\n',' '), d[1]+' solicitações'+(d[3]?' · churn':' · cancelamento'));
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0].replace('\n',' '), 'ago '+d[1].toFixed(2)+'% · set '+d[2].toFixed(2)+'%');
+      });
+      hit.addEventListener('mouseleave', function(){ hideTip(tt); });
+      g.appendChild(hit);
+    });
+  })();
+
+  /* ---- Chart 6: taxa de churn mensal, ago vs set ---- */
+  (function(){
+    var data = [["Agosto (fechado)",0.57,'var(--ink-muted)'],["Setembro (parcial)",0.85,'var(--critical)']];
+    var g = document.getElementById('c6bars');
+    var tt = ensureTooltip('c6wrap');
+    var wrap = document.getElementById('c6wrap');
+    var maxv = 1.0, left = 150, right = 600, plotW = right-left;
+    data.forEach(function(d,i){
+      var y = 20 + i*70;
+      var w = (d[1]/maxv)*plotW;
+      var label = el('text',{x:left-12,y:y+22,'text-anchor':'end',fill:'#f3faf6','font-size':'13'});
+      label.textContent = d[0];
+      g.appendChild(label);
+      var bar = el('rect',{x:left,y:y,width:w,height:34,rx:5,fill:d[2]});
+      g.appendChild(bar);
+      var val = el('text',{x:left+w+10,y:y+22,fill:'#f3faf6','font-size':'13','font-family':'IBM Plex Mono, monospace','font-weight':'600'});
+      val.textContent = d[1].toFixed(2)+'%';
+      g.appendChild(val);
+      var hit = el('rect',{x:left-6,y:y-6,width:plotW+60,height:46,class:'bar-hit'});
+      hit.addEventListener('mousemove', function(e){
+        var r = wrap.getBoundingClientRect();
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0], 'taxa de churn mensal '+d[1].toFixed(2)+'%');
       });
       hit.addEventListener('mouseleave', function(){ hideTip(tt); });
       g.appendChild(hit);
@@ -680,7 +754,6 @@ footer a{color:var(--ink-muted);}
       var path = el('path',{d:pathD, fill:'none', stroke:seriesColors[s], 'stroke-width':2, 'stroke-linecap':'round', 'stroke-linejoin':'round'});
       g.appendChild(path);
     }
-    // y-axis ticks
     [0,10,20,30].forEach(function(v){
       var y = baseline - (v/maxv)*(baseline-top);
       var t = el('text',{x:32,y:y+4,'text-anchor':'end',fill:'#84a892','font-size':'10','font-family':'IBM Plex Mono, monospace'});
@@ -689,7 +762,6 @@ footer a{color:var(--ink-muted);}
       var gridline = el('line',{x1:40,y1:y,x2:620,y2:y,stroke:'#1c3529','stroke-width':1});
       g.insertBefore(gridline, g.firstChild);
     });
-    // x-axis day labels (every 3rd day)
     days.forEach(function(d,i){
       if (i%3===0 || i===n-1){
         var x = xy(i,0)[0];
@@ -698,7 +770,6 @@ footer a{color:var(--ink-muted);}
         g.appendChild(t);
       }
     });
-    // hover hit columns + crosshair
     var crosshair = el('line',{x1:0,y1:top,x2:0,y2:baseline,stroke:'#c9ddd0','stroke-width':1,'stroke-dasharray':'3,3',opacity:0});
     hitG.appendChild(crosshair);
     days.forEach(function(d,i){
