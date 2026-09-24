@@ -71,6 +71,7 @@ h2{font-size:clamp(24px,3.4vw,32px);margin-bottom:6px;}
 .stat .v{font-family:'Sora',sans-serif;font-size:30px;font-weight:700;color:var(--ink);}
 .stat .v.crit{color:var(--critical);}
 .stat .v.acc{color:var(--accent);}
+.stat .v.warn{color:var(--warn);}
 .stat .l{font-size:12.5px;color:var(--ink-muted);margin-top:4px;line-height:1.4;}
 @media(max-width:720px){.statgrid{grid-template-columns:repeat(2,1fr);}}
 
@@ -167,7 +168,7 @@ footer a{color:var(--ink-muted);}
 <div class="masthead"><div class="wrap">
   <div class="eyebrow">Defesa de CRO · Retenção de cancelamento</div>
   <h1>Retenção sem fricção</h1>
-  <p class="thesis">Hoje a allu retém cancelamento segurando pedido sem avisar o cliente. Isso não reduz cancelamento de verdade e concentra risco regulatório. A proposta: self-service resolve por padrão, chat vira exceção reservada pra alto valor ou risco real.</p>
+  <p class="thesis">A allu já retém por conversa — isso não é o problema. O problema é tratar cancelamento (ainda na janela de arrependimento) e churn (cliente que já decidiu, depois de usar o produto) como a mesma coisa, nem sempre cumprir o prazo de 5 dias úteis prometido, e não conseguir separar quem foi convencido de quem só teve o pedido segurado. A proposta: separar os dois, blindar o prazo, self-service por padrão.</p>
   <div class="meta-row">
     <span>Base: solicitações de cancelamento, setembro/2026</span>
     <span>Fonte: BigQuery, v3_raw_alluoffice.order_cancellation_requests</span>
@@ -179,37 +180,42 @@ footer a{color:var(--ink-muted);}
 <section id="problema"><div class="wrap">
   <div class="section-label"><span class="section-num">01</span><span class="section-tag">Como está hoje</span></div>
   <h2>A retenção que aparece no relatório não é a retenção real</h2>
-  <p class="section-sub">2.862 solicitações de cancelamento em setembro/2026. Cruzando cada uma com o histórico do pedido, dá pra ver exatamente em que etapa o cliente estava, quem revogou e quantos voltaram a pedir depois.</p>
+  <p class="section-sub">2.862 solicitações de cancelamento em setembro/2026. Cruzando cada uma com o histórico do pedido, dá pra separar quem ainda estava na janela de arrependimento de quem já era churn de verdade, ver quem revogou e quantos voltaram a pedir depois.</p>
+  <p class="section-sub">Definição usada daqui pra frente: <b style="color:var(--ink)">cancelamento</b> é toda solicitação até 7 dias depois da entrega — a janela de arrependimento. Depois disso, é <b style="color:var(--critical)">churn</b>: o cliente já teve o produto na mão e decidiu mesmo assim. São dois comportamentos diferentes.</p>
 
   <div class="statgrid">
     <div class="stat"><div class="v">2.862</div><div class="l">solicitações de cancelamento em setembro</div></div>
-    <div class="stat"><div class="v crit">55,6%</div><div class="l">das revogações em doc. aprovada foram feitas pela allu, sem o cliente pedir</div></div>
-    <div class="stat"><div class="v crit">62,9%</div><div class="l">desses casos, o cliente volta a pedir cancelamento depois</div></div>
-    <div class="stat"><div class="v acc">13,4%</div><div class="l">retenção líquida real em doc. aprovada — não os 36,2% que o relatório de status mostra</div></div>
+    <div class="stat"><div class="v crit">30,3%</div><div class="l">desse volume já passou da janela de 7 dias — é churn de verdade, não cancelamento</div></div>
+    <div class="stat"><div class="v warn">12,4%</div><div class="l">das solicitações passam do prazo de 5 dias úteis prometido ao cliente</div></div>
+    <div class="stat"><div class="v crit">71,3%</div><div class="l">das revogações em pedidos de churn partem do time, não do cliente pela área do assinante</div></div>
   </div>
 
   <div class="chartcard">
     <h4>Volume de solicitações por etapa do pedido</h4>
     <p class="chart-desc">Setembro/2026 · onde exatamente o cliente estava quando pediu cancelar</p>
     <div class="chart-wrap" id="c1wrap">
-      <svg viewBox="0 0 640 300" id="chart1" role="img" aria-label="Volume de solicitações de cancelamento por etapa do pedido">
+      <svg viewBox="0 0 640 300" id="chart1" role="img" aria-label="Volume de solicitações de cancelamento por etapa do pedido, separando cancelamento e churn">
         <line x1="40" y1="250" x2="600" y2="250" stroke="#26493a" stroke-width="1"/>
         <!-- bars drawn by data below -->
         <g id="c1bars"></g>
       </svg>
     </div>
-    <div class="legend"><span><i style="background:var(--accent)"></i>solicitações</span></div>
+    <div class="legend">
+      <span><i style="background:var(--accent)"></i>cancelamento (até 7 dias pós-entrega)</span>
+      <span><i style="background:var(--critical)"></i>churn (depois de 7 dias)</span>
+    </div>
   </div>
 
   <div class="tblwrap"><table>
-    <thead><tr><th>Etapa</th><th class="num">Volume</th><th class="num">% do total</th></tr></thead>
+    <thead><tr><th>Etapa</th><th class="num">Volume</th><th class="num">% do total</th><th>Categoria</th></tr></thead>
     <tbody>
-      <tr><td>Pagamento aprovado</td><td class="num">376</td><td class="num">13,1%</td></tr>
-      <tr><td>Documentação em análise</td><td class="num">524</td><td class="num">18,3%</td></tr>
-      <tr><td>Documentação aprovada</td><td class="num">685</td><td class="num">23,9%</td></tr>
-      <tr><td>Pedido enviado</td><td class="num">56</td><td class="num">2,0%</td></tr>
-      <tr><td>Pedido entregue</td><td class="num">827</td><td class="num">28,9%</td></tr>
-      <tr><td>Sem etapa identificada</td><td class="num">394</td><td class="num">13,8%</td></tr>
+      <tr><td>Pagamento aprovado</td><td class="num">380</td><td class="num">13,2%</td><td>Cancelamento</td></tr>
+      <tr><td>Documentação em análise</td><td class="num">523</td><td class="num">18,2%</td><td>Cancelamento</td></tr>
+      <tr><td>Documentação aprovada</td><td class="num">692</td><td class="num">24,1%</td><td>Cancelamento</td></tr>
+      <tr><td>Pedido enviado</td><td class="num">56</td><td class="num">1,9%</td><td>Cancelamento</td></tr>
+      <tr><td>Entregue, até 7 dias</td><td class="num">78</td><td class="num">2,7%</td><td>Cancelamento</td></tr>
+      <tr><td>Entregue, depois de 7 dias</td><td class="num">752</td><td class="num">26,1%</td><td style="color:var(--critical);font-weight:600">Churn</td></tr>
+      <tr><td>Sem etapa identificada</td><td class="num">396</td><td class="num">13,8%</td><td>—</td></tr>
     </tbody>
   </table></div>
 
@@ -229,25 +235,26 @@ footer a{color:var(--ink-muted);}
   </div>
 
   <div class="callout crit">
-    <b>O maior gap é exatamente onde a allu mais "retém":</b> em doc. aprovada, a métrica bruta (<span class="k">36,2%</span>) é quase <span class="k">3x</span> a líquida (<span class="k">13,4%</span>). É a etapa com mais volume de revogação por analista — e mais reincidência.
+    O maior gap bruta-vs-líquida continua em doc. aprovada: métrica bruta de <span class="k">36,3%</span> — quase <span class="k">2,7x</span> a líquida (<span class="k">13,5%</span>). Isso não significa má-fé: muita revogação aqui é conversa real que convenceu o cliente a ficar. Mas o gap mostra que o número que sobe no relatório de status não é o número que fica.
   </div>
 
   <div class="chartcard">
-    <h4>Quem revogou o cancelamento — etapa "documentação aprovada"</h4>
-    <p class="chart-desc">248 revogações em setembro. Mais da metade não partiu do cliente.</p>
+    <h4>Quem revogou — cancelamento vs. churn</h4>
+    <p class="chart-desc">Cancelamento: o cliente ainda pode estar mudando de ideia. Churn: já usou o produto e decidiu mesmo assim. Reter do mesmo jeito nos dois casos merece leituras diferentes.</p>
     <div class="chart-wrap" id="c3wrap">
-      <svg viewBox="0 0 640 170" id="chart3" role="img" aria-label="Quem revogou o cancelamento em documentação aprovada">
+      <svg viewBox="0 0 640 260" id="chart3" role="img" aria-label="Quem revogou o cancelamento, comparando cancelamento e churn">
+        <line x1="40" y1="220" x2="600" y2="220" stroke="#26493a" stroke-width="1"/>
         <g id="c3bars"></g>
       </svg>
     </div>
     <div class="legend">
-      <span><i style="background:var(--ink-secondary)"></i>cliente (110 · 44,4%)</span>
-      <span><i style="background:var(--critical)"></i>analista / sistema, sem o cliente pedir (138 · 55,6%)</span>
+      <span><i style="background:var(--ink-secondary)"></i>cliente, pela área do assinante</span>
+      <span><i style="background:var(--critical)"></i>time allu, sem o cliente passar pela área do assinante</span>
     </div>
   </div>
 
   <div class="callout warn">
-    Dos 138 casos revogados pela allu sem o cliente pedir: <b>92 (66,7%) o próprio cliente voltou e abriu nova solicitação depois</b>, pela área do assinante. Não é retenção — é adiamento que o cliente paga com mais um contato.
+    Isso não quer dizer que toda revogação do time foi sem conversa — muita é retenção genuína que convenceu o cliente. Só que hoje não existe um campo que separe "convenci" de "segurei". O que o dado mostra, independente do motivo: em doc. aprovada, dos 138 casos revogados pelo time sem passar pela área do assinante, <b>92 (66,7%) o cliente voltou a pedir cancelamento de novo depois</b>. Seja qual for a razão da revogação original, a decisão não ficou — e no churn essa prática é proporcionalmente mais comum (71,3% time vs. 46,5% no cancelamento ainda dentro da janela).
   </div>
 
   <div class="chartcard">
@@ -271,15 +278,31 @@ footer a{color:var(--ink-muted);}
   <div class="tblwrap"><table>
     <thead><tr><th>Etapa</th><th class="num">Ret. bruta</th><th class="num">Reincidência</th><th class="num">Ret. líquida</th></tr></thead>
     <tbody>
-      <tr><td>Pagamento aprovado</td><td class="num">19,4%</td><td class="num">57,5%</td><td class="num">8,2%</td></tr>
-      <tr><td>Documentação em análise</td><td class="num">22,1%</td><td class="num">35,3%</td><td class="num">14,3%</td></tr>
-      <tr><td>Documentação aprovada</td><td class="num">36,2%</td><td class="num">62,9%</td><td class="num">13,4%</td></tr>
+      <tr><td>Pagamento aprovado</td><td class="num">19,2%</td><td class="num">57,5%</td><td class="num">8,2%</td></tr>
+      <tr><td>Documentação em análise</td><td class="num">22,4%</td><td class="num">35,3%</td><td class="num">14,5%</td></tr>
+      <tr><td>Documentação aprovada</td><td class="num">36,3%</td><td class="num">62,9%</td><td class="num">13,5%</td></tr>
       <tr><td>Pedido enviado</td><td class="num">41,1%</td><td class="num">43,5%</td><td class="num">23,2%</td></tr>
-      <tr><td>Pedido entregue</td><td class="num">19,3%</td><td class="num">43,1%</td><td class="num">11,0%</td></tr>
+      <tr><td>Entregue, até 7 dias (cancelamento)</td><td class="num">32,1%</td><td class="num">56,0%</td><td class="num">14,1%</td></tr>
+      <tr><td style="color:var(--critical)">Entregue, depois de 7 dias (churn)</td><td class="num">18,1%</td><td class="num">41,2%</td><td class="num">10,6%</td></tr>
     </tbody>
   </table></div>
 
-  <p class="section-sub">Reincidência em cima de reincidência: dos pedidos que tiveram revogação em doc. aprovada, <b class="mono" style="color:var(--ink)">61,9%</b> pediram cancelamento de novo em algum momento (média de <b class="mono" style="color:var(--ink)">2,07</b> solicitações por pedido, máximo de <b class="mono" style="color:var(--ink)">8</b> no mesmo pedido). O processo atual não resolve a intenção do cliente, só a adia — e cada rodada consome um analista.</p>
+  <p class="section-sub">Reincidência em cima de reincidência: dos pedidos que tiveram revogação em doc. aprovada, <b class="mono" style="color:var(--ink)">61,9%</b> pediram cancelamento de novo em algum momento (média de <b class="mono" style="color:var(--ink)">2,07</b> solicitações por pedido, máximo de <b class="mono" style="color:var(--ink)">8</b> no mesmo pedido). Seja o motivo da revogação legítimo ou não, o processo atual não resolve a intenção do cliente na maioria das vezes — só adia, e cada rodada consome um analista de novo.</p>
+
+  <div class="chartcard">
+    <h4>O prazo que a allu promete ao cliente — e nem sempre cumpre</h4>
+    <p class="chart-desc">A allu comunica até 5 dias úteis pra resolver a solicitação. Medindo do pedido até a resolução (revogado ou finalizado), setembro/2026:</p>
+    <div class="statgrid" style="margin:16px 0 4px;">
+      <div class="stat"><div class="v">1,9 dias</div><div class="l">média de dias úteis até a resolução</div></div>
+      <div class="stat"><div class="v">0 dias</div><div class="l">mediana — a maioria resolve rápido</div></div>
+      <div class="stat"><div class="v crit">12,4%</div><div class="l">das solicitações passam do prazo de 5 dias úteis prometido</div></div>
+      <div class="stat"><div class="v crit">17 dias</div><div class="l">pior caso do mês — mais de 3 semanas úteis pra resolver</div></div>
+    </div>
+  </div>
+
+  <div class="callout crit">
+    <b>Esse é o risco concreto, não hipotético:</b> promessa comunicada ao cliente descumprida em quase <b>1 de cada 8</b> solicitações. É mais fácil de provar e mais fácil de corrigir do que qualquer discussão sobre "consentimento" na revogação — é operação, tem dono, tem prazo pra virar zero.
+  </div>
 </div></section>
 
 <!-- ============ 02 · MERCADO ============ -->
@@ -350,12 +373,16 @@ footer a{color:var(--ink-muted);}
         <td colspan="5">Nudge único: "chega em até X dias, aguarda ou cancela agora?" — mesma tela pra qualquer motivo, volume não justifica oferta segmentada</td>
       </tr>
       <tr>
-        <td><b>Entregue</b><div class="srcnote">ret. líquida 11,0%, maior volume</div></td>
-        <td>Sem oferta pesada — motivo migra pra campanha pós-cancelamento</td>
+        <td><b>Entregue, até 7 dias</b><div class="srcnote">cancelamento, ret. líquida 14,1%</div></td>
+        <td>Nudge leve — ainda pode ser mudança de ideia</td>
         <td>Renegociação temporária de valor, uma vez</td>
         <td>Sem troca de modelo pós-entrega — só desconto ou nada</td>
         <td>FAQ leve</td>
         <td>Sem oferta — cancela em 1 clique</td>
+      </tr>
+      <tr>
+        <td><b>Entregue, depois de 7 dias</b><div class="srcnote" style="color:var(--critical)">CHURN, ret. líquida 10,6%</div></td>
+        <td colspan="5">Sem oferta condicionada a ficar — o cliente já decidiu depois de usar o produto de verdade. Cancela em 1 clique. O esforço de retenção migra inteiro pra campanha pós-cancelamento (item 6 do roadmap), não pra hora do pedido</td>
       </tr>
     </tbody>
   </table></div>
@@ -402,12 +429,13 @@ footer a{color:var(--ink-muted);}
       <tr><td>Inadimplência / bloqueio</td><td><span class="tag chat">Obrigatório</span></td><td>Precisa de checagem, mas <b>sempre comunicado ao cliente</b> — nunca silencioso</td><td>Humano, com status visível pro cliente</td></tr>
       <tr><td>Motivo = insatisfação com atendimento</td><td><span class="tag chat">Obrigatório</span></td><td>Sintoma de outro processo quebrado, não é objeção comercial</td><td>Humano, prioridade alta</td></tr>
       <tr><td>Pedido já teve 1+ revogação anterior (reincidência)</td><td><span class="tag chat">Obrigatório</span></td><td>Self-service/IA já tentaram uma vez e não resolveram — insistir de novo sozinho é o padrão que gera os 62,9% de reincidência</td><td>Humano, revisão de caso</td></tr>
+      <tr><td>Time quer revogar uma solicitação de CHURN (não cancelamento)</td><td><span class="tag chat">Obrigatório</span></td><td>Cliente já decidiu depois de usar — não é proibido tentar reter, mas precisa ficar registrado o motivo da conversa. É a lacuna que hoje impede provar que a revogação foi legítima</td><td>Humano registra o motivo antes de revogar, sempre</td></tr>
       <tr><td>Cliente pede humano explicitamente</td><td><span class="tag chat">Obrigatório</span></td><td>Direito do cliente, sempre atendido</td><td>Humano</td></tr>
     </tbody>
   </table></div>
 
   <div class="callout acc">
-    Resultado esperado: a esmagadora maioria das <span class="k">2.862</span> solicitações de setembro nunca precisaria tocar em atendimento humano. Pelas regras acima, só chargeback, fraude, inadimplência, documento recusado, insatisfação e reincidência forçam chat — o resto é tela.
+    Resultado esperado: a esmagadora maioria das <span class="k">2.862</span> solicitações de setembro nunca precisaria tocar em atendimento humano. Pelas regras acima, só chargeback, fraude, inadimplência, documento recusado, insatisfação, reincidência e revogação de churn sem motivo registrado forçam chat — o resto é tela.
   </div>
 </div></section>
 
@@ -421,42 +449,49 @@ footer a{color:var(--ink-muted);}
     <div class="priorow">
       <div class="pn">1</div>
       <div style="flex:1">
-        <div class="pt">Parar a revogação silenciosa por analista<span class="badge high">Alto impacto</span></div>
-        <div class="pd">Zero dependência técnica nova — é mudança de processo/regra interna. Corta a fonte dos 62,9% de reincidência em doc. aprovada e o maior ponto de exposição regulatória hoje.</div>
+        <div class="pt">Registrar motivo em toda revogação de churn feita pelo time<span class="badge high">Alto impacto</span></div>
+        <div class="pd">Não é proibir a revogação — muita é retenção genuína que convence o cliente. É parar de fazer sem deixar rastro. Hoje não dá pra distinguir conversa real de decisão unilateral, e isso é justamente o que protege a allu se questionada. Zero dependência técnica nova, é regra de processo.</div>
       </div>
     </div>
     <div class="priorow">
       <div class="pn">2</div>
+      <div style="flex:1">
+        <div class="pt">Cumprir o prazo de 5 dias úteis já comunicado ao cliente<span class="badge high">Alto impacto</span></div>
+        <div class="pd">12,4% das solicitações furam o prazo prometido, com casos de até 17 dias úteis. É o risco mais concreto e mais fácil de transformar em meta operacional com dono direto.</div>
+      </div>
+    </div>
+    <div class="priorow">
+      <div class="pn">3</div>
       <div style="flex:1">
         <div class="pt">Trocar a métrica de retenção pra líquida<span class="badge high">Alto impacto</span></div>
         <div class="pd">Sem isso, qualquer melhoria feita a partir daqui vai ser avaliada com o número errado. É só reprocessar o que já existe.</div>
       </div>
     </div>
     <div class="priorow">
-      <div class="pn">3</div>
+      <div class="pn">4</div>
       <div style="flex:1">
         <div class="pt">Tela de self-service com oferta condicional ao motivo<span class="badge med">Médio esforço</span></div>
         <div class="pd">Começar por doc. análise e doc. aprovada — maior retenção líquida combinada com maior volume. Motivo/submotivo já existem na base, é reaproveitar dado que já é coletado.</div>
       </div>
     </div>
     <div class="priorow">
-      <div class="pn">4</div>
+      <div class="pn">5</div>
       <div style="flex:1">
         <div class="pt">Lançar pausa como oferta<span class="badge med">Médio esforço</span></div>
         <div class="pd">Maior alavanca do mercado (337% de adoção onde existe) e não existe hoje na allu. Versão pré-entrega (pausar processo) é simples; versão pós-entrega precisa de desenho de custódia/logística à parte.</div>
       </div>
     </div>
     <div class="priorow">
-      <div class="pn">5</div>
+      <div class="pn">6</div>
       <div style="flex:1">
         <div class="pt">Campanha pós-cancelamento automatizada<span class="badge low">Baixo esforço, usa Alluwave</span></div>
-        <div class="pd">Sequência 7/30/90 dias personalizada pelo motivo, disparada via Alluwave. É onde a retenção pós-entrega deveria acontecer, em vez de segurar na hora do pedido.</div>
+        <div class="pd">Sequência 7/30/90 dias personalizada pelo motivo, disparada via Alluwave. É onde a retenção de churn deveria acontecer, em vez de segurar na hora do pedido.</div>
       </div>
     </div>
     <div class="priorow">
-      <div class="pn">6</div>
+      <div class="pn">7</div>
       <div style="flex:1">
-        <div class="pt">Chat reservado, só nos gatilhos definidos<span class="badge low">Depende dos itens 1 e 3</span></div>
+        <div class="pt">Chat reservado, só nos gatilhos definidos<span class="badge low">Depende dos itens 1 e 4</span></div>
         <div class="pd">Última etapa — só faz sentido depois que a tela resolve o volume padrão. Reduz carga de analista naturalmente, sem precisar de meta de produtividade.</div>
       </div>
     </div>
@@ -464,7 +499,7 @@ footer a{color:var(--ink-muted);}
 </div></section>
 
 <footer><div class="wrap">
-  <p>Dados internos: BigQuery, <span class="mono">v3_raw_alluoffice.order_cancellation_requests</span> + <span class="mono">v3_gold_alluoffice.tri_orders__current_state</span>, setembro/2026. Etapa do pedido reconstruída comparando o timestamp da solicitação contra os marcos de status do pedido.</p>
+  <p>Dados internos: BigQuery, <span class="mono">v3_raw_alluoffice.order_cancellation_requests</span> + <span class="mono">v3_gold_alluoffice.tri_orders__current_state</span>, setembro/2026. Etapa do pedido reconstruída comparando o timestamp da solicitação contra os marcos de status do pedido. Cancelamento vs. churn definido pela janela de 7 dias corridos após a entrega. Prazo de resolução calculado em dias úteis (segunda a sexta) entre a solicitação e a data de revogação/finalização.</p>
   <p>Benchmarks: Subscription Index, Churnkey, Chargebee, Loopwork/SubJolt (dados de 441 mil tentativas de cancelamento, 87 marcas DTC), FTC (Negative Option Rule / Click-to-Cancel, reaberta em 2026).</p>
 </div></footer>
 
@@ -492,25 +527,26 @@ footer a{color:var(--ink-muted);}
   }
   function hideTip(tt){ tt.classList.remove('show'); }
 
-  /* ---- Chart 1: volume by stage ---- */
+  /* ---- Chart 1: volume by stage, cancelamento vs churn ---- */
   (function(){
     var data = [
-      ["Pagamento\naprovado",376],
-      ["Doc.\nanálise",524],
-      ["Doc.\naprovada",685],
-      ["Enviado",56],
-      ["Entregue",827]
+      ["Pagamento\naprovado",380,'var(--accent)',false],
+      ["Doc.\nanálise",523,'var(--accent)',false],
+      ["Doc.\naprovada",692,'var(--accent)',false],
+      ["Enviado",56,'var(--accent)',false],
+      ["Entregue\n≤7d",78,'var(--accent)',false],
+      ["Entregue\n>7d",752,'var(--critical)',true]
     ];
     var g = document.getElementById('c1bars');
     var tt = ensureTooltip('c1wrap');
     var wrap = document.getElementById('c1wrap');
-    var max = 827, baseline = 250, top = 30, plotH = baseline-top;
-    var bandW = 112, barW = 78, left = 40;
+    var max = 752, baseline = 250, top = 30, plotH = baseline-top;
+    var bandW = 560/6, barW = 58, left = 40;
     data.forEach(function(d,i){
       var h = (d[1]/max)*plotH;
       var x = left + i*bandW + (bandW-barW)/2;
       var y = baseline - h;
-      var bar = el('rect',{x:x,y:y,width:barW,height:h,rx:4,fill:'var(--accent)',opacity:0.9});
+      var bar = el('rect',{x:x,y:y,width:barW,height:h,rx:4,fill:d[2],opacity:0.9});
       g.appendChild(bar);
       var label = el('text',{x:x+barW/2,y:y-10,'text-anchor':'middle',fill:'#f3faf6','font-size':'13',
         'font-family':'IBM Plex Mono, monospace','font-weight':'500'});
@@ -525,7 +561,7 @@ footer a{color:var(--ink-muted);}
       var hit = el('rect',{x:x-6,y:top-10,width:barW+12,height:baseline-top+10,class:'bar-hit'});
       hit.addEventListener('mousemove', function(e){
         var r = wrap.getBoundingClientRect();
-        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0].replace('\n',' '), d[1]+' solicitações');
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0].replace('\n',' '), d[1]+' solicitações'+(d[3]?' · churn':' · cancelamento'));
       });
       hit.addEventListener('mouseleave', function(){ hideTip(tt); });
       g.appendChild(hit);
@@ -535,17 +571,18 @@ footer a{color:var(--ink-muted);}
   /* ---- Chart 2: retenção bruta vs líquida ---- */
   (function(){
     var data = [
-      ["Pagamento aprovado",19.4,8.2],
-      ["Doc. análise",22.1,14.3],
-      ["Doc. aprovada",36.2,13.4],
+      ["Pagamento\naprovado",19.2,8.2],
+      ["Doc.\nanálise",22.4,14.5],
+      ["Doc.\naprovada",36.3,13.5],
       ["Enviado",41.1,23.2],
-      ["Entregue",19.3,11.0]
+      ["Entregue\n≤7d",32.1,14.1],
+      ["Entregue\n>7d",18.1,10.6]
     ];
     var g = document.getElementById('c2bars');
     var tt = ensureTooltip('c2wrap');
     var wrap = document.getElementById('c2wrap');
     var maxv = 45, baseline = 230, top = 20, plotH = baseline-top;
-    var bandW = 112, left = 40, barW = 30, gap = 4;
+    var bandW = 560/6, left = 40, barW = 24, gap = 4;
     data.forEach(function(d,i){
       var gx = left + i*bandW;
       var offset = (bandW - (barW*2+gap))/2;
@@ -556,46 +593,63 @@ footer a{color:var(--ink-muted);}
       var b2 = el('rect',{x:x2,y:y2,width:barW,height:h2,rx:3,fill:'var(--accent)'});
       g.appendChild(b1); g.appendChild(b2);
       [[x1,y1,d[1]],[x2,y2,d[2]]].forEach(function(v){
-        var t = el('text',{x:v[0]+barW/2,y:v[1]-8,'text-anchor':'middle',fill:'#c9ddd0','font-size':'11.5',
+        var t = el('text',{x:v[0]+barW/2,y:v[1]-8,'text-anchor':'middle',fill:'#c9ddd0','font-size':'10.5',
           'font-family':'IBM Plex Mono, monospace'});
         t.textContent = v[2].toFixed(1)+'%';
         g.appendChild(t);
       });
-      var cat = el('text',{x:gx+bandW/2,y:baseline+18,'text-anchor':'middle',fill:'#84a892','font-size':'10.5'});
-      cat.textContent = d[0];
-      g.appendChild(cat);
+      var lines = d[0].split('\n');
+      lines.forEach(function(ln, li){
+        var cat = el('text',{x:gx+bandW/2,y:baseline+16+li*12,'text-anchor':'middle',fill:'#84a892','font-size':'10'});
+        cat.textContent = ln;
+        g.appendChild(cat);
+      });
       var hit = el('rect',{x:gx,y:top-10,width:bandW,height:baseline-top+10,class:'bar-hit'});
       hit.addEventListener('mousemove', function(e){
         var r = wrap.getBoundingClientRect();
-        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0], 'bruta '+d[1].toFixed(1)+'% · líquida '+d[2].toFixed(1)+'%');
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0].replace('\n',' '), 'bruta '+d[1].toFixed(1)+'% · líquida '+d[2].toFixed(1)+'%');
       });
       hit.addEventListener('mouseleave', function(){ hideTip(tt); });
       g.appendChild(hit);
     });
   })();
 
-  /* ---- Chart 3: quem revogou (horizontal) ---- */
+  /* ---- Chart 3: quem revogou, cancelamento vs churn ---- */
   (function(){
-    var data = [["Cliente",110,'var(--ink-secondary)'],["Analista / sistema",138,'var(--critical)']];
+    var data = [
+      ["Cancelamento",53.5,46.5,523],
+      ["Churn",28.7,71.3,136]
+    ];
     var g = document.getElementById('c3bars');
     var tt = ensureTooltip('c3wrap');
     var wrap = document.getElementById('c3wrap');
-    var max = 138, left = 150, right = 600, plotW = right-left;
+    var maxv = 100, baseline = 220, top = 20, plotH = baseline-top;
+    var bandW = 280, left = 40, barW = 80, gap = 12;
     data.forEach(function(d,i){
-      var y = 20 + i*70;
-      var w = (d[1]/max)*plotW;
-      var label = el('text',{x:left-12,y:y+22,'text-anchor':'end',fill:'#f3faf6','font-size':'13'});
-      label.textContent = d[0];
-      g.appendChild(label);
-      var bar = el('rect',{x:left,y:y,width:w,height:34,rx:5,fill:d[2]});
-      g.appendChild(bar);
-      var val = el('text',{x:left+w+10,y:y+22,fill:'#f3faf6','font-size':'13','font-family':'IBM Plex Mono, monospace','font-weight':'600'});
-      val.textContent = d[1];
-      g.appendChild(val);
-      var hit = el('rect',{x:left-6,y:y-6,width:plotW+40,height:46,class:'bar-hit'});
+      var gx = left + i*bandW;
+      var offset = (bandW - (barW*2+gap))/2;
+      var x1 = gx+offset, x2 = gx+offset+barW+gap;
+      var h1 = (d[1]/maxv)*plotH, h2 = (d[2]/maxv)*plotH;
+      var y1 = baseline-h1, y2 = baseline-h2;
+      var b1 = el('rect',{x:x1,y:y1,width:barW,height:h1,rx:4,fill:'var(--ink-secondary)'});
+      var b2 = el('rect',{x:x2,y:y2,width:barW,height:h2,rx:4,fill:'var(--critical)'});
+      g.appendChild(b1); g.appendChild(b2);
+      [[x1,y1,d[1]],[x2,y2,d[2]]].forEach(function(v){
+        var t = el('text',{x:v[0]+barW/2,y:v[1]-10,'text-anchor':'middle',fill:'#f3faf6','font-size':'14',
+          'font-family':'IBM Plex Mono, monospace','font-weight':'600'});
+        t.textContent = v[2].toFixed(1)+'%';
+        g.appendChild(t);
+      });
+      var cat = el('text',{x:gx+bandW/2,y:baseline+22,'text-anchor':'middle',fill:'#f3faf6','font-size':'13','font-weight':'600'});
+      cat.textContent = d[0];
+      g.appendChild(cat);
+      var sub = el('text',{x:gx+bandW/2,y:baseline+38,'text-anchor':'middle',fill:'#84a892','font-size':'11'});
+      sub.textContent = d[3]+' revogações';
+      g.appendChild(sub);
+      var hit = el('rect',{x:gx,y:top-10,width:bandW,height:baseline-top+10,class:'bar-hit'});
       hit.addEventListener('mousemove', function(e){
         var r = wrap.getBoundingClientRect();
-        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0], d[1]+' revogações');
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0], 'cliente '+d[1].toFixed(1)+'% · time '+d[2].toFixed(1)+'%');
       });
       hit.addEventListener('mouseleave', function(){ hideTip(tt); });
       g.appendChild(hit);
