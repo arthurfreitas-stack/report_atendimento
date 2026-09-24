@@ -152,6 +152,24 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .badge.med{background:rgba(242,201,76,.15);color:var(--warn);}
 .badge.low{background:rgba(116,242,184,.15);color:var(--accent);}
 
+/* ---------- light modal mockup (matches real app UI) ---------- */
+.modalmock{
+  width:260px;flex-shrink:0;background:#ffffff;border-radius:18px;padding:22px 20px;
+  box-shadow:0 12px 32px rgba(0,0,0,.35);position:relative;text-align:center;
+}
+.modalmock-close{position:absolute;top:14px;right:16px;color:#9ca3af;font-size:18px;line-height:1;font-family:system-ui,sans-serif;}
+.modalmock-icon{width:44px;height:44px;border-radius:50%;background:#eef2ff;color:#4f46e5;display:flex;align-items:center;justify-content:center;font-size:20px;margin:4px auto 14px;}
+.modalmock-icon.ok{background:#dcfce7;color:#16a34a;}
+.modalmock-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:#111827;line-height:1.35;margin-bottom:8px;}
+.modalmock-body{font-size:12.5px;color:#6b7280;line-height:1.5;margin-bottom:16px;}
+.modalmock-btn{border-radius:10px;padding:11px 10px;font-size:12.5px;font-weight:600;margin-bottom:8px;font-family:'IBM Plex Sans',sans-serif;}
+.modalmock-btn.primary{background:#22c55e;color:#06210f;}
+.modalmock-btn.outline{background:#fff;color:#374151;border:1px solid #d1d5db;}
+.modalmock-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.modalmock-item{display:flex;justify-content:space-between;align-items:center;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#374151;text-align:left;}
+.modalmock-item.sel{border-color:#22c55e;background:#f0fdf4;}
+.modalmock-item .mm-price{font-family:'IBM Plex Mono',monospace;font-weight:600;color:#111827;font-size:11px;}
+
 /* ---------- journey / process steps ---------- */
 .journey{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px 26px 22px;margin:22px 0;}
 .journey-head{display:flex;align-items:baseline;gap:10px;}
@@ -510,7 +528,7 @@ footer a{color:var(--ink-muted);}
           <div class="branchgrid">
             <div class="branch go">
               <div class="bt go">→ Quer trocar</div>
-              "Entendi! Então, ao invés de cancelar, vamos te chamar pra fazer um novo pedido e trocar o produto e plano pro que você realmente quer assinar. Vamos te chamar em até 1 dia útil pra fazer essa alteração, combinado?" — fluxo encerra aqui, sem cancelamento.
+              <b>Modal 3 — escolha self-service:</b> abre o catálogo ali mesmo (mesma função que já existe pro vendedor), cliente escolhe produto e plano novos e confirma. Sem esperar contato de ninguém.
             </div>
             <div class="branch stop">
               <div class="bt">→ Não, quer cancelar mesmo</div>
@@ -523,15 +541,49 @@ footer a{color:var(--ink-muted);}
       </div>
     </div>
 
+    <div class="callout acc" style="margin-top:24px;">
+      <b>Benchmark — Mercado Livre:</b> cancelamento antes do envio é resolvido em um clique, self-service, sem esperar contato de vendedor: o comprador abre o pedido, clica em "cancelar compra" e o sistema processa na hora. Ecommerces que deixam o cliente editar o próprio pedido antes do envio (trocar produto/variante) têm taxa de troca muito maior que fluxos tradicionais de devolução — quanto mais perto de zero a fricção, mais o cliente escolhe editar em vez de cancelar. Por isso a troca de produto/plano aqui também devia ser self-service na hora, não um "te chamamos depois".
+    </div>
+
     <div class="sysrules">
       <h5>Regras de sistema</h5>
       <ul>
-        <li>Escolher "quero trocar" não revoga nem cancela o pedido original — abre uma nova intenção de compra tratada pelo time comercial. O pedido original continua com status "pagamento aprovado" até o novo pedido ser confirmado com o cliente.</li>
-        <li><span class="tbc">A confirmar</span> — prazo de retorno se o cliente não responder o contato em até 1 dia útil: hoje não existe uma regra definida pra isso. Proposta: o pedido original segue no fluxo normal (nenhum cancelamento automático), e reabre o convite pra troca no próximo contato.</li>
-        <li><span class="tbc">A confirmar</span> — o formulário de cancelamento atual mostra multa de 20% pra qualquer etapa. Nessa etapa específica não houve documentação enviada nem produto despachado, então não deveria haver "tempo remanescente do serviço" a cobrar. Precisa ajuste na regra de cálculo antes de liberar esse fluxo.</li>
+        <li>Escolher "quero trocar" não cancela o pedido original — ele é substituído na hora pelo novo produto/plano escolhido, com checkout ajustado automaticamente (mesma função de catálogo que a IA de vendas já usa hoje).</li>
+        <li><span class="tbc">A confirmar</span> — se o novo produto/plano tiver preço diferente do pago originalmente, como fica o ajuste de cobrança (crédito, complemento, novo link de pagamento)? Precisa alinhar com o time financeiro antes de liberar esse fluxo self-service.</li>
+        <li><b>Sem multa nessa etapa.</b> O cliente ainda não recebeu o pedido, não há tempo de serviço consumido — o formulário de cancelamento atual mostra 20% de multa pra qualquer etapa, e isso precisa ser corrigido especificamente aqui.</li>
         <li>Acessar o FAQ ou o suporte a partir do motivo "confuso"/"inseguro" não cancela nada sozinho. Se o cliente ficar satisfeito com a resposta, ele decide entre voltar pro passo 3 (trocar) ou seguir com o cancelamento.</li>
       </ul>
     </div>
+
+    <div class="mockrow" style="margin-top:26px;">
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon">🔁</div>
+        <div class="modalmock-title">Você assinou o produto ou plano errado?</div>
+        <div class="modalmock-body">Talvez você só precise trocar, não cancelar.</div>
+        <div class="modalmock-btn primary">Isso, assinei um produto mas quero outro</div>
+        <div class="modalmock-btn outline">Não, quero cancelar mesmo</div>
+      </div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-title" style="text-align:left">Escolha o produto e plano certos</div>
+        <div class="modalmock-body" style="text-align:left">Sem custo, sem perder sua aprovação de pagamento.</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item sel"><span>iPhone 16 128GB · 36 meses</span><span class="mm-price">R$ 199/mês</span></div>
+          <div class="modalmock-item"><span>iPhone 16 Pro 256GB · 36 meses</span><span class="mm-price">R$ 289/mês</span></div>
+          <div class="modalmock-item"><span>MacBook Air M4 · 36 meses</span><span class="mm-price">R$ 249/mês</span></div>
+        </div>
+        <div class="modalmock-btn primary">Confirmar troca</div>
+      </div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon ok">✓</div>
+        <div class="modalmock-title">Troca feita!</div>
+        <div class="modalmock-body">Seu novo pedido é o iPhone 16 128GB no plano de 36 meses. Agora é só seguir com a documentação normalmente.</div>
+        <div class="modalmock-btn primary">Entendi</div>
+      </div>
+    </div>
+    <p class="srcnote">Da esquerda pra direita: modal 2 (validação) → modal 3 (escolha self-service, substitui o "te chamamos em 1 dia útil") → confirmação. Nenhuma das três precisa de humano.</p>
   </div>
 
   <h3 style="font-size:18px;margin:36px 0 6px;">Quando o chat é necessário</h3>
