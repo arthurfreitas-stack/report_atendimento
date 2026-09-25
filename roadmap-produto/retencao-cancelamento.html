@@ -166,12 +166,11 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .modalmock-btn{border-radius:10px;padding:11px 10px;font-size:12.5px;font-weight:600;margin-bottom:8px;font-family:'IBM Plex Sans',sans-serif;}
 .modalmock-btn.primary{background:#22c55e;color:#06210f;}
 .modalmock-btn.outline{background:#fff;color:#374151;border:1px solid #d1d5db;}
+.modalmock-btn.text{background:transparent;color:#9ca3af;font-weight:500;font-size:11.5px;padding:8px 10px;margin-bottom:0;text-decoration:underline;text-underline-offset:2px;}
 .modalmock-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
 .modalmock-item{display:flex;justify-content:space-between;align-items:center;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#374151;text-align:left;}
 .modalmock-item.sel{border-color:#22c55e;background:#f0fdf4;}
 .modalmock-item .mm-price{font-family:'IBM Plex Mono',monospace;font-weight:600;color:#111827;font-size:11px;}
-.modalmock-exit{display:block;width:100%;text-align:center;background:#f0fdf4;border:1.5px solid #22c55e;color:#15803d;font-weight:700;font-size:12px;border-radius:9px;padding:9px 6px;margin-bottom:10px;font-family:'IBM Plex Sans',sans-serif;}
-.modalmock-divider{height:1px;background:#e5e7eb;margin:2px 0 14px;}
 .flowrow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:26px 0;}
 .flowarrow{font-size:22px;color:var(--accent);flex-shrink:0;font-family:'IBM Plex Mono',monospace;}
 .flowarrow.down{transform:rotate(90deg);}
@@ -570,27 +569,25 @@ footer a{color:var(--ink-muted);}
     <div class="flowrow">
       <div class="modalmock">
         <div class="modalmock-close">×</div>
-        <div class="modalmock-exit">✓ Continuar com minha assinatura</div>
-        <div class="modalmock-divider"></div>
         <div class="modalmock-icon">🔁</div>
         <div class="modalmock-title">Você assinou o produto ou plano errado?</div>
         <div class="modalmock-body">Talvez você só precise trocar, não cancelar.</div>
-        <div class="modalmock-btn primary">Isso, assinei um produto mas quero outro</div>
-        <div class="modalmock-btn outline">Não, quero cancelar mesmo</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-btn outline">Isso, assinei um produto mas quero outro</div>
+        <div class="modalmock-btn text">Não, quero cancelar mesmo</div>
       </div>
       <div class="flowarrow">→</div>
       <div class="modalmock">
         <div class="modalmock-close">×</div>
-        <div class="modalmock-exit">✓ Continuar com minha assinatura</div>
-        <div class="modalmock-divider"></div>
         <div class="modalmock-title" style="text-align:left">Escolha o produto e plano certos</div>
         <div class="modalmock-body" style="text-align:left">Sem custo, sem perder sua aprovação de pagamento.</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
         <div class="modalmock-list">
           <div class="modalmock-item sel"><span>iPhone 16 128GB · 36 meses</span><span class="mm-price">R$ 199/mês</span></div>
           <div class="modalmock-item"><span>iPhone 16 Pro 256GB · 36 meses</span><span class="mm-price">R$ 289/mês</span></div>
           <div class="modalmock-item"><span>MacBook Air M4 · 36 meses</span><span class="mm-price">R$ 249/mês</span></div>
         </div>
-        <div class="modalmock-btn primary">Confirmar troca</div>
+        <div class="modalmock-btn outline">Confirmar troca</div>
       </div>
       <div class="flowarrow">→</div>
       <div class="modalmock">
@@ -607,16 +604,15 @@ footer a{color:var(--ink-muted);}
     <div class="flowcol">
       <div class="modalmock">
         <div class="modalmock-close">×</div>
-        <div class="modalmock-exit">✓ Continuar com minha assinatura</div>
-        <div class="modalmock-divider"></div>
         <div class="modalmock-title" style="text-align:left">Cancelar assinatura</div>
         <div class="modalmock-body" style="text-align:left">Selecione o motivo do cancelamento:</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
         <div class="modalmock-list">
           <div class="modalmock-item"><span>Motivo</span><span class="mm-price">▾</span></div>
           <div class="modalmock-item"><span>Submotivo</span><span class="mm-price">▾</span></div>
           <div class="modalmock-item"><span>Observação (opcional)</span><span></span></div>
         </div>
-        <div class="modalmock-btn primary">Solicitar cancelamento</div>
+        <div class="modalmock-btn text">Solicitar cancelamento</div>
       </div>
       <div class="flowarrow down">→</div>
       <div class="forkrow">
@@ -625,14 +621,13 @@ footer a{color:var(--ink-muted);}
           <div class="flowarrow down">→</div>
           <div class="modalmock" style="width:230px;">
             <div class="modalmock-close">×</div>
-            <div class="modalmock-exit">✓ Continuar com minha assinatura</div>
-            <div class="modalmock-divider"></div>
             <div class="modalmock-icon">💬</div>
             <div class="modalmock-title">Antes de cancelar, isso ajuda?</div>
             <div class="modalmock-body">Central de dúvidas ou fale com o suporte agora.</div>
+            <div class="modalmock-btn primary">Continuar com minha assinatura</div>
             <div class="modalmock-btn outline">Ver dúvidas frequentes</div>
             <div class="modalmock-btn outline">Falar com o suporte</div>
-            <div class="modalmock-btn primary">Ainda quero cancelar</div>
+            <div class="modalmock-btn text">Ainda quero cancelar</div>
           </div>
         </div>
         <div class="forkcolitem">
@@ -700,27 +695,25 @@ footer a{color:var(--ink-muted);}
     <div class="flowrow">
       <div class="modalmock">
         <div class="modalmock-close">×</div>
-        <div class="modalmock-exit">✓ Continuar com minha assinatura</div>
-        <div class="modalmock-divider"></div>
         <div class="modalmock-icon">🔁</div>
         <div class="modalmock-title">Você assinou o produto ou plano errado?</div>
         <div class="modalmock-body">Talvez você só precise trocar, não cancelar.</div>
-        <div class="modalmock-btn primary">Isso, assinei um produto mas quero outro</div>
-        <div class="modalmock-btn outline">Não, quero cancelar mesmo</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-btn outline">Isso, assinei um produto mas quero outro</div>
+        <div class="modalmock-btn text">Não, quero cancelar mesmo</div>
       </div>
       <div class="flowarrow">→</div>
       <div class="modalmock">
         <div class="modalmock-close">×</div>
-        <div class="modalmock-exit">✓ Continuar com minha assinatura</div>
-        <div class="modalmock-divider"></div>
         <div class="modalmock-title" style="text-align:left">Escolha o produto e plano certos</div>
         <div class="modalmock-body" style="text-align:left">Sua documentação continua em análise normalmente.</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
         <div class="modalmock-list">
           <div class="modalmock-item sel"><span>iPhone 16 128GB · 36 meses</span><span class="mm-price">R$ 199/mês</span></div>
           <div class="modalmock-item"><span>iPhone 16 Pro 256GB · 36 meses</span><span class="mm-price">R$ 289/mês</span></div>
           <div class="modalmock-item"><span>MacBook Air M4 · 36 meses</span><span class="mm-price">R$ 249/mês</span></div>
         </div>
-        <div class="modalmock-btn primary">Confirmar troca</div>
+        <div class="modalmock-btn outline">Confirmar troca</div>
       </div>
       <div class="flowarrow">→</div>
       <div class="modalmock">
@@ -737,28 +730,26 @@ footer a{color:var(--ink-muted);}
     <div class="flowcol">
       <div class="modalmock" style="width:270px;">
         <div class="modalmock-close">×</div>
-        <div class="modalmock-exit">✓ Continuar com minha assinatura</div>
-        <div class="modalmock-divider"></div>
         <div class="modalmock-icon warn">⏳</div>
         <div class="modalmock-title">Sua documentação já está em análise</div>
         <div class="modalmock-body">O prazo é de até 1 dia útil — você recebe o retorno pelo WhatsApp e e-mail. Se cancelar agora, todo o progresso é perdido e você precisa enviar tudo de novo se quiser assinar depois.<br><br>Recomendamos aguardar: se for reprovada, o estorno é automático na hora; se for aprovada, seu pedido já vai direto pra fila de envio.</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
         <div class="modalmock-btn outline">Ver dúvidas frequentes</div>
         <div class="modalmock-btn outline">Falar com o suporte</div>
-        <div class="modalmock-btn primary">Cancelar mesmo assim</div>
+        <div class="modalmock-btn text">Cancelar mesmo assim</div>
       </div>
       <div class="flowarrow down">→</div>
       <div class="modalmock">
         <div class="modalmock-close">×</div>
-        <div class="modalmock-exit">✓ Continuar com minha assinatura</div>
-        <div class="modalmock-divider"></div>
         <div class="modalmock-title" style="text-align:left">Cancelar assinatura</div>
         <div class="modalmock-body" style="text-align:left">Selecione o motivo do cancelamento:</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
         <div class="modalmock-list">
           <div class="modalmock-item"><span>Motivo</span><span class="mm-price">▾</span></div>
           <div class="modalmock-item"><span>Submotivo</span><span class="mm-price">▾</span></div>
           <div class="modalmock-item"><span>Observação (opcional)</span><span></span></div>
         </div>
-        <div class="modalmock-btn primary">Solicitar cancelamento</div>
+        <div class="modalmock-btn text">Solicitar cancelamento</div>
       </div>
       <div class="flowarrow down">→</div>
       <div class="modalmock">
