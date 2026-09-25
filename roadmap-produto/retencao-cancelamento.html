@@ -763,6 +763,136 @@ footer a{color:var(--ink-muted);}
     <p class="srcnote">"Ver dúvidas frequentes" e "Falar com o suporte" não cancelam nada — só ajudam antes da decisão. "Cancelar mesmo assim" segue pro formulário e resolve na hora, sem esperar o resultado da análise.</p>
   </div>
 
+  <div class="journey">
+    <div class="journey-head"><span class="journey-num">03</span><span class="journey-title">Cancelamento com documentação aprovada e envio gerado</span></div>
+    <p class="journey-elig"><b>Validação de elegibilidade:</b> esse fluxo se aplica a pedidos com status "Documentação aprovada" e solicitação de envio já gerada — o aparelho já foi separado pra esse pedido, ainda não chegou ao cliente.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>
+        <div class="step-body">Cliente pede para cancelar um pedido nessa condição.</div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
+        <div class="step-body"><b>Modal 1 — aviso de perda</b> (o mesmo de sempre): reativação bloqueada por 180 dias, ofertas exclusivas, suporte prioritário em trocas, seguro do aparelho. <span class="btnlabel">Manter assinatura</span> <span class="btnlabel">Sim, quero cancelar</span></div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
+        <div class="step-body"><b>Modal 2 — validação de troca</b> (o mesmo de sempre): "Você assinou o produto ou plano errado? Talvez você só precise trocar, não cancelar." <span class="btnlabel">Isso, assinei um produto mas quero outro</span> <span class="btnlabel">Não, quero cancelar mesmo</span></div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">4</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <b>Ramifica conforme a resposta:</b>
+          <div class="branchgrid">
+            <div class="branch go">
+              <div class="bt go">→ Quer trocar</div>
+              <b>Modal 3 — escolha self-service</b>, mesma mecânica das etapas anteriores. Aqui o aparelho já está separado/roteado, então trocar de item pode exigir liberar essa unidade e gerar um novo envio — sinalizado nas regras abaixo.
+            </div>
+            <div class="branch stop">
+              <div class="bt">→ Não, quer cancelar mesmo</div>
+              Sequência de 3 modais específicos dessa etapa: aviso de envio → esclarecimento de cobrança → motivo (com FAQ e suporte juntos, antes de confirmar).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sysrules">
+      <h5>Regras de sistema</h5>
+      <ul>
+        <li>Ao confirmar "cancelar mesmo assim", o pedido sai imediatamente da fila de envio (Siga) — deixa de ser processado operacionalmente. Mas pro cliente, a confirmação e o estorno acontecem na hora, sem esperar contato de analista.</li>
+        <li><span class="tbc">A confirmar</span> — trocar de produto/plano nessa etapa exige liberar a unidade física já alocada e gerar uma nova expedição pro item novo. É mais complexo que nas etapas 1 e 2 (onde nada tinha sido roteado ainda). Precisa confirmar se o sistema de logística suporta isso em tempo real ou se cai numa fila separada.</li>
+        <li><span class="tbc">A confirmar</span> — mesma lógica das etapas anteriores: o produto ainda não foi entregue, então não deveria haver multa. Mas aqui já existe custo logístico real (separação, roteamento) — vale confirmar com o time se isso muda a regra.</li>
+        <li>A unidade alocada pro pedido cancelado volta pro estoque geral. Se o cliente assinar de novo depois, não há garantia da mesma unidade nem do mesmo prazo — o processo recomeça do zero, é por isso que o modal de aviso reforça essa perda.</li>
+      </ul>
+    </div>
+
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:20px 0 4px;">Fluxo 1 — cliente quer trocar</h5>
+    <div class="flowrow">
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon">🔁</div>
+        <div class="modalmock-title">Você assinou o produto ou plano errado?</div>
+        <div class="modalmock-body">Talvez você só precise trocar, não cancelar.</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-btn outline">Isso, assinei um produto mas quero outro</div>
+        <div class="modalmock-btn text">Não, quero cancelar mesmo</div>
+      </div>
+      <div class="flowarrow">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-title" style="text-align:left">Escolha o produto e plano certos</div>
+        <div class="modalmock-body" style="text-align:left">Seu envio atual é reservado; ao trocar, geramos uma nova expedição pro item certo.</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item sel"><span>iPhone 16 128GB · 36 meses</span><span class="mm-price">R$ 199/mês</span></div>
+          <div class="modalmock-item"><span>iPhone 16 Pro 256GB · 36 meses</span><span class="mm-price">R$ 289/mês</span></div>
+          <div class="modalmock-item"><span>MacBook Air M4 · 36 meses</span><span class="mm-price">R$ 249/mês</span></div>
+        </div>
+        <div class="modalmock-btn outline">Confirmar troca</div>
+      </div>
+      <div class="flowarrow">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon ok">✓</div>
+        <div class="modalmock-title">Troca feita!</div>
+        <div class="modalmock-body">Seu novo pedido é o iPhone 16 128GB no plano de 36 meses. Assim que o novo item for separado, você recebe a nova previsão de envio.</div>
+        <div class="modalmock-btn primary">Entendi</div>
+      </div>
+    </div>
+
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:34px 0 4px;">Fluxo 2 — cliente quer cancelar mesmo assim</h5>
+    <p class="chart-desc" style="margin-bottom:16px;">Sai do modal 2, botão "Não, quero cancelar mesmo" — aqui o aparelho já está separado e a entrega tem data prevista, então são três avisos antes do formulário: o que se perde, como fica a cobrança, e só depois o motivo.</p>
+    <div class="flowcol">
+      <div class="modalmock" style="width:270px;">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon warn">📦</div>
+        <div class="modalmock-title">Sua documentação já foi aprovada</div>
+        <div class="modalmock-body">A solicitação de envio já foi gerada. Se cancelar agora, você perde o aparelho que assinou e precisa refazer todo o processo se quiser assinar de novo depois.</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item"><span>Previsão de expedição</span><span class="mm-price">28/09</span></div>
+          <div class="modalmock-item"><span>Prazo final de entrega</span><span class="mm-price">06/10</span></div>
+        </div>
+        <div class="modalmock-btn text">Quero cancelar mesmo assim</div>
+      </div>
+      <div class="flowarrow down">→</div>
+      <div class="modalmock" style="width:250px;">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon">💳</div>
+        <div class="modalmock-title">Sobre a próxima cobrança</div>
+        <div class="modalmock-body">Sua segunda mensalidade só é cobrada depois que o produto for entregue. Cancelando agora, nenhuma cobrança futura acontece.</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-btn text">Entendi, seguir com o cancelamento</div>
+      </div>
+      <div class="flowarrow down">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-title" style="text-align:left">Cancelar assinatura</div>
+        <div class="modalmock-body" style="text-align:left">Selecione o motivo do cancelamento:</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item"><span>Motivo</span><span class="mm-price">▾</span></div>
+          <div class="modalmock-item"><span>Submotivo</span><span class="mm-price">▾</span></div>
+          <div class="modalmock-item"><span>Observação (opcional)</span><span></span></div>
+        </div>
+        <div class="modalmock-btn outline">Ver dúvidas frequentes</div>
+        <div class="modalmock-btn outline">Falar com o suporte</div>
+        <div class="modalmock-btn text">Solicitar cancelamento</div>
+      </div>
+      <div class="flowarrow down">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon ok">✓</div>
+        <div class="modalmock-title">Cancelamento confirmado</div>
+        <div class="modalmock-body">Sua assinatura foi cancelada agora e o pedido saiu da fila de envio. O estorno é processado automaticamente, sem precisar de contato.</div>
+        <div class="modalmock-btn primary">OK, fechar</div>
+      </div>
+    </div>
+    <p class="srcnote">Três avisos, não um só: perda do aparelho + datas, depois cobrança, só então motivo. FAQ e suporte ficam disponíveis junto do motivo, pro cliente tirar dúvida antes de confirmar — nenhum dos dois bloqueia ou atrasa o cancelamento.</p>
+  </div>
+
   <h3 style="font-size:18px;margin:36px 0 6px;">Quando o chat é necessário</h3>
   <p class="section-sub">Duas famílias bem diferentes: chat por <span style="color:var(--accent)">valor</span> (vale o esforço de tentar reter melhor) e chat por <span style="color:var(--critical)">risco</span> (o cancelamento não pode ser efetivado sem checagem). Só a segunda bloqueia o self-service.</p>
 
