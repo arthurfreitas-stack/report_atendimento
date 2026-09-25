@@ -234,7 +234,6 @@ footer a{color:var(--ink-muted);}
   <a href="#problema">01 · A tendência</a>
   <a href="#saves">02 · O que acontece depois</a>
   <a href="#modelo">03 · O modelo ideal</a>
-  <a href="#aplicar">04 · Como aplicar</a>
 </div></nav>
 
 <div class="masthead"><div class="wrap">
@@ -394,7 +393,7 @@ footer a{color:var(--ink-muted);}
 <section id="modelo"><div class="wrap">
   <div class="section-label"><span class="section-num">03</span><span class="section-tag">Como deveríamos fazer</span></div>
   <h2>Self-service resolve a tela. Chat é reservado.</h2>
-  <p class="section-sub">Princípio único: a tela de cancelamento sempre tem um botão de "cancelar mesmo assim" funcional. Chat só entra quando o valor de reter justifica o esforço, ou quando existe risco real que exige checagem humana — nunca como pedágio padrão.</p>
+  <p class="section-sub">Princípio: a tela de cancelamento tem um botão de "cancelar mesmo assim" funcional em toda etapa — com uma única exceção, pedido em trânsito, onde não dá pra interromper o envio e a saída passa a ser recusar o recebimento. Fora isso, chat só entra quando o valor de reter justifica o esforço, ou quando existe risco real que exige checagem humana — nunca como pedágio padrão.</p>
 
   <h3 style="font-size:18px;margin:32px 0 6px;">Regras de negócio gerais</h3>
   <p class="section-sub">Valem pra toda etapa, exceto onde uma etapa específica sobrescreve. Cada jornada abaixo só descreve o que muda a partir daqui.</p>
@@ -410,55 +409,55 @@ footer a{color:var(--ink-muted);}
     </ul>
   </div>
 
-  <h3 style="font-size:18px;margin:32px 0 6px;">O que aparece pro cliente, por etapa e por motivo</h3>
-  <p class="section-sub">A tela muda pouco entre motivos — o que muda é a <b>oferta</b> dentro dela. Tudo abaixo acontece sem abrir chat.</p>
+  <h3 style="font-size:18px;margin:32px 0 6px;">O que aparece pro cliente, por etapa</h3>
+  <p class="section-sub">Resumo das 5 jornadas detalhadas abaixo — cada linha aqui é a etapa de destino de uma jornada. Troca é a única alternativa oferecida antes de cancelar, quando disponível. O motivo registrado no formulário decide quando o FAQ/suporte aparece (etapa 1) e o que a tela final mostra (etapa 5) — hoje ele não gera ofertas diferentes nas etapas 2 e 3.</p>
 
   <div class="tblwrap"><table>
     <thead><tr>
-      <th>Etapa</th><th>Mudei de ideia</th><th>Financeiro</th><th>Modelo errado / quer outro</th><th>Confuso / inseguro</th><th>Achou opção melhor</th>
+      <th>Etapa</th><th>Troca disponível</th><th>Se insiste em cancelar</th><th>Resultado</th>
     </tr></thead>
     <tbody>
       <tr>
         <td><b>Pagamento aprovado</b><div class="srcnote">taxa 4,20% · ret. líquida 8,2%</div></td>
-        <td>Sem oferta ativa — nada aprovado ainda pra preservar, só entender o motivo</td>
-        <td>Sem oferta ativa — foco em remarketing depois, não em reter agora</td>
-        <td>Trocar modelo, sem custo</td>
-        <td>Card explicativo do modelo (não é oferta, é FAQ)</td>
-        <td>Sem oferta — motivo pouco reversível, deixa ir</td>
+        <td>Sim, sem custo, direto no catálogo self-service</td>
+        <td>Motivo/submotivo genérico. Se "confuso ou inseguro", mostra FAQ + suporte antes de confirmar; qualquer outro motivo segue direto</td>
+        <td>Confirmado na hora, sem multa</td>
       </tr>
       <tr>
         <td><b>Doc. em análise</b><div class="srcnote">taxa 4,95% · ret. líquida 14,5%</div></td>
-        <td>Sem oferta ativa — análise ainda não foi aprovada, nada específico pra preservar ainda</td>
-        <td>Trocar pra plano 36m, parcela menor</td>
-        <td>Trocar modelo direto na tela</td>
-        <td>FAQ + reforço RA1000/prova social</td>
-        <td>Reancoragem de valor (depreciação) uma vez</td>
+        <td>Sim, mesma mecânica — a documentação enviada não é afetada pela troca</td>
+        <td>Aviso do prazo de análise (até 1 dia útil), com FAQ + suporte sempre visíveis, depois motivo/submotivo genérico</td>
+        <td>Confirmado na hora, análise encerrada, sem multa</td>
       </tr>
       <tr>
         <td><b>Doc. aprovada</b><div class="srcnote" style="color:var(--critical)">taxa 14,97% (subindo) · ret. líquida 13,5%</div></td>
-        <td>Salvar a análise aprovada — retoma sem reenviar documento nem refazer aprovação</td>
-        <td>Trocar pra plano 36m, simulação na tela</td>
-        <td>Trocar modelo direto, antes do envio</td>
-        <td>FAQ + prova social</td>
-        <td>Reancoragem uma vez, sem insistir</td>
+        <td><span class="tbc">A confirmar</span> — exige liberar a unidade já separada/roteada e gerar nova expedição</td>
+        <td>3 avisos em sequência: perda do aparelho + datas → cobrança → motivo/submotivo genérico com FAQ + suporte</td>
+        <td>Confirmado na hora, sai da fila de envio, sem multa</td>
       </tr>
       <tr>
         <td><b>Enviado</b><div class="srcnote">taxa 1,28% · ret. líquida 23,2%, volume baixo</div></td>
-        <td colspan="5">Sem opção de cancelar em trânsito — tela mostra rastreio e orienta aguardar ou recusar o recebimento na entrega. FAQ e suporte disponíveis, sem oferta segmentada por motivo</td>
+        <td>Não</td>
+        <td colspan="1">Não é possível — tela de rastreio orienta aguardar ou recusar o recebimento na entrega. FAQ e suporte disponíveis, sem abrir caminho de cancelamento</td>
+        <td>Sem cancelamento em trânsito</td>
       </tr>
       <tr>
         <td><b>Entregue, até 7 dias</b><div class="srcnote">cancelamento, taxa 2,54% · ret. líquida 14,1%</div></td>
-        <td colspan="5">Direito de arrependimento (CDC art. 49) — sem oferta condicionada. Tela captura o motivo específico da devolução (produto errado, defeito técnico, financeiro, outro) e segue direto pra confirmação, com código de devolução gerado na hora</td>
+        <td>Não — sem troca pós-entrega (exigiria logística reversa completa)</td>
+        <td>Motivo específico de devolução (produto errado, defeito técnico, financeiro, outro) → orientação de devolução com FAQ</td>
+        <td>Confirmado na hora, código de devolução gerado, sem multa (direito legal)</td>
       </tr>
       <tr>
         <td><b>Entregue, depois de 7 dias</b><div class="srcnote" style="color:var(--critical)">CHURN, taxa mensal 0,85% (quase dobrou) · ret. líquida 10,6%</div></td>
-        <td colspan="5">Sem oferta condicionada a ficar — o cliente já decidiu depois de usar o produto de verdade. Cancela em 1 clique. O esforço de retenção migra inteiro pra campanha pós-cancelamento (item 6 do roadmap), não pra hora do pedido</td>
+        <td>Não</td>
+        <td colspan="1">Self-service direto, sem oferta condicionada a ficar — jornada tela a tela ainda não desenhada</td>
+        <td>Confirmado em 1 clique; esforço de retenção migra pra campanha pós-cancelamento</td>
       </tr>
     </tbody>
   </table></div>
 
   <h3 style="font-size:18px;margin:36px 0 6px;">Jornada detalhada, etapa por etapa</h3>
-  <p class="section-sub">A matriz acima mostra a oferta. Aqui está a tela a tela — regra de negócio, ramificação e o que muda no sistema. Começando pela etapa com maior volume de chegada (11.362 pedidos em agosto): pagamento aprovado, documentação ainda não enviada.</p>
+  <p class="section-sub">A tabela acima é o resumo. Aqui está a tela a tela — regra de negócio, ramificação e o que muda no sistema. Começando pela etapa com maior volume de chegada (11.362 pedidos em agosto): pagamento aprovado, documentação ainda não enviada.</p>
 
   <div class="journey">
     <div class="journey-head"><span class="journey-num">01</span><span class="journey-title">Cancelamento com pagamento aprovado, sem documentação enviada</span></div>
@@ -942,72 +941,6 @@ footer a{color:var(--ink-muted);}
     <p class="srcnote">Sem troca de modelo aqui — o produto já chegou. O caminho é curto de propósito: prazo → motivo específico da devolução → confirmação com código na hora, sem esperar retorno de análise nem contato humano pra ser efetivado.</p>
   </div>
 
-</div></section>
-
-<!-- ============ 04 · APLICAR ============ -->
-<section id="aplicar"><div class="wrap">
-  <div class="section-label"><span class="section-num">04</span><span class="section-tag">Como aplicar</span></div>
-  <h2>Ordem de execução</h2>
-  <p class="section-sub">Prioridade por impacto imediato e menor dependência de construir algo novo.</p>
-
-  <div class="priolist">
-    <div class="priorow">
-      <div class="pn">1</div>
-      <div style="flex:1">
-        <div class="pt">Investigar o que mudou em doc. aprovada entre agosto e setembro<span class="badge high">Alto impacto</span></div>
-        <div class="pd">É a única etapa do funil cuja taxa de cancelamento piorou, e piorou apesar do viés que deveria subestimar setembro. Antes de desenhar qualquer solução nova, vale entender a causa: mudança de processo, de time, de política de aprovação de documento?</div>
-      </div>
-    </div>
-    <div class="priorow">
-      <div class="pn">2</div>
-      <div style="flex:1">
-        <div class="pt">Registrar motivo em toda revogação de churn feita pelo time<span class="badge high">Alto impacto</span></div>
-        <div class="pd">Não é proibir a revogação — muita é retenção genuína que convence o cliente. É parar de fazer sem deixar rastro. A taxa de churn mensal quase dobrou; sem esse registro, não dá pra saber se a resposta da allu está ajudando ou represando.</div>
-      </div>
-    </div>
-    <div class="priorow">
-      <div class="pn">3</div>
-      <div style="flex:1">
-        <div class="pt">Cumprir o prazo de 5 dias úteis já comunicado ao cliente<span class="badge high">Alto impacto</span></div>
-        <div class="pd">12,4% das solicitações furam o prazo prometido, com casos de até 17 dias úteis. É o risco mais concreto e mais fácil de transformar em meta operacional com dono direto.</div>
-      </div>
-    </div>
-    <div class="priorow">
-      <div class="pn">4</div>
-      <div style="flex:1">
-        <div class="pt">Acompanhar taxa por etapa e retenção líquida como métrica mensal fixa<span class="badge high">Alto impacto</span></div>
-        <div class="pd">Esse relatório não pode ser um evento único — é assim que se pega uma etapa piorando a tempo de agir, como aconteceu aqui com doc. aprovada. Sem isso, qualquer melhoria feita a partir daqui também vai ser avaliada com o número errado.</div>
-      </div>
-    </div>
-    <div class="priorow">
-      <div class="pn">5</div>
-      <div style="flex:1">
-        <div class="pt">Tela de self-service com oferta condicional ao motivo<span class="badge med">Médio esforço</span></div>
-        <div class="pd">Começar por doc. análise e doc. aprovada — maior taxa de solicitação combinada com maior volume. Motivo/submotivo já existem na base, é reaproveitar dado que já é coletado.</div>
-      </div>
-    </div>
-    <div class="priorow">
-      <div class="pn">6</div>
-      <div style="flex:1">
-        <div class="pt">Salvar análise de documento já aprovada como oferta<span class="badge low">Baixo esforço</span></div>
-        <div class="pd">Não é pausa de assinatura — isso não se aplica a ativo físico alugado, não dá pra pausar um produto parado na casa do cliente sem custo real. A versão que faz sentido aqui é mais simples: manter a aprovação de documento válida por N dias quando o cliente pede cancelamento em doc. aprovada, pra ele não ter que reenviar nada se voltar atrás. Só se aplica onde já existe análise aprovada — não em pagamento aprovado ou doc. em análise.</div>
-      </div>
-    </div>
-    <div class="priorow">
-      <div class="pn">7</div>
-      <div style="flex:1">
-        <div class="pt">Campanha pós-cancelamento automatizada<span class="badge low">Baixo esforço, usa Alluwave</span></div>
-        <div class="pd">Sequência 7/30/90 dias personalizada pelo motivo, disparada via Alluwave. É onde a retenção de churn deveria acontecer, em vez de segurar na hora do pedido.</div>
-      </div>
-    </div>
-    <div class="priorow">
-      <div class="pn">8</div>
-      <div style="flex:1">
-        <div class="pt">Chat reservado, só nos gatilhos definidos<span class="badge low">Depende dos itens 2 e 5</span></div>
-        <div class="pd">Última etapa — só faz sentido depois que a tela resolve o volume padrão.</div>
-      </div>
-    </div>
-  </div>
 </div></section>
 
 <footer><div class="wrap">
