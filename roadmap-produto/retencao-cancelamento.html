@@ -152,25 +152,32 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .badge.med{background:rgba(242,201,76,.15);color:var(--warn);}
 .badge.low{background:rgba(116,242,184,.15);color:var(--accent);}
 
-/* ---------- light modal mockup (matches real app UI) ---------- */
+/* ---------- light modal mockup (matches real app UI, fintech-grade polish) ---------- */
 .modalmock{
-  width:260px;flex-shrink:0;background:#ffffff;border-radius:18px;padding:22px 20px;
-  box-shadow:0 12px 32px rgba(0,0,0,.35);position:relative;text-align:center;
+  width:264px;flex-shrink:0;background:#ffffff;border-radius:24px;padding:26px 22px 22px;
+  box-shadow:0 1px 2px rgba(16,24,40,.06), 0 24px 48px -12px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.03);
+  position:relative;text-align:center;
 }
-.modalmock-close{position:absolute;top:14px;right:16px;color:#9ca3af;font-size:18px;line-height:1;font-family:system-ui,sans-serif;}
-.modalmock-icon{width:44px;height:44px;border-radius:50%;background:#eef2ff;color:#4f46e5;display:flex;align-items:center;justify-content:center;font-size:20px;margin:4px auto 14px;}
+.modalmock-close{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:#f2f4f7;color:#667085;font-size:14px;line-height:1;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;}
+.mm-step{position:absolute;top:18px;left:22px;font-size:10px;font-weight:600;color:#98a2b3;letter-spacing:.04em;font-family:'IBM Plex Mono',monospace;}
+.modalmock-icon{width:52px;height:52px;border-radius:50%;background:#eef2ff;color:#4f46e5;display:flex;align-items:center;justify-content:center;font-size:23px;margin:6px auto 16px;}
 .modalmock-icon.ok{background:#dcfce7;color:#16a34a;}
-.modalmock-icon.warn{background:#fef3c7;color:#b45309;}
-.modalmock-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:#111827;line-height:1.35;margin-bottom:8px;}
-.modalmock-body{font-size:12.5px;color:#6b7280;line-height:1.5;margin-bottom:16px;}
-.modalmock-btn{border-radius:10px;padding:11px 10px;font-size:12.5px;font-weight:600;margin-bottom:8px;font-family:'IBM Plex Sans',sans-serif;}
-.modalmock-btn.primary{background:#22c55e;color:#06210f;}
-.modalmock-btn.outline{background:#fff;color:#374151;border:1px solid #d1d5db;}
-.modalmock-btn.text{background:transparent;color:#9ca3af;font-weight:500;font-size:11.5px;padding:8px 10px;margin-bottom:0;text-decoration:underline;text-underline-offset:2px;}
-.modalmock-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
-.modalmock-item{display:flex;justify-content:space-between;align-items:center;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#374151;text-align:left;}
-.modalmock-item.sel{border-color:#22c55e;background:#f0fdf4;}
-.modalmock-item .mm-price{font-family:'IBM Plex Mono',monospace;font-weight:600;color:#111827;font-size:11px;}
+.modalmock-icon.warn{background:#fef3e2;color:#c2650a;}
+.modalmock-title{font-family:'Sora',sans-serif;font-size:16.5px;font-weight:700;color:#0c111d;line-height:1.35;margin-bottom:8px;letter-spacing:-.01em;}
+.modalmock-body{font-size:12.5px;color:#667085;line-height:1.6;margin-bottom:18px;}
+.modalmock-btn{border-radius:13px;padding:13px 14px;font-size:12.5px;font-weight:600;margin-bottom:8px;font-family:'IBM Plex Sans',sans-serif;letter-spacing:.01em;}
+.modalmock-btn.primary{background:linear-gradient(180deg,#16a34a,#15803d);color:#ffffff;box-shadow:0 1px 2px rgba(16,24,40,.06),0 8px 16px -6px rgba(21,128,61,.5);}
+.modalmock-btn.outline{background:#fff;color:#344054;border:1.5px solid #e4e7ec;}
+.modalmock-btn.text{background:transparent;color:#98a2b3;font-weight:600;font-size:11.5px;padding:9px 10px;margin-bottom:0;text-decoration:none;letter-spacing:.02em;}
+.modalmock-list{display:flex;flex-direction:column;background:#f9fafb;border:1px solid #eef1f4;border-radius:14px;padding:2px 14px;margin-bottom:16px;}
+.modalmock-item{display:flex;align-items:center;gap:8px;padding:11px 0;font-size:11.5px;color:#344054;text-align:left;border-bottom:1px solid #eef1f4;}
+.modalmock-item:last-child{border-bottom:none;}
+.modalmock-item .mm-price{margin-left:auto;text-align:right;overflow-wrap:anywhere;font-family:'IBM Plex Mono',monospace;font-weight:600;color:#101828;font-size:11px;}
+.modalmock-list.picklist{background:none;border:none;padding:0;gap:8px;}
+.modalmock-list.picklist .modalmock-item{border:1px solid #e5e7eb;border-radius:12px;padding:12px 13px;}
+.modalmock-list.picklist .modalmock-item.sel{border-color:#16a34a;background:#f0fdf4;}
+.modalmock-list.picklist .modalmock-item::before{content:'';width:16px;height:16px;border-radius:50%;border:1.5px solid #d0d5dd;flex-shrink:0;background:#fff;}
+.modalmock-list.picklist .modalmock-item.sel::before{border-color:#16a34a;box-shadow:inset 0 0 0 3.5px #16a34a;}
 .flowrow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:26px 0;}
 .flowarrow{font-size:22px;color:var(--accent);flex-shrink:0;font-family:'IBM Plex Mono',monospace;}
 .flowarrow.down{transform:rotate(90deg);}
@@ -561,7 +568,7 @@ footer a{color:var(--ink-muted);}
       </ul>
     </div>
 
-    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:0 0 4px;">Fluxo 1 — cliente quer trocar</h5>
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:0 0 4px;">Fluxo 1 — cliente quer trocar · 3 telas</h5>
     <div class="flowrow">
       <div class="modalmock">
         <div class="modalmock-close">×</div>
@@ -578,7 +585,7 @@ footer a{color:var(--ink-muted);}
         <div class="modalmock-title" style="text-align:left">Escolha o produto e plano certos</div>
         <div class="modalmock-body" style="text-align:left">Sem custo, sem perder sua aprovação de pagamento.</div>
         <div class="modalmock-btn primary">Continuar com minha assinatura</div>
-        <div class="modalmock-list">
+        <div class="modalmock-list picklist">
           <div class="modalmock-item sel"><span>iPhone 16 128GB · 36 meses</span><span class="mm-price">R$ 199/mês</span></div>
           <div class="modalmock-item"><span>iPhone 16 Pro 256GB · 36 meses</span><span class="mm-price">R$ 289/mês</span></div>
           <div class="modalmock-item"><span>MacBook Air M4 · 36 meses</span><span class="mm-price">R$ 249/mês</span></div>
@@ -687,7 +694,7 @@ footer a{color:var(--ink-muted);}
       </ul>
     </div>
 
-    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:20px 0 4px;">Fluxo 1 — cliente quer trocar</h5>
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:20px 0 4px;">Fluxo 1 — cliente quer trocar · 3 telas</h5>
     <div class="flowrow">
       <div class="modalmock">
         <div class="modalmock-close">×</div>
@@ -704,7 +711,7 @@ footer a{color:var(--ink-muted);}
         <div class="modalmock-title" style="text-align:left">Escolha o produto e plano certos</div>
         <div class="modalmock-body" style="text-align:left">Sua documentação continua em análise normalmente.</div>
         <div class="modalmock-btn primary">Continuar com minha assinatura</div>
-        <div class="modalmock-list">
+        <div class="modalmock-list picklist">
           <div class="modalmock-item sel"><span>iPhone 16 128GB · 36 meses</span><span class="mm-price">R$ 199/mês</span></div>
           <div class="modalmock-item"><span>iPhone 16 Pro 256GB · 36 meses</span><span class="mm-price">R$ 289/mês</span></div>
           <div class="modalmock-item"><span>MacBook Air M4 · 36 meses</span><span class="mm-price">R$ 249/mês</span></div>
@@ -721,7 +728,7 @@ footer a{color:var(--ink-muted);}
       </div>
     </div>
 
-    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:34px 0 4px;">Fluxo 2 — cliente quer cancelar mesmo assim</h5>
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:34px 0 4px;">Fluxo 2 — cliente quer cancelar mesmo assim · 3 telas</h5>
     <p class="chart-desc" style="margin-bottom:16px;">Sai do modal 2, botão "Não, quero cancelar mesmo" — mas aqui existe algo em jogo (documento enviado, análise rodando), então entra um aviso antes de ir pro formulário.</p>
     <div class="flowcol">
       <div class="modalmock" style="width:270px;">
@@ -804,7 +811,7 @@ footer a{color:var(--ink-muted);}
       </ul>
     </div>
 
-    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:20px 0 4px;">Fluxo 1 — cliente quer trocar</h5>
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:20px 0 4px;">Fluxo 1 — cliente quer trocar · 3 telas</h5>
     <div class="flowrow">
       <div class="modalmock">
         <div class="modalmock-close">×</div>
@@ -821,7 +828,7 @@ footer a{color:var(--ink-muted);}
         <div class="modalmock-title" style="text-align:left">Escolha o produto e plano certos</div>
         <div class="modalmock-body" style="text-align:left">Seu envio atual é reservado; ao trocar, geramos uma nova expedição pro item certo.</div>
         <div class="modalmock-btn primary">Continuar com minha assinatura</div>
-        <div class="modalmock-list">
+        <div class="modalmock-list picklist">
           <div class="modalmock-item sel"><span>iPhone 16 128GB · 36 meses</span><span class="mm-price">R$ 199/mês</span></div>
           <div class="modalmock-item"><span>iPhone 16 Pro 256GB · 36 meses</span><span class="mm-price">R$ 289/mês</span></div>
           <div class="modalmock-item"><span>MacBook Air M4 · 36 meses</span><span class="mm-price">R$ 249/mês</span></div>
@@ -838,7 +845,7 @@ footer a{color:var(--ink-muted);}
       </div>
     </div>
 
-    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:34px 0 4px;">Fluxo 2 — cliente quer cancelar mesmo assim</h5>
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:34px 0 4px;">Fluxo 2 — cliente quer cancelar mesmo assim · 4 telas</h5>
     <p class="chart-desc" style="margin-bottom:16px;">Sai do modal 2, botão "Não, quero cancelar mesmo" — aqui o aparelho já está separado e a entrega tem data prevista, então são três avisos antes do formulário: o que se perde, como fica a cobrança, e só depois o motivo.</p>
     <div class="flowcol">
       <div class="modalmock" style="width:270px;">
@@ -966,6 +973,7 @@ footer a{color:var(--ink-muted);}
       </ul>
     </div>
 
+    <h5 style="font-family:'Sora',sans-serif;font-size:14px;color:var(--ink);margin:20px 0 4px;">Fluxo — cliente se arrepende e devolve · 4 telas</h5>
     <div class="flowcol">
       <div class="modalmock" style="width:270px;">
         <div class="modalmock-close">×</div>
@@ -984,11 +992,11 @@ footer a{color:var(--ink-muted);}
         <div class="modalmock-close">×</div>
         <div class="modalmock-title" style="text-align:left">Por que você quer devolver?</div>
         <div class="modalmock-btn primary">Continuar com minha assinatura</div>
-        <div class="modalmock-list">
-          <div class="modalmock-item"><span>Chegou o produto errado</span><span></span></div>
-          <div class="modalmock-item sel"><span>Produto com defeito técnico</span><span>✓</span></div>
-          <div class="modalmock-item"><span>Problema financeiro</span><span></span></div>
-          <div class="modalmock-item"><span>Outro motivo</span><span></span></div>
+        <div class="modalmock-list picklist">
+          <div class="modalmock-item"><span>Chegou o produto errado</span></div>
+          <div class="modalmock-item sel"><span>Produto com defeito técnico</span></div>
+          <div class="modalmock-item"><span>Problema financeiro</span></div>
+          <div class="modalmock-item"><span>Outro motivo</span></div>
         </div>
         <div class="modalmock-btn text">Continuar</div>
       </div>
