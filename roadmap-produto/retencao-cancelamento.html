@@ -466,7 +466,7 @@ footer a{color:var(--ink-muted);}
       </tr>
       <tr>
         <td><b>Enviado</b><div class="srcnote">taxa 1,28% · ret. líquida 23,2%, volume baixo</div></td>
-        <td colspan="5">Nudge único: "chega em até X dias, aguarda ou cancela agora?" — mesma tela pra qualquer motivo, volume não justifica oferta segmentada</td>
+        <td colspan="5">Sem opção de cancelar em trânsito — tela mostra rastreio e orienta aguardar ou recusar o recebimento na entrega. FAQ e suporte disponíveis, sem oferta segmentada por motivo</td>
       </tr>
       <tr>
         <td><b>Entregue, até 7 dias</b><div class="srcnote">cancelamento, taxa 2,54% · ret. líquida 14,1%</div></td>
@@ -891,6 +891,50 @@ footer a{color:var(--ink-muted);}
       </div>
     </div>
     <p class="srcnote">Três avisos, não um só: perda do aparelho + datas, depois cobrança, só então motivo. FAQ e suporte ficam disponíveis junto do motivo, pro cliente tirar dúvida antes de confirmar — nenhum dos dois bloqueia ou atrasa o cancelamento.</p>
+  </div>
+
+  <div class="journey">
+    <div class="journey-head"><span class="journey-num">04</span><span class="journey-title">Cancelamento com pedido enviado, ainda em trânsito</span></div>
+    <p class="journey-elig"><b>Validação de elegibilidade:</b> esse fluxo se aplica a pedidos com status "Enviado" — já existe código de rastreio, o aparelho está com a transportadora, ainda não chegou ao endereço do cliente.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>
+        <div class="step-body">Cliente pede para cancelar um pedido nessa condição.</div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">2</div></div>
+        <div class="step-body"><b>Modal único — bloqueio informativo</b> (só existe aqui): não existe "cancelar mesmo assim" nessa etapa. A tela mostra data de envio, código de rastreio e link de rastreamento, explica que não dá pra cancelar com o item em trânsito, e orienta aguardar a entrega — se não quiser mais o produto, é só recusar o recebimento na hora. <span class="btnlabel">Ver dúvidas frequentes</span> <span class="btnlabel">Falar com o suporte</span></div>
+      </div>
+    </div>
+
+    <div class="sysrules">
+      <h5>Regras de sistema</h5>
+      <ul>
+        <li>Não existe caminho de self-service pra cancelar nessa etapa — a tela é 100% informativa. Nenhuma solicitação de cancelamento é registrada enquanto o pedido está em trânsito.</li>
+        <li>Sem multa: o cliente ainda não recebeu o aparelho, mesma lógica das etapas anteriores.</li>
+        <li><span class="tbc">A confirmar</span> — o que acontece operacionalmente quando o cliente recusa o recebimento: quem processa a devolução com a transportadora, em quanto tempo sai o estorno, e se isso é tratado como cancelamento ou como um fluxo próprio de recusa/devolução.</li>
+        <li><span class="tbc">A confirmar</span> — se o suporte tem alguma exceção operacional pra interromper um envio antes da entrega (ex: endereço errado, suspeita de fraude), fora do fluxo padrão do cliente.</li>
+      </ul>
+    </div>
+
+    <div class="flowrow" style="justify-content:center;">
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon warn">🚚</div>
+        <div class="modalmock-title">Seu pedido já está a caminho</div>
+        <div class="modalmock-body">Não é possível cancelar com o item em trânsito. Aguarde chegar — se não quiser mais o produto, você pode recusar o recebimento na hora da entrega.</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item"><span>Enviado em</span><span class="mm-price">22/09</span></div>
+          <div class="modalmock-item"><span>Código de rastreio</span><span class="mm-price">BR123456789</span></div>
+          <div class="modalmock-item"><span>Rastrear em</span><span class="mm-price">rastreio.allugator.com</span></div>
+        </div>
+        <div class="modalmock-btn primary">Entendi</div>
+        <div class="modalmock-btn outline">Ver dúvidas frequentes</div>
+        <div class="modalmock-btn outline">Falar com o suporte</div>
+      </div>
+    </div>
+    <p class="srcnote">FAQ e suporte ficam disponíveis pra dúvida ou pra um caso excepcional — mas nenhum dos dois abre um caminho de cancelamento aqui. A saída padrão de quem não quer mais o produto é recusar na entrega, não cancelar em trânsito.</p>
   </div>
 
   <h3 style="font-size:18px;margin:36px 0 6px;">Quando o chat é necessário</h3>
