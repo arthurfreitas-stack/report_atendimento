@@ -357,7 +357,7 @@ footer a{color:var(--ink-muted);}
   </div>
 
   <div class="callout warn">
-    Isso não quer dizer que toda revogação do time foi sem conversa — muita é retenção genuína que convenceu o cliente. Só que hoje não existe um campo que separe "convenci" de "segurei". O que o dado mostra, independente do motivo: em doc. aprovada, dos 138 casos revogados pelo time sem passar pela área do assinante, <b>92 (66,7%) o cliente voltou a pedir cancelamento de novo depois</b>. Seja qual for a razão da revogação original, a decisão não ficou — e no churn essa prática é proporcionalmente mais comum (71,3% time vs. 46,5% no cancelamento ainda dentro da janela).
+    Hoje não existe um campo que separe "convenci" de "segurei" numa revogação feita pelo time. O que o dado mostra, independente do motivo: em doc. aprovada, dos 138 casos revogados pelo time sem passar pela área do assinante, <b>92 (66,7%) o cliente voltou a pedir cancelamento de novo depois</b>. No churn essa prática é proporcionalmente mais comum (71,3% time vs. 46,5% no cancelamento ainda dentro da janela). A quebra completa — revogado pelo cliente vs. pelo time, e reincidência na mesma etapa vs. em etapa diferente — está na tabela abaixo.
   </div>
 
   <div class="chartcard">
@@ -390,7 +390,21 @@ footer a{color:var(--ink-muted);}
     </tbody>
   </table></div>
 
-  <p class="section-sub">Reincidência em cima de reincidência: dos pedidos que tiveram revogação em doc. aprovada, <b class="mono" style="color:var(--ink)">61,9%</b> pediram cancelamento de novo em algum momento (média de <b class="mono" style="color:var(--ink)">2,07</b> solicitações por pedido, máximo de <b class="mono" style="color:var(--ink)">8</b> no mesmo pedido). Seja o motivo da revogação legítimo ou não, o processo atual não resolve a intenção do cliente na maioria das vezes — só adia, e cada rodada consome um analista de novo.</p>
+  <p class="section-sub">Reincidência em cima de reincidência: dos pedidos que tiveram revogação em doc. aprovada, <b class="mono" style="color:var(--ink)">62,9%</b> pediram cancelamento de novo em algum momento (média de <b class="mono" style="color:var(--ink)">2,07</b> solicitações por pedido, máximo de <b class="mono" style="color:var(--ink)">8</b> no mesmo pedido). Seja o motivo da revogação legítimo ou não, o processo atual não resolve a intenção do cliente na maioria das vezes — só adia, e cada rodada consome um analista de novo.</p>
+
+  <h4 style="font-family:'Sora',sans-serif;font-size:15px;color:var(--ink);margin:26px 0 4px;">Quem revogou, e quem voltou a pedir — cliente vs. allu</h4>
+  <p class="section-sub">A pergunta que falta responder: quando é o <b style="color:var(--ink)">cliente</b> quem revoga pela área do assinante, ele reincide menos do que quando é o <b style="color:var(--ink)">time</b> quem revoga sem ele passar por lá? E quando reincide, é pedindo cancelamento <b style="color:var(--ink)">na mesma etapa</b> (sinal de que nada mudou de fato) ou <b style="color:var(--ink)">numa etapa diferente</b> (o pedido avançou e ele decidiu cancelar de novo depois)? Essa quebra ainda não foi extraída.</p>
+
+  <div class="tblwrap"><table>
+    <thead><tr><th>Quem revogou</th><th class="num">Casos revogados</th><th class="num">Reincidiu</th><th class="num">Reincidiu na mesma etapa</th><th class="num">Reincidiu em outra etapa</th></tr></thead>
+    <tbody>
+      <tr><td>Cliente, pela área do assinante</td><td class="num"><span class="tbc">dado pendente</span></td><td class="num"><span class="tbc">dado pendente</span></td><td class="num"><span class="tbc">dado pendente</span></td><td class="num"><span class="tbc">dado pendente</span></td></tr>
+      <tr><td>Time allu, sem passar pela área do assinante</td><td class="num"><span class="tbc">dado pendente</span></td><td class="num"><span class="tbc">dado pendente</span></td><td class="num"><span class="tbc">dado pendente</span></td><td class="num"><span class="tbc">dado pendente</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn" style="margin-top:14px;">
+    <b>Dado pendente — precisa de nova consulta ao BigQuery.</b> Esta sessão não tem acesso a BigQuery pra rodar a extração (sem <span class="mono">bq</span> CLI, sem client configurado). A lógica já está definida: cruzar <span class="mono">revoked_origin</span> ('external' = cliente vs. outro = time) com reincidência — e, pra cada caso reincidente, comparar a etapa (status) da nova solicitação com a etapa da solicitação revogada, no mesmo <span class="mono">order_product_id</span>. Precisa rodar em uma sessão com acesso ao BigQuery, ou os números podem ser colados aqui pra eu preencher a tabela.
+  </div>
 
   <div class="chartcard">
     <h4>O prazo que a allu promete ao cliente — e nem sempre cumpre</h4>
@@ -426,7 +440,7 @@ footer a{color:var(--ink-muted);}
   </div>
 
   <div class="offergrid">
-    <div class="offercard"><div class="m">Pausa</div><div class="o">maior alavanca do mercado — não se aplica direto aqui</div><div class="r">No modelo original (assinatura digital), segura cobrança e produto por N dias. Não faz sentido pra ativo físico alugado: não dá pra "pausar" um iPhone parado na casa do cliente sem custo real. O que se traduz pro nosso negócio: salvar a análise de documento já aprovada, pra não obrigar o cliente a refazer tudo se voltar atrás.</div></div>
+    <div class="offercard"><div class="m">Pausa</div><div class="o">maior alavanca do mercado — não se aplica direto aqui</div><div class="r">No modelo original (assinatura digital), segura cobrança e produto por N dias. Não faz sentido pra ativo físico alugado — a versão que funciona aqui é salvar a análise de documento já aprovada (item 6 do plano de execução, seção 05).</div></div>
     <div class="offercard"><div class="m">Downgrade</div><div class="o">plano/produto menor</div><div class="r">Pra "modelo errado" ou "muito caro" — trocar em vez de cancelar.</div></div>
     <div class="offercard"><div class="m">Desconto temporário</div><div class="o">sensibilidade a preço</div><div class="r">Só quando o motivo é claramente financeiro. Genérico converte pior que oferta direcionada.</div></div>
     <div class="offercard"><div class="m">Uma oferta só</div><div class="o">nunca em sequência</div><div class="r">Empilhar ofertas reduz conversão e é o padrão que reguladores miram.</div></div>
@@ -438,6 +452,20 @@ footer a{color:var(--ink-muted);}
   <div class="section-label"><span class="section-num">04</span><span class="section-tag">Como deveríamos fazer</span></div>
   <h2>Self-service resolve a tela. Chat é reservado.</h2>
   <p class="section-sub">Princípio único: a tela de cancelamento sempre tem um botão de "cancelar mesmo assim" funcional. Chat só entra quando o valor de reter justifica o esforço, ou quando existe risco real que exige checagem humana — nunca como pedágio padrão.</p>
+
+  <h3 style="font-size:18px;margin:32px 0 6px;">Regras de negócio gerais</h3>
+  <p class="section-sub">Valem pra toda etapa, exceto onde uma etapa específica sobrescreve. Cada jornada abaixo só descreve o que muda a partir daqui.</p>
+  <div class="sysrules" style="margin-top:14px;padding-top:0;border-top:none;">
+    <ul>
+      <li><b>Sem multa em nenhuma etapa antes da entrega.</b> O cliente nunca teve o produto na mão, não há tempo de serviço consumido. O formulário de cancelamento atual mostra 20% de multa pra qualquer etapa — isso é um bug de sistema a corrigir, não uma regra de negócio válida.</li>
+      <li><b>Direito de arrependimento (CDC art. 49): 7 dias corridos após a entrega.</b> Cancelamento dentro dessa janela também não tem multa e tem estorno garantido — é obrigação legal, não oferta de retenção. É a linha que separa "cancelamento" de "churn" em todo este relatório.</li>
+      <li><b>Todo fluxo de cancelamento pré-envio abre com os mesmos dois modais-padrão:</b> Modal 1, aviso de perda (reativação bloqueada por 180 dias, ofertas exclusivas, suporte prioritário em trocas, seguro do aparelho) e Modal 2, validação de troca ("você assinou o produto ou plano errado?"). As jornadas abaixo só detalham o que acontece depois desses dois.</li>
+      <li><b>"Quero trocar" nunca cancela o pedido original</b> — substitui na hora por produto/plano novo. A documentação (identidade, análise de crédito) é do cliente, não do item, então nunca precisa ser reenviada por causa de uma troca.</li>
+      <li><b>"Cancelar mesmo assim" sempre efetiva na hora</b>, sem os 5 dias úteis do processo atual — só vira fila humana quando o motivo cai numa das exceções obrigatórias de chat (seção "Quando o chat é necessário", adiante).</li>
+      <li><span class="tbc">A confirmar</span> — ajuste de cobrança quando o produto/plano trocado tem preço diferente do original (crédito, complemento, novo link de pagamento). Precisa alinhar com o financeiro antes de liberar troca como self-service.</li>
+      <li><span class="tbc">A confirmar</span> — a partir de doc. aprovada o item já está separado/roteado no logístico; trocar exige liberar essa unidade e gerar nova expedição. Precisa confirmar se o sistema suporta isso em tempo real ou se cai numa fila separada.</li>
+    </ul>
+  </div>
 
   <h3 style="font-size:18px;margin:32px 0 6px;">O que aparece pro cliente, por etapa e por motivo</h3>
   <p class="section-sub">A tela muda pouco entre motivos — o que muda é a <b>oferta</b> dentro dela. Tudo abaixo acontece sem abrir chat.</p>
@@ -528,14 +556,10 @@ footer a{color:var(--ink-muted);}
       </div>
       <div class="step">
         <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
-        <div class="step-body"><b>Modal 1 — aviso de perda</b> (o modal já existente hoje): reforça o que o cliente perde ao cancelar — reativação bloqueada por 180 dias, ofertas exclusivas, suporte prioritário em trocas, seguro do aparelho. <span class="btnlabel">Manter assinatura</span> <span class="btnlabel">Sim, quero cancelar</span></div>
+        <div class="step-body"><b>Modal 1 e 2 — padrão</b> (aviso de perda + validação de troca, ver regras gerais acima).</div>
       </div>
       <div class="step">
-        <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
-        <div class="step-body"><b>Modal 2 — validação de troca:</b> "Você assinou o produto ou plano errado? Talvez você só precise trocar, não cancelar." <span class="btnlabel">Isso, assinei um produto mas quero outro</span> <span class="btnlabel">Não, quero cancelar mesmo</span></div>
-      </div>
-      <div class="step">
-        <div class="step-rail"><div class="step-num">4</div></div>
+        <div class="step-rail"><div class="step-num">3</div></div>
         <div class="step-body">
           <b>Ramifica conforme a resposta:</b>
           <div class="branchgrid">
@@ -555,16 +579,13 @@ footer a{color:var(--ink-muted);}
     </div>
 
     <div class="callout acc" style="margin-top:24px;">
-      <b>Benchmark — Mercado Livre:</b> cancelamento antes do envio é resolvido em um clique, self-service, sem esperar contato de vendedor: o comprador abre o pedido, clica em "cancelar compra" e o sistema processa na hora. Ecommerces que deixam o cliente editar o próprio pedido antes do envio (trocar produto/variante) têm taxa de troca muito maior que fluxos tradicionais de devolução — quanto mais perto de zero a fricção, mais o cliente escolhe editar em vez de cancelar. Por isso a troca de produto/plano aqui também devia ser self-service na hora, não um "te chamamos depois".
+      <b>Benchmark — Mercado Livre:</b> cancelamento antes do envio é resolvido em um clique, self-service, sem esperar contato de vendedor. Ecommerces que deixam o cliente editar o próprio pedido antes do envio têm taxa de troca muito maior que fluxos tradicionais de devolução — quanto mais perto de zero a fricção, mais o cliente escolhe editar em vez de cancelar.
     </div>
 
     <div class="sysrules">
-      <h5>Regras de sistema</h5>
+      <h5>Regras de sistema desta etapa</h5>
       <ul>
-        <li>Escolher "quero trocar" não cancela o pedido original — ele é substituído na hora pelo novo produto/plano escolhido, com checkout ajustado automaticamente (mesma função de catálogo que a IA de vendas já usa hoje).</li>
-        <li><span class="tbc">A confirmar</span> — se o novo produto/plano tiver preço diferente do pago originalmente, como fica o ajuste de cobrança (crédito, complemento, novo link de pagamento)? Precisa alinhar com o time financeiro antes de liberar esse fluxo self-service.</li>
-        <li><b>Sem multa nessa etapa.</b> O cliente ainda não recebeu o pedido, não há tempo de serviço consumido — o formulário de cancelamento atual mostra 20% de multa pra qualquer etapa, e isso precisa ser corrigido especificamente aqui.</li>
-        <li>Acessar o FAQ ou o suporte a partir do motivo "confuso"/"inseguro" não cancela nada sozinho. Se o cliente ficar satisfeito com a resposta, ele decide entre voltar pro passo 3 (trocar) ou seguir com o cancelamento.</li>
+        <li>Acessar o FAQ ou o suporte a partir do motivo "confuso"/"inseguro" não cancela nada sozinho — se o cliente ficar satisfeito com a resposta, ele decide entre voltar pro passo 3 (trocar) ou seguir com o cancelamento.</li>
       </ul>
     </div>
 
@@ -646,7 +667,7 @@ footer a{color:var(--ink-muted);}
         </div>
       </div>
     </div>
-    <p class="srcnote">"Ainda quero cancelar" no modal de FAQ leva pro mesmo resultado do modal ao lado. Hoje esse caminho cai em "aguarde contato em até 5 dias úteis" — aqui não há motivo pra isso: nada foi enviado, nada foi analisado, não há multa, o cancelamento pode ser efetivado na hora.</p>
+    <p class="srcnote">"Ainda quero cancelar" no modal de FAQ leva pro mesmo resultado do modal ao lado. Hoje esse caminho cai em "aguarde contato em até 5 dias úteis" — aqui não há motivo pra isso: nada foi enviado, nada foi analisado.</p>
   </div>
 
   <div class="journey">
@@ -660,14 +681,10 @@ footer a{color:var(--ink-muted);}
       </div>
       <div class="step">
         <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
-        <div class="step-body"><b>Modal 1 — aviso de perda</b> (o mesmo de sempre): reativação bloqueada por 180 dias, ofertas exclusivas, suporte prioritário em trocas, seguro do aparelho. <span class="btnlabel">Manter assinatura</span> <span class="btnlabel">Sim, quero cancelar</span></div>
+        <div class="step-body"><b>Modal 1 e 2 — padrão</b> (aviso de perda + validação de troca, ver regras gerais).</div>
       </div>
       <div class="step">
-        <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
-        <div class="step-body"><b>Modal 2 — validação de troca</b> (o mesmo de sempre): "Você assinou o produto ou plano errado? Talvez você só precise trocar, não cancelar." <span class="btnlabel">Isso, assinei um produto mas quero outro</span> <span class="btnlabel">Não, quero cancelar mesmo</span></div>
-      </div>
-      <div class="step">
-        <div class="step-rail"><div class="step-num">4</div></div>
+        <div class="step-rail"><div class="step-num">3</div></div>
         <div class="step-body">
           <b>Ramifica conforme a resposta:</b>
           <div class="branchgrid">
@@ -685,12 +702,9 @@ footer a{color:var(--ink-muted);}
     </div>
 
     <div class="sysrules">
-      <h5>Regras de sistema</h5>
+      <h5>Regras de sistema desta etapa</h5>
       <ul>
-        <li>Escolher "quero trocar" não cancela nem reinicia a análise — só troca o produto/plano do pedido. A documentação (identidade, análise de crédito) é do cliente, não do item, então não precisa ser reenviada.</li>
         <li><span class="tbc">A confirmar</span> — se a análise for concluída (aprovada ou reprovada) enquanto o cliente está nesse fluxo de cancelamento, qual status prevalece? Proposta: se aprovar antes do cliente confirmar o cancelamento, avisar na hora ("sua documentação acabou de ser aprovada, quer mesmo cancelar?") em vez de processar os dois em paralelo.</li>
-        <li><span class="tbc">A confirmar</span> — mesma dúvida da etapa 1: sem multa aqui também, já que o produto ainda não foi enviado nem entregue? Precisa confirmar com o time.</li>
-        <li>"Cancelar mesmo assim" no modal 4 leva ao formulário de motivo/submotivo/observação e, na sequência, à confirmação — sem esperar retorno da análise, sem os 5 dias úteis do fluxo atual.</li>
       </ul>
     </div>
 
@@ -777,20 +791,16 @@ footer a{color:var(--ink-muted);}
       </div>
       <div class="step">
         <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
-        <div class="step-body"><b>Modal 1 — aviso de perda</b> (o mesmo de sempre): reativação bloqueada por 180 dias, ofertas exclusivas, suporte prioritário em trocas, seguro do aparelho. <span class="btnlabel">Manter assinatura</span> <span class="btnlabel">Sim, quero cancelar</span></div>
+        <div class="step-body"><b>Modal 1 e 2 — padrão</b> (aviso de perda + validação de troca, ver regras gerais).</div>
       </div>
       <div class="step">
-        <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
-        <div class="step-body"><b>Modal 2 — validação de troca</b> (o mesmo de sempre): "Você assinou o produto ou plano errado? Talvez você só precise trocar, não cancelar." <span class="btnlabel">Isso, assinei um produto mas quero outro</span> <span class="btnlabel">Não, quero cancelar mesmo</span></div>
-      </div>
-      <div class="step">
-        <div class="step-rail"><div class="step-num">4</div><div class="step-line"></div></div>
+        <div class="step-rail"><div class="step-num">3</div></div>
         <div class="step-body">
           <b>Ramifica conforme a resposta:</b>
           <div class="branchgrid">
             <div class="branch go">
               <div class="bt go">→ Quer trocar</div>
-              <b>Modal 3 — escolha self-service</b>, mesma mecânica das etapas anteriores. Aqui o aparelho já está separado/roteado, então trocar de item pode exigir liberar essa unidade e gerar um novo envio — sinalizado nas regras abaixo.
+              <b>Modal 3 — escolha self-service</b>, mesma mecânica das etapas anteriores. Aqui o aparelho já está separado/roteado, então trocar de item exige liberar essa unidade e gerar um novo envio (ver regras gerais).
             </div>
             <div class="branch stop">
               <div class="bt">→ Não, quer cancelar mesmo</div>
@@ -802,11 +812,9 @@ footer a{color:var(--ink-muted);}
     </div>
 
     <div class="sysrules">
-      <h5>Regras de sistema</h5>
+      <h5>Regras de sistema desta etapa</h5>
       <ul>
         <li>Ao confirmar "cancelar mesmo assim", o pedido sai imediatamente da fila de envio (Siga) — deixa de ser processado operacionalmente. Mas pro cliente, a confirmação e o estorno acontecem na hora, sem esperar contato de analista.</li>
-        <li><span class="tbc">A confirmar</span> — trocar de produto/plano nessa etapa exige liberar a unidade física já alocada e gerar uma nova expedição pro item novo. É mais complexo que nas etapas 1 e 2 (onde nada tinha sido roteado ainda). Precisa confirmar se o sistema de logística suporta isso em tempo real ou se cai numa fila separada.</li>
-        <li><span class="tbc">A confirmar</span> — mesma lógica das etapas anteriores: o produto ainda não foi entregue, então não deveria haver multa. Mas aqui já existe custo logístico real (separação, roteamento) — vale confirmar com o time se isso muda a regra.</li>
         <li>A unidade alocada pro pedido cancelado volta pro estoque geral. Se o cliente assinar de novo depois, não há garantia da mesma unidade nem do mesmo prazo — o processo recomeça do zero, é por isso que o modal de aviso reforça essa perda.</li>
       </ul>
     </div>
@@ -912,10 +920,9 @@ footer a{color:var(--ink-muted);}
     </div>
 
     <div class="sysrules">
-      <h5>Regras de sistema</h5>
+      <h5>Regras de sistema desta etapa</h5>
       <ul>
         <li>Não existe caminho de self-service pra cancelar nessa etapa — a tela é 100% informativa. Nenhuma solicitação de cancelamento é registrada enquanto o pedido está em trânsito.</li>
-        <li>Sem multa: o cliente ainda não recebeu o aparelho, mesma lógica das etapas anteriores.</li>
         <li><span class="tbc">A confirmar</span> — o que acontece operacionalmente quando o cliente recusa o recebimento: quem processa a devolução com a transportadora, em quanto tempo sai o estorno, e se isso é tratado como cancelamento ou como um fluxo próprio de recusa/devolução.</li>
         <li><span class="tbc">A confirmar</span> — se o suporte tem alguma exceção operacional pra interromper um envio antes da entrega (ex: endereço errado, suspeita de fraude), fora do fluxo padrão do cliente.</li>
       </ul>
@@ -964,9 +971,9 @@ footer a{color:var(--ink-muted);}
     </div>
 
     <div class="sysrules">
-      <h5>Regras de sistema</h5>
+      <h5>Regras de sistema desta etapa</h5>
       <ul>
-        <li>Prazo de 7 dias corridos é direito legal de arrependimento em compra à distância (CDC, art. 49) — não é oferta de retenção, é obrigação. Sem multa, estorno garantido.</li>
+        <li>Esta é a aplicação direta da regra geral de arrependimento (CDC art. 49, ver regras gerais na seção 04) — é o motivo de essa etapa existir como fluxo próprio.</li>
         <li>Sem oferta de troca de modelo pós-entrega nessa janela: trocar exigiria logística reversa completa (recolher o que chegou + expedir outro item), mais custosa que simplesmente processar a devolução.</li>
         <li><span class="tbc">A confirmar</span> — como funciona o código de devolução na prática: é etiqueta de postagem reversa, coleta agendada, ou o cliente leva a algum ponto? Precisa confirmar com logística.</li>
         <li><span class="tbc">A confirmar</span> — se o motivo "defeito técnico" aciona algum fluxo diferente (ex: troca do aparelho em vez de devolução) antes de ir pro cancelamento, ou se hoje tudo cai na mesma esteira de devolução.</li>
