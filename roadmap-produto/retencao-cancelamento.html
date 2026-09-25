@@ -233,9 +233,8 @@ footer a{color:var(--ink-muted);}
 <nav class="topnav"><div class="topnav-inner">
   <a href="#problema">01 · A tendência</a>
   <a href="#saves">02 · O que acontece depois</a>
-  <a href="#mercado">03 · Como o mercado faz</a>
-  <a href="#modelo">04 · O modelo ideal</a>
-  <a href="#aplicar">05 · Como aplicar</a>
+  <a href="#modelo">03 · O modelo ideal</a>
+  <a href="#aplicar">04 · Como aplicar</a>
 </div></nav>
 
 <div class="masthead"><div class="wrap">
@@ -297,23 +296,6 @@ footer a{color:var(--ink-muted);}
     <b>Doc. aprovada é a única etapa do funil que piorou.</b> Todas as outras melhoraram de agosto pra setembro — inclusive apesar do viés de subestimar setembro. É o ponto exato onde vale investigar o que mudou no processo entre os dois meses.
   </div>
 
-  <div class="chartcard">
-    <h4>Taxa de churn mensal — base ativa, não funil</h4>
-    <p class="chart-desc">% da base ativa elegível (cliente com produto entregue há mais de 7 dias) que pediu cancelamento naquele mês.</p>
-    <div class="chart-wrap" id="c6wrap">
-      <svg viewBox="0 0 640 200" id="chart6" role="img" aria-label="Taxa de churn mensal, agosto comparado a setembro">
-        <g id="c6bars"></g>
-      </svg>
-    </div>
-    <div class="legend">
-      <span><i style="background:var(--ink-muted)"></i>agosto (fechado)</span>
-      <span><i style="background:var(--critical)"></i>setembro (parcial, até dia 24)</span>
-    </div>
-  </div>
-
-  <div class="callout crit">
-    Agosto: 289 churns sobre base de 51.023 clientes elegíveis (<span class="k">0,57%</span>). Setembro, ainda com 6 dias faltando: 455 sobre 53.571 (<span class="k">0,85%</span>). Normalizando pelos dias corridos (setembro tem 24 de 30 dias observados), a taxa equivalente do mês fecha perto de <b>1,06%</b> — quase o dobro de agosto. Base ativa também cresceu (mais gente exposta ao risco), o que torna o aumento da taxa ainda mais relevante do que pareceria só olhando o número absoluto de churns.
-  </div>
 </div></section>
 
 <!-- ============ 02 · O QUE ACONTECE DEPOIS ============ -->
@@ -406,50 +388,11 @@ footer a{color:var(--ink-muted);}
     <b>Duas ressalvas de metodologia nesta tabela específica.</b> Primeiro: pra chegar num "revogado" com origem conhecida (setembro, 1º–24), usei <span class="mono">status_id = 'cancellation_request_revoked'</span> + <span class="mono">revoked_origin</span> não nulo — 453 casos no total. Esse número <b>não reconcilia</b> com os 523 (cancelamento) + 136 (churn) do gráfico "quem revogou" acima; não consegui reproduzir a lógica exata usada lá apesar de testar sete definições diferentes de escopo, e a diferença é grande demais pra ignorar. Segundo: "mesma etapa" usa uma classificação por data de marco (pagamento/doc/envio/entrega) que, testada isoladamente, <b>não bate</b> com as taxas por etapa já verificadas neste relatório (ex: dá 18,2% de taxa bruta em doc. aprovada onde o valor confirmado é 36,3%) — então os rótulos absolutos de etapa não são confiáveis. A comparação mesma-etapa-vs-outra-etapa é mais robusta que os rótulos isolados (o mesmo viés de classificação tende a afetar os dois pontos do mesmo pedido igualmente), mas ainda assim deve ser lida como direcional, não como número fechado. Pendente reconciliar com quem rodou a extração original.
   </div>
 
-  <div class="chartcard">
-    <h4>O prazo que a allu promete ao cliente — e nem sempre cumpre</h4>
-    <p class="chart-desc">A allu comunica até 5 dias úteis pra resolver a solicitação. Medindo do pedido até a resolução (revogado ou finalizado), setembro/2026:</p>
-    <div class="statgrid" style="margin:16px 0 4px;">
-      <div class="stat"><div class="v">1,9 dias</div><div class="l">média de dias úteis até a resolução</div></div>
-      <div class="stat"><div class="v">0 dias</div><div class="l">mediana — a maioria resolve rápido</div></div>
-      <div class="stat"><div class="v crit">12,4%</div><div class="l">das solicitações passam do prazo de 5 dias úteis prometido</div></div>
-      <div class="stat"><div class="v crit">17 dias</div><div class="l">pior caso do mês — mais de 3 semanas úteis pra resolver</div></div>
-    </div>
-  </div>
-
-  <div class="callout crit">
-    <b>Esse é o risco concreto, não hipotético:</b> promessa comunicada ao cliente descumprida em quase <b>1 de cada 8</b> solicitações. É mais fácil de provar e mais fácil de corrigir do que qualquer discussão sobre "consentimento" na revogação — é operação, tem dono, tem prazo pra virar zero.
-  </div>
 </div></section>
 
-<!-- ============ 03 · MERCADO ============ -->
-<section id="mercado"><div class="wrap">
-  <div class="section-label"><span class="section-num">03</span><span class="section-tag">Como o mercado faz</span></div>
-  <h2>Fluxo bem desenhado retém sem prender ninguém no chat</h2>
-  <p class="section-sub">Benchmarks de assinatura/DTC nos EUA e a direção regulatória da FTC apontam pro mesmo lugar: menos fricção na tela, uma oferta só, chat reservado.</p>
-
-  <div class="statgrid">
-    <div class="stat"><div class="v">10–34%</div><div class="l">taxa de salvamento em fluxo de cancelamento bem desenhado (média 15%, melhores 20%+)</div></div>
-    <div class="stat"><div class="v">337%</div><div class="l">crescimento no uso de pausa quando oferecida como alternativa ao cancelamento</div></div>
-    <div class="stat"><div class="v">3 em 4</div><div class="l">clientes que pausam acabam voltando depois — é a oferta de maior retorno</div></div>
-    <div class="stat"><div class="v">2,5x</div><div class="l">mais salvamentos com fluxo estruturado (motivo + 1 oferta) vs. desconto genérico solto</div></div>
-  </div>
-
-  <div class="callout acc">
-    <b>Regra da FTC "click-to-cancel"</b> (reaberta em 2026): o cliente cancela em tantos cliques quanto levou pra assinar. Pode existir <b>uma</b> oferta de retenção, mas o cliente precisa poder recusar e seguir em um clique — sem múltiplas telas, sem forçar contato humano pra completar o cancelamento. Prender cancelamento atrás de atendimento é exatamente o padrão que a regra mira.
-  </div>
-
-  <div class="offergrid">
-    <div class="offercard"><div class="m">Pausa</div><div class="o">maior alavanca do mercado — não se aplica direto aqui</div><div class="r">No modelo original (assinatura digital), segura cobrança e produto por N dias. Não faz sentido pra ativo físico alugado — a versão que funciona aqui é salvar a análise de documento já aprovada (item 6 do plano de execução, seção 05).</div></div>
-    <div class="offercard"><div class="m">Downgrade</div><div class="o">plano/produto menor</div><div class="r">Pra "modelo errado" ou "muito caro" — trocar em vez de cancelar.</div></div>
-    <div class="offercard"><div class="m">Desconto temporário</div><div class="o">sensibilidade a preço</div><div class="r">Só quando o motivo é claramente financeiro. Genérico converte pior que oferta direcionada.</div></div>
-    <div class="offercard"><div class="m">Uma oferta só</div><div class="o">nunca em sequência</div><div class="r">Empilhar ofertas reduz conversão e é o padrão que reguladores miram.</div></div>
-  </div>
-</div></section>
-
-<!-- ============ 04 · MODELO IDEAL ============ -->
+<!-- ============ 03 · MODELO IDEAL ============ -->
 <section id="modelo"><div class="wrap">
-  <div class="section-label"><span class="section-num">04</span><span class="section-tag">Como deveríamos fazer</span></div>
+  <div class="section-label"><span class="section-num">03</span><span class="section-tag">Como deveríamos fazer</span></div>
   <h2>Self-service resolve a tela. Chat é reservado.</h2>
   <p class="section-sub">Princípio único: a tela de cancelamento sempre tem um botão de "cancelar mesmo assim" funcional. Chat só entra quando o valor de reter justifica o esforço, ou quando existe risco real que exige checagem humana — nunca como pedágio padrão.</p>
 
@@ -461,7 +404,7 @@ footer a{color:var(--ink-muted);}
       <li><b>Direito de arrependimento (CDC art. 49): 7 dias corridos após a entrega.</b> Cancelamento dentro dessa janela também não tem multa e tem estorno garantido — é obrigação legal, não oferta de retenção. É a linha que separa "cancelamento" de "churn" em todo este relatório.</li>
       <li><b>Todo fluxo de cancelamento pré-envio abre com os mesmos dois modais-padrão:</b> Modal 1, aviso de perda (reativação bloqueada por 180 dias, ofertas exclusivas, suporte prioritário em trocas, seguro do aparelho) e Modal 2, validação de troca ("você assinou o produto ou plano errado?"). As jornadas abaixo só detalham o que acontece depois desses dois.</li>
       <li><b>"Quero trocar" nunca cancela o pedido original</b> — substitui na hora por produto/plano novo. A documentação (identidade, análise de crédito) é do cliente, não do item, então nunca precisa ser reenviada por causa de uma troca.</li>
-      <li><b>"Cancelar mesmo assim" sempre efetiva na hora</b>, sem os 5 dias úteis do processo atual — só vira fila humana quando o motivo cai numa das exceções obrigatórias de chat (seção "Quando o chat é necessário", adiante).</li>
+      <li><b>"Cancelar mesmo assim" sempre efetiva na hora</b>, sem os 5 dias úteis do processo atual — só vira fila humana em risco real (chargeback, fraude, inadimplência) ou a pedido explícito do cliente.</li>
       <li><span class="tbc">A confirmar</span> — ajuste de cobrança quando o produto/plano trocado tem preço diferente do original (crédito, complemento, novo link de pagamento). Precisa alinhar com o financeiro antes de liberar troca como self-service.</li>
       <li><span class="tbc">A confirmar</span> — a partir de doc. aprovada o item já está separado/roteado no logístico; trocar exige liberar essa unidade e gerar nova expedição. Precisa confirmar se o sistema suporta isso em tempo real ou se cai numa fila separada.</li>
     </ul>
@@ -514,34 +457,6 @@ footer a{color:var(--ink-muted);}
     </tbody>
   </table></div>
 
-  <div class="mockrow">
-    <div class="phone">
-      <div class="pill">Área do assinante · self-service</div>
-      <div class="stagebanner">Sua documentação já foi aprovada. Falta pouco pro seu pedido ser enviado.</div>
-      <div class="qtitle">Por que você quer cancelar?</div>
-      <div class="motivo">Mudei de ideia</div>
-      <div class="motivo sel">Minha situação financeira mudou</div>
-      <div class="motivo">Encontrei uma opção melhor</div>
-      <div class="offercard2">
-        <div class="ot">Antes de confirmar</div>
-        <div class="od">Dá pra trocar pro plano de 36 meses agora — sua parcela cai e você mantém a aprovação. Quer ver o novo valor?</div>
-      </div>
-      <div class="btnrow">
-        <div class="btn primary">Ver novo valor</div>
-        <div class="btn ghost">Cancelar mesmo assim</div>
-      </div>
-    </div>
-    <div class="mocknote">
-      <h5>Por que essa tela funciona</h5>
-      <ul>
-        <li>Motivo e submotivo já existem na base — a tela só precisa reagir a eles, não é feature nova de captura de dado.</li>
-        <li>Uma oferta, gerada pelo motivo escolhido — nada de sequência de telas.</li>
-        <li>"Cancelar mesmo assim" tem o mesmo peso visual do botão de oferta — cumpre o requisito de 1 clique da FTC por construção, não como adaptação forçada depois.</li>
-        <li>Nenhum humano é necessário pra esse fluxo acontecer.</li>
-      </ul>
-    </div>
-  </div>
-
   <h3 style="font-size:18px;margin:36px 0 6px;">Jornada detalhada, etapa por etapa</h3>
   <p class="section-sub">A matriz acima mostra a oferta. Aqui está a tela a tela — regra de negócio, ramificação e o que muda no sistema. Começando pela etapa com maior volume de chegada (11.362 pedidos em agosto): pagamento aprovado, documentação ainda não enviada.</p>
 
@@ -576,10 +491,6 @@ footer a{color:var(--ink-muted);}
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="callout acc" style="margin-top:24px;">
-      <b>Benchmark — Mercado Livre:</b> cancelamento antes do envio é resolvido em um clique, self-service, sem esperar contato de vendedor. Ecommerces que deixam o cliente editar o próprio pedido antes do envio têm taxa de troca muito maior que fluxos tradicionais de devolução — quanto mais perto de zero a fricção, mais o cliente escolhe editar em vez de cancelar.
     </div>
 
     <div class="sysrules">
@@ -973,7 +884,7 @@ footer a{color:var(--ink-muted);}
     <div class="sysrules">
       <h5>Regras de sistema desta etapa</h5>
       <ul>
-        <li>Esta é a aplicação direta da regra geral de arrependimento (CDC art. 49, ver regras gerais na seção 04) — é o motivo de essa etapa existir como fluxo próprio.</li>
+        <li>Esta é a aplicação direta da regra geral de arrependimento (CDC art. 49, ver regras gerais no início desta seção) — é o motivo de essa etapa existir como fluxo próprio.</li>
         <li>Sem oferta de troca de modelo pós-entrega nessa janela: trocar exigiria logística reversa completa (recolher o que chegou + expedir outro item), mais custosa que simplesmente processar a devolução.</li>
         <li><span class="tbc">A confirmar</span> — como funciona o código de devolução na prática: é etiqueta de postagem reversa, coleta agendada, ou o cliente leva a algum ponto? Precisa confirmar com logística.</li>
         <li><span class="tbc">A confirmar</span> — se o motivo "defeito técnico" aciona algum fluxo diferente (ex: troca do aparelho em vez de devolução) antes de ir pro cancelamento, ou se hoje tudo cai na mesma esteira de devolução.</li>
@@ -1031,33 +942,11 @@ footer a{color:var(--ink-muted);}
     <p class="srcnote">Sem troca de modelo aqui — o produto já chegou. O caminho é curto de propósito: prazo → motivo específico da devolução → confirmação com código na hora, sem esperar retorno de análise nem contato humano pra ser efetivado.</p>
   </div>
 
-  <h3 style="font-size:18px;margin:36px 0 6px;">Quando o chat é necessário</h3>
-  <p class="section-sub">Duas famílias bem diferentes: chat por <span style="color:var(--accent)">valor</span> (vale o esforço de tentar reter melhor) e chat por <span style="color:var(--critical)">risco</span> (o cancelamento não pode ser efetivado sem checagem). Só a segunda bloqueia o self-service.</p>
-
-  <div class="tblwrap"><table>
-    <thead><tr><th>Situação</th><th>Chat necessário?</th><th>Por quê</th><th>Quem trata</th></tr></thead>
-    <tbody>
-      <tr><td>Qualquer motivo, oferta de self-service recusada</td><td><span class="tag self">Não bloqueia</span></td><td>Cancelamento é efetivado na hora. Sem exceção.</td><td>Ninguém — automático</td></tr>
-      <tr><td>Doc. aprovada, motivo financeiro, recusou oferta</td><td><span class="tag watch">Opcional, assíncrono</span></td><td>Maior taxa de solicitação do funil e ela está subindo — vale uma tentativa a mais, mas depois do cancelamento já confirmado na tela</td><td>IA manda mensagem no WhatsApp em até 1h, sem travar nada</td></tr>
-      <tr><td>Documento recusado sem explicação clara</td><td><span class="tag chat">Obrigatório</span></td><td>Não é objeção de retenção, é erro operacional que precisa de correção</td><td>Time de documentação, prioridade</td></tr>
-      <tr><td>Chargeback / disputa de pagamento</td><td><span class="tag chat">Obrigatório</span></td><td>Risco financeiro, decisão não pode ser automática</td><td>Humano, financeiro/antifraude</td></tr>
-      <tr><td>Suspeita de fraude</td><td><span class="tag chat">Obrigatório</span></td><td>Risco de segurança</td><td>Humano, antifraude</td></tr>
-      <tr><td>Inadimplência / bloqueio</td><td><span class="tag chat">Obrigatório</span></td><td>Precisa de checagem, mas <b>sempre comunicado ao cliente</b> — nunca silencioso</td><td>Humano, com status visível pro cliente</td></tr>
-      <tr><td>Motivo = insatisfação com atendimento</td><td><span class="tag chat">Obrigatório</span></td><td>Sintoma de outro processo quebrado, não é objeção comercial</td><td>Humano, prioridade alta</td></tr>
-      <tr><td>Pedido já teve 1+ revogação anterior (reincidência)</td><td><span class="tag chat">Obrigatório</span></td><td>Self-service/IA já tentaram uma vez e não resolveram — insistir de novo sozinho é o padrão que gera os 62,9% de reincidência</td><td>Humano, revisão de caso</td></tr>
-      <tr><td>Time quer revogar uma solicitação de CHURN (não cancelamento)</td><td><span class="tag chat">Obrigatório</span></td><td>Cliente já decidiu depois de usar — não é proibido tentar reter, mas precisa ficar registrado o motivo da conversa. É a lacuna que hoje impede provar que a revogação foi legítima</td><td>Humano registra o motivo antes de revogar, sempre</td></tr>
-      <tr><td>Cliente pede humano explicitamente</td><td><span class="tag chat">Obrigatório</span></td><td>Direito do cliente, sempre atendido</td><td>Humano</td></tr>
-    </tbody>
-  </table></div>
-
-  <div class="callout acc">
-    Resultado esperado: a esmagadora maioria das <span class="k">2.862</span> solicitações de setembro nunca precisaria tocar em atendimento humano. Pelas regras acima, só chargeback, fraude, inadimplência, documento recusado, insatisfação, reincidência e revogação de churn sem motivo registrado forçam chat — o resto é tela.
-  </div>
 </div></section>
 
-<!-- ============ 05 · APLICAR ============ -->
+<!-- ============ 04 · APLICAR ============ -->
 <section id="aplicar"><div class="wrap">
-  <div class="section-label"><span class="section-num">05</span><span class="section-tag">Como aplicar</span></div>
+  <div class="section-label"><span class="section-num">04</span><span class="section-tag">Como aplicar</span></div>
   <h2>Ordem de execução</h2>
   <p class="section-sub">Prioridade por impacto imediato e menor dependência de construir algo novo.</p>
 
@@ -1115,7 +1004,7 @@ footer a{color:var(--ink-muted);}
       <div class="pn">8</div>
       <div style="flex:1">
         <div class="pt">Chat reservado, só nos gatilhos definidos<span class="badge low">Depende dos itens 2 e 5</span></div>
-        <div class="pd">Última etapa — só faz sentido depois que a tela resolve o volume padrão. Reduz carga de analista naturalmente, sem precisar de meta de produtividade.</div>
+        <div class="pd">Última etapa — só faz sentido depois que a tela resolve o volume padrão.</div>
       </div>
     </div>
   </div>
@@ -1188,34 +1077,6 @@ footer a{color:var(--ink-muted);}
       hit.addEventListener('mousemove', function(e){
         var r = wrap.getBoundingClientRect();
         showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0].replace('\n',' '), 'ago '+d[1].toFixed(2)+'% · set '+d[2].toFixed(2)+'%');
-      });
-      hit.addEventListener('mouseleave', function(){ hideTip(tt); });
-      g.appendChild(hit);
-    });
-  })();
-
-  /* ---- Chart 6: taxa de churn mensal, ago vs set ---- */
-  (function(){
-    var data = [["Agosto (fechado)",0.57,'var(--ink-muted)'],["Setembro (parcial)",0.85,'var(--critical)']];
-    var g = document.getElementById('c6bars');
-    var tt = ensureTooltip('c6wrap');
-    var wrap = document.getElementById('c6wrap');
-    var maxv = 1.0, left = 150, right = 600, plotW = right-left;
-    data.forEach(function(d,i){
-      var y = 20 + i*70;
-      var w = (d[1]/maxv)*plotW;
-      var label = el('text',{x:left-12,y:y+22,'text-anchor':'end',fill:'#f3faf6','font-size':'13'});
-      label.textContent = d[0];
-      g.appendChild(label);
-      var bar = el('rect',{x:left,y:y,width:w,height:34,rx:5,fill:d[2]});
-      g.appendChild(bar);
-      var val = el('text',{x:left+w+10,y:y+22,fill:'#f3faf6','font-size':'13','font-family':'IBM Plex Mono, monospace','font-weight':'600'});
-      val.textContent = d[1].toFixed(2)+'%';
-      g.appendChild(val);
-      var hit = el('rect',{x:left-6,y:y-6,width:plotW+60,height:46,class:'bar-hit'});
-      hit.addEventListener('mousemove', function(e){
-        var r = wrap.getBoundingClientRect();
-        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, d[0], 'taxa de churn mensal '+d[1].toFixed(2)+'%');
       });
       hit.addEventListener('mouseleave', function(){ hideTip(tt); });
       g.appendChild(hit);
