@@ -470,11 +470,7 @@ footer a{color:var(--ink-muted);}
       </tr>
       <tr>
         <td><b>Entregue, até 7 dias</b><div class="srcnote">cancelamento, taxa 2,54% · ret. líquida 14,1%</div></td>
-        <td>Nudge leve — ainda pode ser mudança de ideia</td>
-        <td>Renegociação temporária de valor, uma vez</td>
-        <td>Sem troca de modelo pós-entrega — só desconto ou nada</td>
-        <td>FAQ leve</td>
-        <td>Sem oferta — cancela em 1 clique</td>
+        <td colspan="5">Direito de arrependimento (CDC art. 49) — sem oferta condicionada. Tela captura o motivo específico da devolução (produto errado, defeito técnico, financeiro, outro) e segue direto pra confirmação, com código de devolução gerado na hora</td>
       </tr>
       <tr>
         <td><b>Entregue, depois de 7 dias</b><div class="srcnote" style="color:var(--critical)">CHURN, taxa mensal 0,85% (quase dobrou) · ret. líquida 10,6%</div></td>
@@ -935,6 +931,89 @@ footer a{color:var(--ink-muted);}
       </div>
     </div>
     <p class="srcnote">FAQ e suporte ficam disponíveis pra dúvida ou pra um caso excepcional — mas nenhum dos dois abre um caminho de cancelamento aqui. A saída padrão de quem não quer mais o produto é recusar na entrega, não cancelar em trânsito.</p>
+  </div>
+
+  <div class="journey">
+    <div class="journey-head"><span class="journey-num">05</span><span class="journey-title">Cancelamento dentro do prazo de arrependimento (entregue há até 7 dias)</span></div>
+    <p class="journey-elig"><b>Validação de elegibilidade:</b> esse fluxo se aplica a pedidos com status "Entregue" há até 7 dias corridos da data de entrega — dentro do prazo legal de arrependimento (CDC, art. 49).</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>
+        <div class="step-body">Cliente recebe o pedido. A partir da data de entrega, começa a contar o prazo de 7 dias corridos pra decidir entre continuar ou devolver.</div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
+        <div class="step-body"><b>Modal 1 — aviso do prazo</b>: "Seu produto foi entregue" + explica que o cliente tem até o dia Y (entrega + 7 dias corridos) pra avaliar. <span class="btnlabel">Continuar com minha assinatura</span> em destaque, <span class="btnlabel">Me arrependi de assinar</span> com menos destaque.</div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
+        <div class="step-body"><b>Modal 2 — motivo da devolução</b> (novo, só existe aqui): opções específicas de pós-entrega — chegou o produto errado, produto com defeito técnico, problema financeiro, outro motivo.</div>
+      </div>
+      <div class="step">
+        <div class="step-rail"><div class="step-num">4</div></div>
+        <div class="step-body"><b>Modal 3 — orientação de devolução</b>: explica o processo de devolução do aparelho antes de confirmar. <span class="btnlabel">Como devolver meu produto</span> (FAQ) e <span class="btnlabel">Sim, quero cancelar</span> — confirma na hora e gera o código de devolução.</div>
+      </div>
+    </div>
+
+    <div class="sysrules">
+      <h5>Regras de sistema</h5>
+      <ul>
+        <li>Prazo de 7 dias corridos é direito legal de arrependimento em compra à distância (CDC, art. 49) — não é oferta de retenção, é obrigação. Sem multa, estorno garantido.</li>
+        <li>Sem oferta de troca de modelo pós-entrega nessa janela: trocar exigiria logística reversa completa (recolher o que chegou + expedir outro item), mais custosa que simplesmente processar a devolução.</li>
+        <li><span class="tbc">A confirmar</span> — como funciona o código de devolução na prática: é etiqueta de postagem reversa, coleta agendada, ou o cliente leva a algum ponto? Precisa confirmar com logística.</li>
+        <li><span class="tbc">A confirmar</span> — se o motivo "defeito técnico" aciona algum fluxo diferente (ex: troca do aparelho em vez de devolução) antes de ir pro cancelamento, ou se hoje tudo cai na mesma esteira de devolução.</li>
+      </ul>
+    </div>
+
+    <div class="flowcol">
+      <div class="modalmock" style="width:270px;">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon ok">📦</div>
+        <div class="modalmock-title">Seu produto foi entregue</div>
+        <div class="modalmock-body">Você tem até <b>7 dias corridos</b> após a entrega pra avaliar o produto e decidir: continuar com a assinatura ou devolver.</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item"><span>Entregue em</span><span class="mm-price">20/09</span></div>
+          <div class="modalmock-item"><span>Prazo pra decidir até</span><span class="mm-price">27/09</span></div>
+        </div>
+        <div class="modalmock-btn text">Me arrependi de assinar</div>
+      </div>
+      <div class="flowarrow down">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-title" style="text-align:left">Por que você quer devolver?</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item"><span>Chegou o produto errado</span><span></span></div>
+          <div class="modalmock-item sel"><span>Produto com defeito técnico</span><span>✓</span></div>
+          <div class="modalmock-item"><span>Problema financeiro</span><span></span></div>
+          <div class="modalmock-item"><span>Outro motivo</span><span></span></div>
+        </div>
+        <div class="modalmock-btn text">Continuar</div>
+      </div>
+      <div class="flowarrow down">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-title" style="text-align:left">Cancelar assinatura</div>
+        <div class="modalmock-body" style="text-align:left">Vamos te orientar sobre a devolução do aparelho: embalagem, coleta e prazo. Assim que confirmar, o código de devolução é gerado na hora.</div>
+        <div class="modalmock-btn primary">Continuar com minha assinatura</div>
+        <div class="modalmock-btn outline">Como devolver meu produto</div>
+        <div class="modalmock-btn text">Sim, quero cancelar</div>
+      </div>
+      <div class="flowarrow down">→</div>
+      <div class="modalmock">
+        <div class="modalmock-close">×</div>
+        <div class="modalmock-icon ok">✓</div>
+        <div class="modalmock-title">Cancelamento confirmado</div>
+        <div class="modalmock-body">Sua assinatura foi cancelada agora. O estorno é processado automaticamente após a devolução do aparelho.</div>
+        <div class="modalmock-list">
+          <div class="modalmock-item"><span>Código de devolução</span><span class="mm-price">DEV-48213</span></div>
+        </div>
+        <div class="modalmock-btn primary">OK, fechar</div>
+      </div>
+    </div>
+    <p class="srcnote">Sem troca de modelo aqui — o produto já chegou. O caminho é curto de propósito: prazo → motivo específico da devolução → confirmação com código na hora, sem esperar retorno de análise nem contato humano pra ser efetivado.</p>
   </div>
 
   <h3 style="font-size:18px;margin:36px 0 6px;">Quando o chat é necessário</h3>
