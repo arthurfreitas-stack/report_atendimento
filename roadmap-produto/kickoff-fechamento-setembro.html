@@ -165,6 +165,10 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .badge.eng{background:var(--accent-soft);color:var(--accent-dim);}
 .badge.jur{background:var(--warn-soft);color:var(--warn);}
 .badge.dado{background:var(--critical-soft);color:var(--critical);}
+.badge.dup{background:var(--blue-soft);color:var(--blue);}
+.badge.ops{background:var(--surface-alt);color:var(--ink-secondary);}
+.pipenote{background:var(--surface-alt);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:10px;padding:14px 16px;margin:16px 0 26px;font-size:13px;line-height:1.65;color:var(--ink-secondary);}
+.pipenote b{color:var(--ink);}
 
 .alignlist{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
 .alignrow{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6;color:var(--ink-secondary);}
@@ -524,12 +528,19 @@ footer a{color:var(--ink-muted);}
   <h2>Tasks de outubro</h2>
   <p class="section-sub">Puxadas das 3 specs já fechadas — execução, não desenho novo.</p>
 
+  <div class="pipenote"><b>Pra subir no Pipe CX:</b> cada linha abaixo é candidata a card novo. Cruzei com o que aparece hoje no seu board — onde achei sobreposição clara, deixei a nota <span class="badge dup">Já existe?</span> pra você conferir antes de duplicar: CX-0055 parece ser a task B-6 (painel de entrega); CX-0056 (migrar o chat pro app, já Em Andamento) é a mesma frente da seção D — as tasks D são pré-requisito/desdobramento dela, não um card concorrente; CX-0047 cobre o alinhamento de comunicação de plano de 36 meses na seção 07; CX-0030 (tempo mínimo de upgrade, já concluído) resolve só a regra de carência — o fluxo self-service completo de A-1 ainda não existe. Não tenho acesso direto ao seu pipe pra conferir o status atual de cada card, então trate essas marcações como ponto de partida pra revisão sua, não como fato fechado.</div>
+
   <h3><span class="n">A</span>Upgrade self-service</h3>
   <div class="tasklist">
     <div class="taskrow"><div class="tn">1</div><div><div class="tt">Fluxo self-service de upgrade no App/Site<span class="badge eng">Eng</span></div><div class="td">CTA "Fazer upgrade", validação de elegibilidade em tempo real, vitrine filtrada por categoria com cupom aplicado, endereço/plano/pagamento e confirmação sem sair do app/site.</div></div></div>
     <div class="taskrow"><div class="tn">2</div><div><div class="tt">Ferramenta de upgrade assistido no allu.office<span class="badge eng">Eng</span></div><div class="td">Aba "Upgrades" no pedido, busca por CPF/ID/nome, link de pagamento com preço personalizado por CPF.</div></div></div>
     <div class="taskrow"><div class="tn">3</div><div><div class="tt">Geração automática do código de devolução do ativo antigo<span class="badge eng">Eng</span></div><div class="td">Disparo no evento de entrega do novo ativo, prazo de 3 dias úteis.</div></div></div>
     <div class="taskrow"><div class="tn">4</div><div><div class="tt">Atualizar Termos de Uso — upgrade por categoria<span class="badge jur">Jurídico</span></div><div class="td">Cláusulas 2.15–2.19: upgrade pra mesma categoria, cupom no lugar do cálculo de diferença, estorno/cancelamento previstos.</div></div></div>
+    <div class="taskrow"><div class="tn">5</div><div><div class="tt">Cupom de upgrade configurável por campanha<span class="badge eng">Eng</span></div><div class="td">Percentual do desconto (hoje 5% ou 10%) parametrizável no allu.office, aplicado igual no self-service e no fluxo assistido.</div></div></div>
+    <div class="taskrow"><div class="tn">6</div><div><div class="tt">Estorno automático da assinatura antiga durante o upgrade<span class="badge eng">Eng</span></div><div class="td">Toda cobrança da assinatura atual feita entre o pagamento do upgrade e a entrega do novo produto é estornada automaticamente.</div></div></div>
+    <div class="taskrow"><div class="tn">7</div><div><div class="tt">Cancelamento self-service do pedido de upgrade<span class="badge eng">Eng</span></div><div class="td">Cliente cancela a qualquer momento antes da entrega, sem efeito na assinatura atual; valor pago pelo upgrade é estornado.</div></div></div>
+    <div class="taskrow"><div class="tn">8</div><div><div class="tt">Flag de "contrato antigo" no allu.office<span class="badge eng">Eng</span></div><div class="td">Identifica clientes fora da nova regra de carência de 12 meses (CX-0030) pra liberar a exceção de upgrade sem análise manual caso a caso.</div></div></div>
+    <div class="taskrow"><div class="tn">9</div><div><div class="tt">Instrumentação de métricas do funil de upgrade<span class="badge eng">Eng</span></div><div class="td">Conversão do funil, % self-service vs. assistido, TMA antes/depois, taxa de devolução do ativo antigo no prazo, ticket médio incremental.</div></div></div>
   </div>
 
   <h3><span class="n">B</span>Logística de devoluções</h3>
@@ -539,9 +550,14 @@ footer a{color:var(--ink-muted);}
     <div class="taskrow"><div class="tn">3</div><div><div class="tt">Automação de reenvio por falha de entrega<span class="badge eng">Eng</span></div><div class="td">Mensagem + Forms de confirmação de endereço; sem resposta, cancela e devolve ao estoque.</div></div></div>
     <div class="taskrow"><div class="tn">4</div><div><div class="tt">Validação de endereço no cadastro/checkout<span class="badge eng">Eng</span></div><div class="td">Bloquear caracteres especiais, campo obrigatório.</div></div></div>
     <div class="taskrow"><div class="tn">5</div><div><div class="tt">Estorno automático de cobranças durante a devolução<span class="badge eng">Eng</span></div><div class="td">Comparar data da cobrança com data de postagem na validação do recebimento.</div></div></div>
-    <div class="taskrow"><div class="tn">6</div><div><div class="tt">Painel de entrega, expedição e atraso<span class="badge eng">Eng</span></div><div class="td">Visão consolidada de pedidos em expedição, atraso, aguardando endereço e devolvidos por flag.</div></div></div>
+    <div class="taskrow"><div class="tn">6</div><div><div class="tt">Painel de entrega, expedição e atraso<span class="badge eng">Eng</span><span class="badge dup">Já existe?</span></div><div class="td">Visão consolidada de pedidos em expedição, atraso, aguardando endereço e devolvidos por flag. Parece coincidir com o CX-0055 do pipe — conferir antes de recriar.</div></div></div>
     <div class="taskrow"><div class="tn">7</div><div><div class="tt">Engine de cálculo da nova TDA por faixa de contrato<span class="badge eng">Eng</span></div><div class="td">12/24/36 meses = 40/30/20% do valor remanescente, mesma engine app/site e allu.office.</div></div></div>
     <div class="taskrow"><div class="tn">8</div><div><div class="tt">Atualizar cláusula 6.6 dos Termos de Uso (TDA)<span class="badge jur">Jurídico</span></div><div class="td">Refletir a tabela de multa por faixa de tempo cumprido.</div></div></div>
+    <div class="taskrow"><div class="tn">9</div><div><div class="tt">Exibir o valor da multa (TDA) na tela de cancelamento<span class="badge eng">Eng</span></div><div class="td">Mostrar percentual e valor calculado antes da confirmação — hoje a tela não deixa isso claro pro cliente.</div></div></div>
+    <div class="taskrow"><div class="tn">10</div><div><div class="tt">Remover a negociação de multa por 1 mensalidade<span class="badge eng">Eng</span></div><div class="td">Tirar a opção do self-service e do allu.office — a nova regra de TDA por faixa não prevê mais essa redução.</div></div></div>
+    <div class="taskrow"><div class="tn">11</div><div><div class="tt">SLAs de avaliação do ativo devolvido, por cenário<span class="badge eng">Eng</span></div><div class="td">Padrão (3 dias úteis), sem ligar/sem serial visível (7 dias úteis) e bloqueado (3 dias úteis + Forms de desbloqueio) — com aviso proativo ao cliente em cada exceção.</div></div></div>
+    <div class="taskrow"><div class="tn">12</div><div><div class="tt">Implementar as 4 comunicações automáticas de devolução<span class="badge eng">Eng</span></div><div class="td">Recebimento do pedido, falha de entrega (Forms de endereço), ativo devolvido com problema e ativo devolvido bloqueado — via app/push/e-mail, registradas no histórico do pedido.</div></div></div>
+    <div class="taskrow"><div class="tn">13</div><div><div class="tt">Reescrever o manual de devolução<span class="badge ops">Conteúdo</span></div><div class="td">Instruções claras sobre bateria (não remover), acessórios originais e embalagem — reduz "devolvido com divergência" na origem.</div></div></div>
   </div>
 
   <h3><span class="n">C</span>Cancelamento self-service</h3>
@@ -554,12 +570,14 @@ footer a{color:var(--ink-muted);}
   </div>
 
   <h3><span class="n">D</span>Canal único de atendimento</h3>
+  <p class="section-sub" style="margin-top:-6px;font-size:13px;">Essas 6 tasks são desdobramento técnico do CX-0056 (migrar o chat pro app, já Em Andamento no pipe) — não é um card novo concorrente, é o que falta pra fechar essa frente.</p>
   <div class="tasklist">
     <div class="taskrow"><div class="tn">1</div><div><div class="tt">Identificação de canal na Intercom<span class="badge eng">Eng</span></div><div class="td">Atendente enxerga, direto na conversa, se o cliente está no app, no site ou no WhatsApp — hoje não dá pra diferenciar.</div></div></div>
     <div class="taskrow"><div class="tn">2</div><div><div class="tt">Histórico de conversas abertas do cliente entre canais<span class="badge eng">Eng</span></div><div class="td">Atendente visualiza, na mesma tela, todos os chats abertos daquele cliente — app/site e WhatsApp — pra identificar duplicidade antes de responder, não depois.</div></div></div>
     <div class="taskrow"><div class="tn">3</div><div><div class="tt">Resumo automático de histórico do cliente, gerado por IA<span class="badge eng">Eng</span></div><div class="td">Com o cliente autenticado no app/site, salvar histórico de conversas, chats e solicitações por CONTA/USUÁRIO (não por número de telefone) e gerar um diagnóstico em tempo real de tudo que ele já tratou na vida ativa dele — pro atendente saber como proceder assim que abre o atendimento.</div></div></div>
     <div class="taskrow"><div class="tn">4</div><div><div class="tt">Trava de 1 chat de suporte por vez no app/site<span class="badge eng">Eng</span></div><div class="td">Cliente só abre um novo chat depois de fechar o anterior — impede a duplicidade que a própria plataforma causaria se não tivesse essa regra.</div></div></div>
     <div class="taskrow"><div class="tn">5</div><div><div class="tt">Redirecionamento automático de suporte no WhatsApp<span class="badge eng">Eng</span></div><div class="td">Fluxo de IA detecta intent de suporte em conversas de Recuperação/Vendas no WhatsApp e responde só com link pro chat do app/site — nunca resolve o assunto ali.</div></div></div>
+    <div class="taskrow"><div class="tn">6</div><div><div class="tt">Lógica de encerramento e retorno de ticket<span class="badge eng">Eng</span></div><div class="td">Todo chat fecha como resolvido ou não resolvido. Não resolvido volta pro mesmo atendente. Resolvido — ou 7 dias sem retorno do cliente — a conversa volta pra fila da IA.</div></div></div>
   </div>
 </div></section>
 
@@ -581,9 +599,13 @@ footer a{color:var(--ink-muted);}
     <div class="alignrow"><b>Estorno automático na devolução: gatilho direto, ou aprovação manual do financeiro?</b><span class="who">Dono sugerido: Financeiro + Logística</span></div>
     <div class="alignrow"><b>Onde mora o painel de entrega/expedição/atraso</b> — allu.office, allu.flow, ou tela nova.<span class="who">Dono sugerido: Tecnologia</span></div>
     <div class="alignrow"><b>Valor de referência pra multa/ressarcimento</b> quando o cliente não desbloqueia o aparelho devolvido bloqueado.<span class="who">Dono sugerido: Jurídico + Financeiro</span></div>
-    <div class="alignrow"><b>Validar com a Yngredy a comunicação de mudança de plano pros clientes de 36 meses</b> antes de desenhar a comunicação da nova TDA por faixa pra esse público.<span class="who">Dono sugerido: CRM/CX</span></div>
+    <div class="alignrow"><b>Validar com a Yngredy a comunicação de mudança de plano pros clientes de 36 meses</b> antes de desenhar a comunicação da nova TDA por faixa pra esse público. Pode já ser o CX-0047 do pipe — conferir antes de abrir de novo.<span class="who">Dono sugerido: CRM/CX</span></div>
     <div class="alignrow"><b>Ajuste de cobrança em troca de plano/produto com preço diferente</b> — alinhar com financeiro antes de liberar troca como self-service.<span class="who">Dono sugerido: Financeiro</span></div>
     <div class="alignrow"><b>Trocar de produto/plano em doc. aprovada exige liberar a unidade já roteada</b> — confirmar com logística se o sistema suporta isso em tempo real.<span class="who">Dono sugerido: Logística + Tecnologia</span></div>
+    <div class="alignrow new"><b>Recusa de recebimento em trânsito</b> — definir operacionalmente quem processa a devolução com a transportadora, em quanto tempo sai o estorno, e se isso é tratado como cancelamento ou como um fluxo próprio de recusa.<span class="who">Dono sugerido: Logística</span></div>
+    <div class="alignrow new"><b>Exceção do suporte pra interromper um envio antes da entrega</b> — endereço errado, suspeita de fraude — fora do fluxo padrão do cliente.<span class="who">Dono sugerido: Logística + CX</span></div>
+    <div class="alignrow new"><b>Mecânica do código de devolução pós-entrega</b> — etiqueta de postagem reversa, coleta agendada, ou o cliente leva a um ponto físico.<span class="who">Dono sugerido: Logística</span></div>
+    <div class="alignrow new"><b>Defeito técnico dentro do prazo de arrependimento</b> — confirmar se aciona troca do aparelho em vez de devolução, ou se cai na mesma esteira hoje.<span class="who">Dono sugerido: Logística + Produto</span></div>
     <div class="alignrow"><b>Queda de FCR/CSAT em Winnie e Giselle</b> — entender causa (volume, motivo de contato, algo pontual) antes de virar tendência do time.<span class="who">Dono sugerido: Gestão do time de Suporte</span></div>
     <div class="alignrow new"><b>Canal único — como tratar quem resiste a baixar o app?</b> Parte da base vai preferir continuar só no WhatsApp. Definir se existe um fallback (ex.: link do chat abre em navegador sem precisar instalar o app) ou se a regra é rígida desde o início.<span class="who">Dono sugerido: Arthur / Produto</span></div>
     <div class="alignrow new"><b>Canal único — critério técnico do redirecionamento automático</b> — qual a régua de confiança da IA pra classificar "isso é assunto de suporte" dentro de uma conversa de Recuperação/Vendas no WhatsApp, sem redirecionar clientes errados ou perder intenção de compra.<span class="who">Dono sugerido: Tecnologia</span></div>
