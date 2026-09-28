@@ -128,6 +128,20 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .pill.done{border-color:var(--accent-dim);color:var(--accent-dim);background:var(--accent-soft);}
 .pill.todo{border-color:var(--critical);color:var(--critical);background:var(--critical-soft);}
 
+.priobox{background:var(--surface);border:1px solid var(--blue);border-left:4px solid var(--blue);border-radius:14px;padding:22px 22px 18px;margin:20px 0 28px;box-shadow:0 1px 2px rgba(20,23,15,.04);}
+.priobox-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap;}
+.priobox-badge{font-family:'IBM Plex Mono',monospace;color:#fff;background:var(--blue);font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:999px;text-transform:uppercase;}
+.priobox-title{font-family:'Sora',sans-serif;font-size:19px;font-weight:700;color:var(--ink);}
+.priobox p{font-size:14px;line-height:1.65;color:var(--ink-secondary);margin:10px 0;}
+.priobox p b{color:var(--ink);}
+.priobox h5{font-size:13px;font-weight:700;color:var(--blue);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.03em;}
+.priobox ul{margin:0;padding-left:20px;font-size:14px;line-height:1.7;color:var(--ink-secondary);}
+.priobox ul li b{color:var(--ink);}
+.priobox .flowsteps{display:flex;flex-direction:column;gap:6px;margin:10px 0;}
+.priobox .flowstep{background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:9px 13px;font-size:13px;color:var(--ink-secondary);}
+.priobox .flowstep b{color:var(--ink);}
+.pill.blue{border-color:var(--blue);color:var(--blue);background:var(--blue-soft);}
+
 .attcard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,23,15,.04);}
 .attcard-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
 .attcard-head .name{font-family:'Sora',sans-serif;font-size:15.5px;font-weight:700;color:var(--ink);}
@@ -167,7 +181,7 @@ footer a{color:var(--ink-muted);}
 <nav class="topnav"><div class="topnav-inner">
   <a href="#diagnostico">01 · Setembro</a>
   <a href="#comparacao">02 · Agosto vs. setembro</a>
-  <a href="#dores">03 · As 3 dores</a>
+  <a href="#dores">03 · Canal único + dores</a>
   <a href="#atendentes">04 · Por atendente</a>
   <a href="#conclusoes">05 · Conclusões</a>
   <a href="#tasks">06 · Tasks</a>
@@ -292,8 +306,38 @@ footer a{color:var(--ink-muted);}
 <!-- ============ 03 · AS 3 DORES ============ -->
 <section id="dores"><div class="wrap">
   <div class="section-label"><span class="section-num">03</span><span class="section-tag">Onde o cliente sente mais</span></div>
-  <h2>As três dores da operação</h2>
-  <p class="section-sub">As três já têm spec ou desenho pronto. Nenhuma foi implementada ainda.</p>
+  <h2>A dor estrutural e as três dores da operação</h2>
+  <p class="section-sub">Uma dor de raiz (fragmentação de canal) mais três dores específicas de fluxo. As três já têm spec ou desenho pronto — nenhuma foi implementada ainda. A estrutural é conceito novo, nascido neste kickoff.</p>
+
+  <div class="priobox">
+    <div class="priobox-head"><span class="priobox-badge">Plano de outubro · estrutural</span><span class="priobox-title">Canal único de atendimento: tudo passa a ser resolvido no app/site</span></div>
+    <p>Hoje, não importa em qual número de WhatsApp o cliente escreve — cai tudo no mesmo fluxo de IA, sem diferenciação de canal, número ou origem pro atendente. Na prática, o número usado pelo cliente é só um "front": o fluxo e as regras são idênticos em todos os canais.</p>
+    <p><b>O problema que isso causa:</b> o mesmo cliente acaba com mais de uma conversa aberta ao mesmo tempo — às vezes porque ele mesmo chama em números diferentes achando que está "voltando a falar com a Allu"; às vezes porque a própria Allu causa isso (um comunicado sai por outro número, o cliente responde lá, e nasce uma 3ª conversa sem querer). O time de CX então precisa identificar manualmente que é o mesmo cliente e encerrar o atendimento "duplicado" — o que também abre risco real de dois atendentes (ou IA e humano ao mesmo tempo) respondendo a mesma pessoa em paralelo, com informações conflitantes.</p>
+    <div class="evidence"><div class="ev">Hoje não existe identidade de cliente unificada entre canais nos nossos dados — validado no BigQuery: o campo de identidade do Intercom (<span style="font-family:'IBM Plex Mono',monospace">user_id</span>) é por contato/sessão daquele canal específico, não por conta Allu autenticada</div></div>
+    <p style="font-size:12.5px;color:var(--ink-muted);margin-top:-4px">Por isso não dá pra medir hoje, com precisão, quantas conversas duplicadas isso gera por mês — é exatamente essa lacuna de identidade que a proposta abaixo resolve.</p>
+
+    <h5>Proposta</h5>
+    <div class="flowsteps">
+      <div class="flowstep"><b>Suporte/CX centralizado no app/site</b> — igual banco digital: o cliente resolve suporte logado na própria conta, nunca pelo WhatsApp.</div>
+      <div class="flowstep"><b>WhatsApp mantido só pra Recuperação e Vendas</b> — fluxos que a Allu inicia (cobrança, recorrência, oferta), não o cliente.</div>
+      <div class="flowstep"><b>Suporte mencionado no WhatsApp → redireciona, nunca trata</b> — resposta automática com link direto pro chat do app/site.</div>
+      <div class="flowstep"><b>1 chat por vez</b> — cliente não abre um 2º chat de suporte enquanto o 1º estiver aberto. Só abre outro depois de fechar o anterior.</div>
+      <div class="flowstep"><b>Comunicados continuam no WhatsApp, só que informativos</b> — CTA sempre de "acompanhar no app/site", nunca de "responder aqui".</div>
+    </div>
+
+    <h5>Impacto esperado</h5>
+    <ul>
+      <li>Elimina a duplicidade estrutural de conversas do mesmo cliente em canais/números diferentes.</li>
+      <li>Fim do trabalho manual do time de CX de identificar e encerrar atendimentos duplicados.</li>
+      <li>Cliente autenticado = identidade única por conta (não mais por número de telefone) — habilita histórico real e consolidado por cliente.</li>
+      <li>Reduz o risco de dois atendentes, ou IA e humano, respondendo o mesmo cliente ao mesmo tempo com informações conflitantes.</li>
+      <li>Atendimento passa a rodar em ambiente próprio (app/site) em vez de depender só da infraestrutura da Meta — mais controle e mais dado nosso.</li>
+      <li>Efeito colateral positivo: empurra adoção do app, o que já é pré-requisito de outras duas frentes deste documento (upgrade e cancelamento self-service).</li>
+    </ul>
+
+    <div class="statusrow"><span class="pill blue">Conceito definido neste kickoff</span><span class="pill todo">Spec detalhada: a fazer</span><span class="pill todo">Implementação: 0%</span></div>
+    <div class="bench"><b>Benchmark:</b> bancos digitais e fintechs (Nubank, Inter, C6 e similares) resolvem a imensa maioria do atendimento dentro do próprio app — WhatsApp/SMS funcionam só como canal de notificação e outbound, nunca como canal primário de suporte. É o padrão de quem depende de autenticação segura e quer controle do próprio dado, em vez de operar sobre a infraestrutura de um terceiro.</div>
+  </div>
 
   <div class="chartcard">
     <h4>Cancelamento concentra quase o triplo do volume de Logística ou Upgrade</h4>
@@ -508,6 +552,15 @@ footer a{color:var(--ink-muted);}
     <div class="taskrow"><div class="tn">4</div><div><div class="tt">Registrar motivo em toda revogação de churn feita pelo time<span class="badge eng">Eng</span></div><div class="td">Sem esse registro, não dá pra saber se a resposta da allu ajuda ou represa o churn.</div></div></div>
     <div class="taskrow"><div class="tn">5</div><div><div class="tt">Cumprir o prazo de 5 dias úteis já comunicado ao cliente<span class="badge eng">Eng</span></div><div class="td">12,4% das solicitações furam o prazo, pior caso 17 dias úteis.</div></div></div>
   </div>
+
+  <h3><span class="n">D</span>Canal único de atendimento</h3>
+  <div class="tasklist">
+    <div class="taskrow"><div class="tn">1</div><div><div class="tt">Identificação de canal na Intercom<span class="badge eng">Eng</span></div><div class="td">Atendente enxerga, direto na conversa, se o cliente está no app, no site ou no WhatsApp — hoje não dá pra diferenciar.</div></div></div>
+    <div class="taskrow"><div class="tn">2</div><div><div class="tt">Histórico de conversas abertas do cliente entre canais<span class="badge eng">Eng</span></div><div class="td">Atendente visualiza, na mesma tela, todos os chats abertos daquele cliente — app/site e WhatsApp — pra identificar duplicidade antes de responder, não depois.</div></div></div>
+    <div class="taskrow"><div class="tn">3</div><div><div class="tt">Resumo automático de histórico do cliente, gerado por IA<span class="badge eng">Eng</span></div><div class="td">Com o cliente autenticado no app/site, salvar histórico de conversas, chats e solicitações por CONTA/USUÁRIO (não por número de telefone) e gerar um diagnóstico em tempo real de tudo que ele já tratou na vida ativa dele — pro atendente saber como proceder assim que abre o atendimento.</div></div></div>
+    <div class="taskrow"><div class="tn">4</div><div><div class="tt">Trava de 1 chat de suporte por vez no app/site<span class="badge eng">Eng</span></div><div class="td">Cliente só abre um novo chat depois de fechar o anterior — impede a duplicidade que a própria plataforma causaria se não tivesse essa regra.</div></div></div>
+    <div class="taskrow"><div class="tn">5</div><div><div class="tt">Redirecionamento automático de suporte no WhatsApp<span class="badge eng">Eng</span></div><div class="td">Fluxo de IA detecta intent de suporte em conversas de Recuperação/Vendas no WhatsApp e responde só com link pro chat do app/site — nunca resolve o assunto ali.</div></div></div>
+  </div>
 </div></section>
 
 <!-- ============ 07 · ALINHAMENTOS ============ -->
@@ -532,6 +585,9 @@ footer a{color:var(--ink-muted);}
     <div class="alignrow"><b>Ajuste de cobrança em troca de plano/produto com preço diferente</b> — alinhar com financeiro antes de liberar troca como self-service.<span class="who">Dono sugerido: Financeiro</span></div>
     <div class="alignrow"><b>Trocar de produto/plano em doc. aprovada exige liberar a unidade já roteada</b> — confirmar com logística se o sistema suporta isso em tempo real.<span class="who">Dono sugerido: Logística + Tecnologia</span></div>
     <div class="alignrow"><b>Queda de FCR/CSAT em Winnie e Giselle</b> — entender causa (volume, motivo de contato, algo pontual) antes de virar tendência do time.<span class="who">Dono sugerido: Gestão do time de Suporte</span></div>
+    <div class="alignrow new"><b>Canal único — como tratar quem resiste a baixar o app?</b> Parte da base vai preferir continuar só no WhatsApp. Definir se existe um fallback (ex.: link do chat abre em navegador sem precisar instalar o app) ou se a regra é rígida desde o início.<span class="who">Dono sugerido: Arthur / Produto</span></div>
+    <div class="alignrow new"><b>Canal único — critério técnico do redirecionamento automático</b> — qual a régua de confiança da IA pra classificar "isso é assunto de suporte" dentro de uma conversa de Recuperação/Vendas no WhatsApp, sem redirecionar clientes errados ou perder intenção de compra.<span class="who">Dono sugerido: Tecnologia</span></div>
+    <div class="alignrow new"><b>Canal único — prazo de dev pra unificação de identidade entre canais</b> — a base técnica (user_id por conta, não por sessão/contato) é pré-requisito de praticamente tudo nessa frente; vale um cronograma antes de comunicar a mudança pro time de CX.<span class="who">Dono sugerido: Tecnologia</span></div>
     <div class="alignrow"><b>Apresentar a calculadora de bônus pro time</b> — fechar o kickoff com clareza de como o resultado de outubro conecta com remuneração variável.<span class="who">Dono: Arthur</span></div>
   </div>
 </div></section>
