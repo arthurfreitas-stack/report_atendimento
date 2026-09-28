@@ -81,7 +81,7 @@ h4{font-size:14.5px;font-weight:600;color:var(--ink);margin:0 0 2px;}
 .chartcard .chart-desc{font-size:12.5px;color:var(--ink-muted);margin-top:3px;}
 .legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0 2px;font-size:12px;color:var(--ink-secondary);}
 .legend span{display:inline-flex;align-items:center;gap:6px;}
-.legend i{width:10px;height:10px;border-radius:999px;display:inline-block;}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block;}
 svg{display:block;width:100%;height:auto;overflow:visible;}
 .chart-wrap{position:relative;}
 .chartgrid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
@@ -230,11 +230,11 @@ footer a{color:var(--ink-muted);}
 
   <div class="chartcard">
     <h4>Onde é melhora real e onde é ruído — ago → set</h4>
-    <div class="chart-desc">Cada bolinha cinza é agosto, a colorida é setembro. Verde = melhorou, vermelho = piorou, azul = mudança sem julgamento de qualidade. Eixo de cada métrica ampliado pra caber só a faixa onde os dados estão — valor exato sempre no hover.</div>
+    <div class="chart-desc">Barra cinza é agosto, colorida é setembro. Verde = melhorou, vermelho = piorou, azul = mudança sem julgamento de qualidade. Valor exato em cima de cada barra e diferença (delta) embaixo.</div>
     <div class="chartgrid3">
-      <div class="minicard"><h5>FCR</h5><div class="chart-wrap" id="wrap-cmp1-fcr"><svg viewBox="0 0 300 108" id="chart-cmp1-fcr"></svg></div></div>
-      <div class="minicard"><h5>Retenção de cancelamento</h5><div class="chart-wrap" id="wrap-cmp1-ret"><svg viewBox="0 0 300 108" id="chart-cmp1-ret"></svg></div></div>
-      <div class="minicard"><h5>Resolução interna</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 108" id="chart-cmp1-resol"></svg></div><div class="note">⚠ campo não era preenchido em agosto — não é uma melhora real, é instrumentação nova (ver seção de leitura abaixo)</div></div>
+      <div class="minicard"><h5>FCR</h5><div class="chart-wrap" id="wrap-cmp1-fcr"><svg viewBox="0 0 300 190" id="chart-cmp1-fcr"></svg></div></div>
+      <div class="minicard"><h5>Retenção de cancelamento</h5><div class="chart-wrap" id="wrap-cmp1-ret"><svg viewBox="0 0 300 190" id="chart-cmp1-ret"></svg></div></div>
+      <div class="minicard"><h5>Resolução interna</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 190" id="chart-cmp1-resol"></svg></div><div class="note">⚠ campo não era preenchido em agosto — não é uma melhora real, é instrumentação nova (ver seção de leitura abaixo)</div></div>
     </div>
     <div class="legend"><span><i style="background:#6c7161"></i>agosto (referência)</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span></div>
   </div>
@@ -243,8 +243,8 @@ footer a{color:var(--ink-muted);}
     <h4>Atendimento ficou mais rápido de ponta a ponta — ago → set</h4>
     <div class="chart-desc">Em horas. 1ª resposta não teve variação prática (1h56min→1h55min na média geral).</div>
     <div class="chartgrid2">
-      <div class="minicard"><h5>Duração total do atendimento</h5><div class="chart-wrap" id="wrap-cmp2-dur"><svg viewBox="0 0 380 108" id="chart-cmp2-dur"></svg></div></div>
-      <div class="minicard"><h5>Tempo até a 1ª resposta</h5><div class="chart-wrap" id="wrap-cmp2-resp"><svg viewBox="0 0 380 108" id="chart-cmp2-resp"></svg></div></div>
+      <div class="minicard"><h5>Duração total do atendimento</h5><div class="chart-wrap" id="wrap-cmp2-dur"><svg viewBox="0 0 380 190" id="chart-cmp2-dur"></svg></div></div>
+      <div class="minicard"><h5>Tempo até a 1ª resposta</h5><div class="chart-wrap" id="wrap-cmp2-resp"><svg viewBox="0 0 380 190" id="chart-cmp2-resp"></svg></div></div>
     </div>
     <div class="legend"><span><i style="background:#6c7161"></i>agosto (referência)</span><span><i style="background:var(--accent-dim)"></i>melhorou (mais rápido)</span><span><i style="background:var(--ink-muted)"></i>estável</span></div>
   </div>
@@ -323,14 +323,14 @@ footer a{color:var(--ink-muted);}
 
   <div class="chartcard">
     <h4>FCR piorou pra 5 dos 6 atendentes com histórico em agosto</h4>
-    <div class="chart-desc">Eixo ampliado (78%–93%) pra mostrar a diferença — posição, não comprimento, então a bolinha não precisa começar do zero. Kelly e Débora não têm bolinha cinza: chegaram/passaram a atender em setembro.</div>
+    <div class="chart-desc">Barra cinza é agosto, barra colorida é setembro (verde = melhorou, vermelho = piorou). Delta em pontos percentuais embaixo do nome. Kelly e Débora sem barra cinza — chegaram/passaram a atender em setembro.</div>
     <div class="chart-wrap" id="wrap-att-fcr"><svg viewBox="0 0 920 340" id="chart-att-fcr"></svg></div>
     <div class="legend"><span><i style="background:#6c7161"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span></div>
   </div>
 
   <div class="chartcard">
     <h4>CSAT caiu para Winnie e Giselle, subiu pro resto do time</h4>
-    <div class="chart-desc">Escala 1–5, eixo ampliado (3,5–5,0) pra mostrar a diferença entre pessoas. Kelly e Débora sem bolinha de agosto — chegaram/começaram a atender em setembro, e já entregam os 2 melhores CSAT do time.</div>
+    <div class="chart-desc">Escala 1–5. Kelly e Débora sem barra de agosto — chegaram/começaram a atender em setembro, e já entregam os 2 melhores CSAT do time.</div>
     <div class="chart-wrap" id="wrap-att-csat"><svg viewBox="0 0 920 340" id="chart-att-csat"></svg></div>
     <div class="legend"><span><i style="background:#6c7161"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span></div>
   </div>
@@ -536,7 +536,7 @@ footer a{color:var(--ink-muted);}
     tt.style.left=x+'px'; tt.style.top=y+'px'; tt.classList.add('show');
   }
   function hideTip(tt){ tt.classList.remove('show'); }
-  var GREY = '#c7ccbb', GREEN = '#0a5d40', RED = '#a53a2c', NEUTRAL_C = '#1c5d8c', BEFORE_DOT = '#6c7161', UNCHANGED_C = '#6c7161';
+  var GREY = '#c7ccbb', GREEN = '#0a5d40', RED = '#a53a2c', NEUTRAL_C = '#1c5d8c', UNCHANGED_C = '#6c7161';
 
   function niceStep(raw){
     if(!isFinite(raw) || raw<=0) return 1;
@@ -561,99 +561,10 @@ footer a{color:var(--ink-muted);}
   }
 
   /* ---- dumbbell (before -> after per item): the default form for any ago-vs-set comparison ---- */
-  function dumbbell(svgId, wrapId, rows, opts){
-    opts = opts||{};
-    var svg = document.getElementById(svgId);
-    var tt = wrapId ? ensureTooltip(wrapId) : null;
-    var wrap = wrapId ? document.getElementById(wrapId) : null;
-    var vb = svg.viewBox.baseVal;
-    var W = vb.width, H = vb.height;
-    var labelW = opts.labelW!=null ? opts.labelW : 0;
-    var deltaW = opts.deltaW!=null ? opts.deltaW : 70;
-    var top = 28, bottom = 4;
-    var left = labelW + (labelW>0?10:6), right = deltaW;
-    var plotW = W-left-right, plotH = H-top-bottom;
-    var n = rows.length;
-    var rowH = plotH/n;
-    var min = opts.min, max = opts.max;
-    var ticks = opts.ticks || niceTicks(min,max,4);
-    var scaleX = function(v){ return left + ((v-min)/(max-min))*plotW; };
-
-    ticks.forEach(function(t){
-      var x = scaleX(t);
-      svg.appendChild(el('line',{x1:x,y1:top-6,x2:x,y2:top+plotH,stroke:'#e7ebdf','stroke-width':1}));
-      var lbl = el('text',{x:x,y:top-12,'text-anchor':'middle','font-size':'10','font-family':'IBM Plex Mono, monospace',fill:'#9aa08c'});
-      lbl.textContent = opts.tickFmt?opts.tickFmt(t):t;
-      svg.appendChild(lbl);
-    });
-
-    rows.forEach(function(row,i){
-      var cy = top + i*rowH + rowH/2;
-      var hasBefore = row.before!=null;
-      var forceNeutral = !!(opts.neutral || row.neutral);
-      var improved = hasBefore && (opts.goodDirection==='down' ? row.after<row.before : row.after>row.before);
-      var unchanged = hasBefore && row.after===row.before;
-      var color = forceNeutral ? NEUTRAL_C : (!hasBefore ? NEUTRAL_C : (unchanged ? UNCHANGED_C : (improved?GREEN:RED)));
-
-      var hit = el('rect',{x:0,y:top+i*rowH,width:W,height:rowH,fill:'transparent',style:'cursor:pointer'});
-      svg.appendChild(hit);
-
-      if(labelW>0){
-        var lbl = el('text',{x:0,y:cy+4,'font-size':'12.5','font-weight':'600',fill:'#14170f'});
-        lbl.textContent = row.label;
-        svg.appendChild(lbl);
-      }
-
-      var ax = scaleX(row.after);
-      var cyBefore = cy, cyAfter = cy;
-      if(hasBefore){
-        var bx = scaleX(row.before);
-        // near-coincident dots (tiny or no delta): separate them vertically so they never draw as one overlapping blob
-        if(Math.abs(ax-bx) < 12){ cyBefore = cy-5.5; cyAfter = cy+5.5; }
-        svg.appendChild(el('line',{x1:bx,y1:cyBefore,x2:ax,y2:cyAfter,stroke:color,'stroke-width':2.5,'stroke-linecap':'round'}));
-        svg.appendChild(el('circle',{cx:bx,cy:cyBefore,r:4.5,fill:BEFORE_DOT,stroke:'#fff','stroke-width':2}));
-        // labels always grow AWAY from the other dot (outward), whichever side before/after land on — never toward each other
-        var beforeIsLeft = bx <= ax;
-        var beforeLbl = el('text',{x: beforeIsLeft ? bx-9 : bx+9, y:cyBefore-7,'text-anchor': beforeIsLeft?'end':'start','font-size':'9','font-family':'IBM Plex Mono, monospace',fill:'#9aa08c'});
-        beforeLbl.textContent = opts.fmt?opts.fmt(row.before):row.before;
-        svg.appendChild(beforeLbl);
-      }
-      svg.appendChild(el('circle',{cx:ax,cy:cyAfter,r:5.5,fill:color,stroke:'#fff','stroke-width':2}));
-      var afterIsLeft = !hasBefore || ax < bx;
-      var afterLbl = el('text',{x: afterIsLeft ? ax-9 : ax+9, y:cyAfter-7,'text-anchor': afterIsLeft?'end':'start','font-size':'9.5','font-family':'IBM Plex Mono, monospace',fill:'#454a3c','font-weight':'600'});
-      afterLbl.textContent = opts.fmt?opts.fmt(row.after):row.after;
-      svg.appendChild(afterLbl);
-
-      var deltaText, deltaColor;
-      if(!hasBefore){
-        deltaText = 'novo em set'; deltaColor = '#6c7161';
-      } else {
-        var d = row.after-row.before;
-        var sign = d>0.0005?'+':(d<-0.0005?'−':'');
-        deltaText = unchanged ? 'sem variação' : sign+(opts.deltaFmt?opts.deltaFmt(Math.abs(d)):Math.abs(d).toFixed(1));
-        deltaColor = forceNeutral ? '#454a3c' : (unchanged?'#6c7161':(improved?GREEN:RED));
-      }
-      var dl = el('text',{x:W-2,y:cy+4,'text-anchor':'end','font-size':'11.5','font-family':'IBM Plex Mono, monospace','font-weight':'700',fill:deltaColor});
-      dl.textContent = deltaText;
-      svg.appendChild(dl);
-
-      if(tt){
-        var titleTx = row.label || opts.metricName || '';
-        var valTx = hasBefore
-          ? 'ago '+(opts.fmt?opts.fmt(row.before):row.before)+'  →  set '+(opts.fmt?opts.fmt(row.after):row.after)
-          : (opts.fmt?opts.fmt(row.after):row.after)+' em set (sem dado de agosto)';
-        hit.addEventListener('mousemove', function(e){
-          var r = wrap.getBoundingClientRect();
-          showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, titleTx, valTx);
-        });
-        hit.addEventListener('mouseleave', function(){hideTip(tt);});
-      }
-    });
-
-    svg.appendChild(el('line',{x1:left,y1:top+plotH,x2:left+plotW,y2:top+plotH,stroke:'#dde2d5','stroke-width':1}));
-  }
-
-  /* ---- grouped column chart: ordered categories x [agoVal,setVal] (distributions/buckets) ---- */
+  /* ---- grouped column chart: ordered categories x [agoVal,setVal].
+     Bars always start at zero (honest length encoding). Optional per-category status
+     coloring on the "setembro" bar (goodDirection/neutral) and a colored delta chip
+     under the category label make direction obvious without needing to read two bars. ---- */
   function groupedBar(svgId, wrapId, cats, agoVals, setVals, opts){
     opts = opts||{};
     var svg = document.getElementById(svgId);
@@ -661,40 +572,83 @@ footer a{color:var(--ink-muted);}
     var wrap = wrapId ? document.getElementById(wrapId) : null;
     var vb = svg.viewBox.baseVal;
     var W = vb.width, H = vb.height;
-    var left=42, right=8, top=18, bottom=32;
+    var n = cats.length;
+    var hasDelta = !!opts.showDelta;
+    var labelFont = n>6 ? 10.5 : 11.5;
+    var left=44, right=8, top=18, bottom = hasDelta ? 48 : 32;
     var plotH = H-top-bottom, plotW = W-left-right;
-    var maxV = Math.max.apply(null, agoVals.concat(setVals)) * 1.2 || 1;
+    var validVals = agoVals.concat(setVals).filter(function(v){return v!=null;});
+    var maxV = (opts.max!=null ? opts.max : Math.max.apply(null, validVals) * 1.22) || 1;
     var ticks = opts.ticks || niceTicks(0,maxV,4);
     ticks.forEach(function(t){
       var y = top+plotH-(t/maxV)*plotH;
       svg.appendChild(el('line',{x1:left,y1:y,x2:left+plotW,y2:y,stroke:'#eceee4','stroke-width':1}));
       svg.appendChild(el('text',{x:left-6,y:y+3,'text-anchor':'end','font-size':'9.5','font-family':'IBM Plex Mono, monospace',fill:'#9aa08c'})).textContent = opts.tickFmt?opts.tickFmt(t):t;
     });
-    var n = cats.length;
     var groupW = plotW/n;
     var innerGap = 3;
-    var barW = Math.min((groupW*0.7-innerGap)/2, 24);
+    var barW = Math.min((groupW*0.7-innerGap)/2, 26);
+    var minLabelGap = n>6 ? 20 : 16;
+
     cats.forEach(function(cat,i){
       var gx = left + i*groupW + groupW/2;
-      [['agosto',agoVals[i],GREY,-1],['setembro',setVals[i],GREEN,1]].forEach(function(s){
-        var seriesName=s[0], val=s[1], color=s[2], side=s[3];
-        var h = (val/maxV)*plotH;
-        var x = side<0 ? gx-innerGap/2-barW : gx+innerGap/2;
-        var y = top+plotH-h;
-        var bar = el('rect',{x:x,y:y,width:barW,height:Math.max(h,1),rx:3,fill:color});
-        svg.appendChild(bar);
-        var lbl = el('text',{x:x+barW/2,y:y-5,'text-anchor':'middle','font-size':'9','font-family':'IBM Plex Mono, monospace',fill:'#454a3c'});
-        lbl.textContent = opts.fmt?opts.fmt(val):val;
-        svg.appendChild(lbl);
+      var agoV = agoVals[i], setV = setVals[i];
+      var hasAgo = agoV!=null;
+      var forceNeutral = !!opts.neutral;
+      var improved = hasAgo && (opts.goodDirection==='down' ? setV<agoV : setV>agoV);
+      var unchanged = hasAgo && setV===agoV;
+      var setColor = forceNeutral ? NEUTRAL_C : (!hasAgo ? NEUTRAL_C : (unchanged ? UNCHANGED_C : (improved?GREEN:RED)));
+
+      var labelYs = {};
+      if(hasAgo){
+        var hA = (agoV/maxV)*plotH;
+        var xA = gx-innerGap/2-barW, yA = top+plotH-hA;
+        var barA = el('rect',{x:xA,y:yA,width:barW,height:Math.max(hA,1),rx:3,fill:GREY});
+        svg.appendChild(barA);
+        labelYs.ago = {y:yA-5, cx:xA+barW/2};
         if(tt){
-          bar.addEventListener('mousemove', function(e){
-            var r = wrap.getBoundingClientRect();
-            showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, cat+' · '+seriesName, opts.fmt?opts.fmt(val):val);
-          });
-          bar.addEventListener('mouseleave', function(){hideTip(tt);});
+          barA.addEventListener('mousemove', function(e){ var r=wrap.getBoundingClientRect(); showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, cat+' · agosto', opts.fmt?opts.fmt(agoV):agoV); });
+          barA.addEventListener('mouseleave', function(){hideTip(tt);});
         }
-      });
-      svg.appendChild(el('text',{x:gx,y:H-12,'text-anchor':'middle','font-size':'10.5',fill:'#454a3c'})).textContent = cat;
+      }
+      var hS = (setV/maxV)*plotH;
+      var xS = gx+innerGap/2, yS = top+plotH-hS;
+      var barS = el('rect',{x:xS,y:yS,width:barW,height:Math.max(hS,1),rx:3,fill:setColor});
+      svg.appendChild(barS);
+      labelYs.set = {y:yS-5, cx:xS+barW/2};
+      if(tt){
+        barS.addEventListener('mousemove', function(e){ var r=wrap.getBoundingClientRect(); showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, cat+' · setembro', opts.fmt?opts.fmt(setV):setV); });
+        barS.addEventListener('mouseleave', function(){hideTip(tt);});
+      }
+
+      // if both value labels would land at nearly the same height, stack them above the taller bar so neither sits on top of a fill
+      if(hasAgo && Math.abs(labelYs.ago.y - labelYs.set.y) < minLabelGap){
+        var topY = Math.min(labelYs.ago.y, labelYs.set.y);
+        if(labelYs.ago.y <= labelYs.set.y){ labelYs.set.y = topY - minLabelGap; } else { labelYs.ago.y = topY - minLabelGap; }
+      }
+      if(hasAgo){
+        var la = el('text',{x:labelYs.ago.cx,y:labelYs.ago.y,'text-anchor':'middle','font-size':labelFont-2,'font-family':'IBM Plex Mono, monospace',fill:'#9aa08c'});
+        la.textContent = opts.fmt?opts.fmt(agoV):agoV;
+        svg.appendChild(la);
+      }
+      var ls = el('text',{x:labelYs.set.cx,y:labelYs.set.y,'text-anchor':'middle','font-size':labelFont-1,'font-weight':'700','font-family':'IBM Plex Mono, monospace',fill:'#14170f'});
+      ls.textContent = opts.fmt?opts.fmt(setV):setV;
+      svg.appendChild(ls);
+
+      if(cat){
+        svg.appendChild(el('text',{x:gx,y:H-(hasDelta?28:12),'text-anchor':'middle','font-size':labelFont,fill:'#454a3c'})).textContent = cat;
+      }
+      if(hasDelta){
+        var dText, dColor;
+        if(!hasAgo){ dText='novo em set'; dColor='#6c7161'; }
+        else {
+          var d = setV-agoV;
+          var sign = d>0.0005?'+':(d<-0.0005?'−':'');
+          dText = unchanged ? 'estável' : sign+(opts.deltaFmt?opts.deltaFmt(Math.abs(d)):Math.abs(d).toFixed(1));
+          dColor = forceNeutral ? '#454a3c' : (unchanged?'#6c7161':(improved?GREEN:RED));
+        }
+        svg.appendChild(el('text',{x:gx,y:H-11,'text-anchor':'middle','font-size':'10','font-weight':'700','font-family':'IBM Plex Mono, monospace',fill:dColor})).textContent = dText;
+      }
     });
     svg.appendChild(el('line',{x1:left,y1:top+plotH,x2:left+plotW,y2:top+plotH,stroke:'#dde2d5','stroke-width':1}));
   }
@@ -884,20 +838,20 @@ footer a{color:var(--ink-muted);}
   lineChart('chart-fcr','wrap-fcr', fcr, {targetLine:85, suffix:'%', max:100, yTicks:[0,25,50,75,100], tickFmt:function(v){return v+'%';}, tickEvery:7,
     annotate:[{date:'2026-09-19', text:'19/set: 28,6% em só 7 conversas — amostra pequena, não é queda real', anchor:'end'}]});
 
-  /* -- 02: agosto vs. setembro — um dumbbell por métrica, cada um com o eixo próprio da sua escala -- */
+  /* -- 02: agosto vs. setembro — coluna por métrica, cada uma com o eixo próprio da sua escala -- */
   var pctFmt = function(v){return v.toFixed(1)+'%';}, ppFmt = function(d){return d.toFixed(1)+'pp';};
-  dumbbell('chart-cmp1-fcr','wrap-cmp1-fcr', [{label:'', before:87.3, after:88.8}],
-    {min:80,max:92,ticks:[80,85,90],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', deltaW:60, metricName:'FCR'});
-  dumbbell('chart-cmp1-ret','wrap-cmp1-ret', [{label:'', before:13.4, after:12.9}],
-    {min:0,max:25,ticks:[0,10,20],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', deltaW:60, metricName:'Retenção de cancelamento'});
-  dumbbell('chart-cmp1-resol','wrap-cmp1-resol', [{label:'', before:0.3, after:45.0}],
-    {min:0,max:50,ticks:[0,25,50],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, neutral:true, deltaW:60, metricName:'Resolução interna'});
+  groupedBar('chart-cmp1-fcr','wrap-cmp1-fcr', [''], [87.3], [88.8],
+    {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
+  groupedBar('chart-cmp1-ret','wrap-cmp1-ret', [''], [13.4], [12.9],
+    {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
+  groupedBar('chart-cmp1-resol','wrap-cmp1-resol', [''], [0.3], [45.0],
+    {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, neutral:true, showDelta:true});
 
   var hFmt = function(v){return v.toFixed(1)+'h';}, hDeltaFmt = function(d){return d.toFixed(1)+'h';};
-  dumbbell('chart-cmp2-dur','wrap-cmp2-dur', [{label:'', before:9.5, after:6.4}],
-    {min:0,max:11,ticks:[0,5,10],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', deltaW:66, metricName:'Duração total'});
-  dumbbell('chart-cmp2-resp','wrap-cmp2-resp', [{label:'', before:1.9, after:1.9}],
-    {min:0,max:3,ticks:[0,1,2,3],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', deltaW:66, metricName:'1ª resposta'});
+  groupedBar('chart-cmp2-dur','wrap-cmp2-dur', [''], [9.5], [6.4],
+    {max:20, ticks:[0,10,20],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', showDelta:true});
+  groupedBar('chart-cmp2-resp','wrap-cmp2-resp', [''], [1.9], [1.9],
+    {max:4, ticks:[0,2,4],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', showDelta:true});
 
   groupedBar('chart-hist','wrap-hist', ['0–15min','15–60min','1–4h','4–8h','8–24h','24h+'], [761,6801,18904,3013,4360,3567], [1059,2733,15388,2392,3807,1926],
     {ticks:[0,5000,10000,15000,20000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, fmt:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}});
@@ -905,55 +859,25 @@ footer a{color:var(--ink-muted);}
   hBar('chart-dores','wrap-dores', ['Cancelamento','Logística','Upgrade'], [2315,884,750], [RED,'#8a5a12',NEUTRAL_C],
     {ticks:[0,1000,2000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, fmt:function(v,i){ var fcrs=['81,2% FCR','66,4% FCR','84,8% FCR']; return v.toLocaleString('pt-BR')+' · '+fcrs[i]; }});
 
-  /* -- 04: por atendente — um dumbbell por métrica, eixo compartilhado entre as 8 pessoas (comparável 1:1) -- */
-  var attRowsFcr = [
-    {label:'Suporte (time)', before:88.4, after:84.9},
-    {label:'Wanessa', before:87.0, after:86.0},
-    {label:'Winnie', before:86.6, after:83.0},
-    {label:'Giselle', before:90.3, after:85.1},
-    {label:'Kelly', before:null, after:82.9},
-    {label:'Débora', before:null, after:90.6},
-    {label:'Paulo (cancel.)', before:80.7, after:84.5},
-    {label:'Amanda (AT)', before:80.6, after:82.9}
-  ];
-  dumbbell('chart-att-fcr','wrap-att-fcr', attRowsFcr, {min:78,max:93,ticks:[80,85,90],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', labelW:130, deltaW:88});
-
-  var attRowsCsat = [
-    {label:'Suporte (time)', before:4.08, after:4.09},
-    {label:'Wanessa', before:4.23, after:4.37},
-    {label:'Winnie', before:4.33, after:3.83},
-    {label:'Giselle', before:3.86, after:3.84},
-    {label:'Kelly', before:null, after:4.58},
-    {label:'Débora', before:null, after:3.77},
-    {label:'Paulo (cancel.)', before:3.80, after:3.85},
-    {label:'Amanda (AT)', before:3.76, after:3.77}
-  ];
+  /* -- 04: por atendente — coluna por métrica, eixo compartilhado entre as 8 pessoas (comparável 1:1), cor da barra de setembro = direção -- */
+  var attCats = ['Suporte (time)','Wanessa','Winnie','Giselle','Kelly','Débora','Paulo (cancel.)','Amanda (AT)'];
   var csatFmt = function(v){return v.toFixed(2);};
-  dumbbell('chart-att-csat','wrap-att-csat', attRowsCsat, {min:3.5,max:5,ticks:[3.5,4,4.5,5],tickFmt:function(t){return t.toFixed(1);}, fmt:csatFmt, deltaFmt:csatFmt, goodDirection:'up', labelW:130, deltaW:88});
-
-  var attRowsVol = [
-    {label:'Suporte (time)', before:6102, after:5829},
-    {label:'Wanessa', before:1865, after:1419},
-    {label:'Winnie', before:1519, after:1398},
-    {label:'Giselle', before:2724, after:1714},
-    {label:'Kelly', before:null, after:846},
-    {label:'Débora', before:null, after:449},
-    {label:'Paulo (cancel.)', before:1608, after:847},
-    {label:'Amanda (AT)', before:1379, after:799}
-  ];
   var countFmt = function(v){return Math.round(v).toLocaleString('pt-BR');};
-  dumbbell('chart-att-vol','wrap-att-vol', attRowsVol, {min:0,max:6500,ticks:[0,2000,4000,6000],tickFmt:function(t){return t>=1000?(t/1000)+'k':t;}, fmt:countFmt, deltaFmt:countFmt, neutral:true, labelW:130, deltaW:88});
 
-  var attRowsDur = [
-    {label:'Suporte (time)', before:14.4, after:8.0},
-    {label:'Wanessa', before:18.9, after:9.5},
-    {label:'Winnie', before:15.4, after:6.8},
-    {label:'Giselle', before:10.7, after:8.0},
-    {label:'Kelly', before:null, after:5.1},
-    {label:'Débora', before:null, after:12.3},
-    {label:'Paulo (cancel.)', before:19.8, after:7.8},
-    {label:'Amanda (AT)', before:39.0, after:20.7}
-  ];
-  dumbbell('chart-att-dur','wrap-att-dur', attRowsDur, {min:0,max:42,ticks:[0,10,20,30,40],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', labelW:130, deltaW:88});
+  groupedBar('chart-att-fcr','wrap-att-fcr', attCats,
+    [88.4,87.0,86.6,90.3,null,null,80.7,80.6], [84.9,86.0,83.0,85.1,82.9,90.6,84.5,82.9],
+    {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
+
+  groupedBar('chart-att-csat','wrap-att-csat', attCats,
+    [4.08,4.23,4.33,3.86,null,null,3.80,3.76], [4.09,4.37,3.83,3.84,4.58,3.77,3.85,3.77],
+    {max:5, ticks:[0,2.5,5],tickFmt:function(t){return t.toFixed(1);}, fmt:csatFmt, deltaFmt:csatFmt, goodDirection:'up', showDelta:true});
+
+  groupedBar('chart-att-vol','wrap-att-vol', attCats,
+    [6102,1865,1519,2724,null,null,1608,1379], [5829,1419,1398,1714,846,449,847,799],
+    {ticks:[0,2000,4000,6000],tickFmt:function(t){return t>=1000?(t/1000)+'k':t;}, fmt:countFmt, deltaFmt:countFmt, neutral:true, showDelta:true});
+
+  groupedBar('chart-att-dur','wrap-att-dur', attCats,
+    [14.4,18.9,15.4,10.7,null,null,19.8,39.0], [8.0,9.5,6.8,8.0,5.1,12.3,7.8,20.7],
+    {ticks:[0,10,20,30,40],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', showDelta:true});
 })();
 </script>
