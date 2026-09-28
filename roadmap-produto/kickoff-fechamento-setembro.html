@@ -242,7 +242,7 @@ footer a{color:var(--ink-muted);}
       <div class="minicard"><h5>FCR</h5><div class="chart-wrap" id="wrap-cmp1-fcr"><svg viewBox="0 0 300 190" id="chart-cmp1-fcr"></svg></div></div>
       <div class="minicard"><h5>Retenção de cancelamento</h5><div class="chart-wrap" id="wrap-cmp1-ret"><svg viewBox="0 0 300 190" id="chart-cmp1-ret"></svg></div></div>
       <div class="minicard"><h5>Resolução externa (CSAT)</h5><div class="chart-wrap" id="wrap-cmp1-ext"><svg viewBox="0 0 300 190" id="chart-cmp1-ext"></svg></div><div class="note">Cliente marca "resolvido?" na pesquisa de CSAT enviada pelo link do atendente. Base: 357 respostas em ago, 369 em set — amostra pequena mas estável nos dois meses, dá pra comparar.</div></div>
-      <div class="minicard"><h5>Resolução interna (campo obrigatório)</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 190" id="chart-cmp1-resol"></svg></div><div class="note">Toda conversa fechada na Intercom exige o atendente preencher resolvido: true/false. Agosto não entra na comparação — só 55 conversas de CX em 9.283 tiveram o campo preenchido (0,59%), amostra pequena demais. Setembro: 4.683 preenchidas de 8.030 (58,3% de adesão) → 88,1% marcadas como resolvidas.</div></div>
+      <div class="minicard"><h5>Resolução interna (campo obrigatório) — setembro</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 190" id="chart-cmp1-resol"></svg></div><div class="note">Toda conversa fechada na Intercom exige o atendente preencher resolvido: true/false. Dos 8.029 atendimentos humanos de CX: 51,4% foi marcado resolvido, 6,9% marcado não resolvido, e 41,7% fechou sem nada preenchido — quase metade das vezes o campo simplesmente não é usado. Agosto não entra na comparação: só 55 de 9.292 tiveram o campo preenchido (0,59%), amostra pequena demais.</div></div>
     </div>
     <div class="legend"><span><i style="background:#6c7161"></i>agosto (referência)</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span><span><i style="background:var(--blue)"></i>sem base em agosto</span></div>
   </div>
@@ -709,6 +709,80 @@ footer a{color:var(--ink-muted);}
     svg.appendChild(el('line',{x1:left,y1:top,x2:left,y2:top+plotH,stroke:'#dde2d5','stroke-width':1}));
   }
 
+  /* ---- 100% stacked bar: part-to-whole (e.g. resolvido / não resolvido / sem preenchimento) ---- */
+  function stackedBar(svgId, wrapId, segments, opts){
+    opts = opts||{};
+    var svg = document.getElementById(svgId);
+    var tt = wrapId ? ensureTooltip(wrapId) : null;
+    var wrap = wrapId ? document.getElementById(wrapId) : null;
+    var vb = svg.viewBox.baseVal;
+    var W = vb.width;
+    var left=4, right=4, top=58, barH=56;
+    var plotW = W-left-right;
+    var total = segments.reduce(function(s,seg){return s+seg.value;},0) || 1;
+
+    var clipId = svgId+'-clip';
+    var defs = el('defs',{});
+    var clipPath = el('clipPath',{id:clipId});
+    clipPath.appendChild(el('rect',{x:left,y:top,width:plotW,height:barH,rx:8}));
+    defs.appendChild(clipPath);
+    svg.appendChild(defs);
+    var g = el('g',{'clip-path':'url(#'+clipId+')'});
+    svg.appendChild(g);
+
+    var x = left;
+    var lbl2s = [];
+    segments.forEach(function(seg){
+      var w = (seg.value/total)*plotW;
+      var bar = el('rect',{x:x,y:top,width:Math.max(w,0.5),height:barH,fill:seg.color});
+      g.appendChild(bar);
+      if(tt){
+        bar.addEventListener('mousemove', function(e){
+          var r = wrap.getBoundingClientRect();
+          showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, seg.label, (opts.fmt?opts.fmt(seg.value):seg.value)+' · '+(seg.value/total*100).toFixed(1)+'%');
+        });
+        bar.addEventListener('mouseleave', function(){hideTip(tt);});
+      }
+      var cx = x + w/2;
+      var pct = seg.value/total*100;
+      if(w > plotW*0.055){
+        var lbl1 = el('text',{x:cx,y:top-24,'text-anchor':'middle','font-size':'14','font-weight':'700','font-family':'IBM Plex Mono, monospace',fill:'#14170f'});
+        lbl1.textContent = pct.toFixed(1).replace('.',',')+'%';
+        svg.appendChild(lbl1);
+        var lbl2 = el('text',{x:cx,y:top-9,'text-anchor':'middle','font-size':'10',fill:'#454a3c'});
+        lbl2.textContent = seg.label;
+        svg.appendChild(lbl2);
+        lbl2s.push(lbl2);
+      }
+      x += w;
+    });
+    // shrink (then drop) adjacent segment-name labels until none overlap
+    for(var pass=0; pass<8; pass++){
+      var collided = false;
+      for(var i=0;i<lbl2s.length-1;i++){
+        var a = lbl2s[i].getBBox(), b = lbl2s[i+1].getBBox();
+        if(a.x+a.width > b.x){
+          collided = true;
+          var fsA = parseFloat(lbl2s[i].getAttribute('font-size'));
+          var fsB = parseFloat(lbl2s[i+1].getAttribute('font-size'));
+          var shrink = fsA <= fsB ? lbl2s[i] : lbl2s[i+1];
+          var fs = parseFloat(shrink.getAttribute('font-size')) - 1;
+          if(fs < 7){ shrink.textContent = ''; } else { shrink.setAttribute('font-size', fs); }
+        }
+      }
+      if(!collided) break;
+    }
+    // thin surface-color separators between segments
+    var acc = left;
+    segments.slice(0,-1).forEach(function(seg){
+      acc += (seg.value/total)*plotW;
+      svg.appendChild(el('rect',{x:acc-1,y:top,width:2,height:barH,fill:'#f0f2e9'}));
+    });
+    var totalLbl = el('text',{x:left,y:top+barH+22,'text-anchor':'start','font-size':'11','font-family':'IBM Plex Mono, monospace',fill:'#6c7161'});
+    totalLbl.textContent = (opts.fmt?opts.fmt(total):total)+' atendimentos humanos no total';
+    svg.appendChild(totalLbl);
+  }
+
   /* ---- line/area chart with y-gridlines, crosshair, pt-BR tooltip dates and point annotations ---- */
   function lineChart(svgId, wrapId, data, opts){
     opts = opts||{};
@@ -863,8 +937,11 @@ footer a{color:var(--ink-muted);}
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
   groupedBar('chart-cmp1-ext','wrap-cmp1-ext', [''], [73.1], [76.7],
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
-  groupedBar('chart-cmp1-resol','wrap-cmp1-resol', [''], [null], [88.3],
-    {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, neutral:true, showDelta:true});
+  stackedBar('chart-cmp1-resol','wrap-cmp1-resol', [
+    {label:'resolvido', value:4128, color:GREEN},
+    {label:'não resolvido', value:555, color:RED},
+    {label:'sem preenchimento', value:3346, color:'#c7ccbb'}
+  ], {fmt:function(v){return Math.round(v).toLocaleString('pt-BR');}});
 
   var hFmt = function(v){return v.toFixed(1)+'h';}, hDeltaFmt = function(d){return d.toFixed(1)+'h';};
   groupedBar('chart-cmp2-dur','wrap-cmp2-dur', [''], [9.5], [6.4],
