@@ -1,26 +1,29 @@
 <title>Kickoff — Fechamento de Setembro</title>
-<meta name="description" content="Diagnóstico de setembro, comparação com agosto e as três dores da operação — upgrade, logística e cancelamento — com tasks pra produto/tecnologia e alinhamentos pendentes.">
+<meta name="description" content="Diagnóstico de setembro validado direto no BigQuery, comparação com agosto, desempenho por atendente e as três dores da operação — com gráficos, tasks pra produto/tecnologia e alinhamentos pendentes.">
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root{
-  color-scheme: dark;
-  --bg:#0a1f18;
-  --surface:#112a21;
-  --surface-alt:#173727;
-  --surface-sunken:#081a14;
-  --border:#26493a;
-  --border-soft:#1c3529;
-  --ink:#f3faf6;
-  --ink-secondary:#c9ddd0;
-  --ink-muted:#84a892;
-  --accent:#74f2b8;
-  --accent-dim:#3f8f6c;
-  --critical:#ff8f8f;
-  --critical-dim:#8a4a4a;
-  --warn:#f2c94c;
-  --warn-dim:#8a7a3a;
+  color-scheme: light;
+  --bg:#f7f8f3;
+  --surface:#ffffff;
+  --surface-alt:#f0f2e9;
+  --surface-sunken:#eceee4;
+  --border:#dde2d5;
+  --border-soft:#e7ebdf;
+  --ink:#14170f;
+  --ink-secondary:#454a3c;
+  --ink-muted:#6c7161;
+  --accent:#0f7a54;
+  --accent-dim:#0a5d40;
+  --accent-soft:#e3f2ea;
+  --critical:#a53a2c;
+  --critical-soft:#fbe9e5;
+  --warn:#8a5a12;
+  --warn-soft:#fbf1de;
+  --blue:#1c5d8c;
+  --blue-soft:#e5eef5;
 }
 
 *{box-sizing:border-box;}
@@ -31,103 +34,126 @@ body{
 }
 h1,h2,h3,h4{font-family:'Sora',system-ui,sans-serif;text-wrap:balance;margin:0;}
 .mono{font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums;}
-a{color:var(--accent);}
-.wrap{max-width:980px;margin:0 auto;padding:0 20px;}
+a{color:var(--accent-dim);}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
 
-.topnav{position:sticky; top:env(safe-area-inset-top,0px); z-index:50; background:rgba(10,31,24,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--border-soft);}
-.topnav-inner{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;gap:18px;overflow-x:auto;white-space:nowrap;}
+.topnav{position:sticky; top:env(safe-area-inset-top,0px); z-index:50; background:rgba(247,248,243,0.94); backdrop-filter:blur(6px); border-bottom:1px solid var(--border);}
+.topnav-inner{max-width:1040px;margin:0 auto;padding:10px 20px;display:flex;gap:18px;overflow-x:auto;white-space:nowrap;}
 .topnav a{color:var(--ink-muted);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.02em;}
-.topnav a:hover{color:var(--accent);}
+.topnav a:hover{color:var(--accent-dim);}
 
-.masthead{padding:56px 0 40px;border-bottom:1px solid var(--border-soft);}
-.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px;}
-.masthead h1{font-size:clamp(30px,4.6vw,44px);font-weight:800;line-height:1.08;max-width:20ch;}
-.thesis{font-size:18px;color:var(--ink-secondary);max-width:62ch;margin-top:18px;}
-.meta-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:24px;font-size:13px;color:var(--ink-muted);}
+.masthead{padding:52px 0 36px;border-bottom:1px solid var(--border);}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-dim);font-weight:700;margin-bottom:14px;}
+.masthead h1{font-size:clamp(28px,4.2vw,42px);font-weight:800;line-height:1.1;max-width:22ch;color:var(--ink);}
+.thesis{font-size:17px;color:var(--ink-secondary);max-width:66ch;margin-top:16px;}
+.meta-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:22px;font-size:12.5px;color:var(--ink-muted);}
+.valid-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent-dim);border:1px solid var(--accent-dim);border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:600;margin-top:18px;}
 
-section{padding:52px 0;border-bottom:1px solid var(--border-soft);}
+section{padding:46px 0;border-bottom:1px solid var(--border);}
 section:last-of-type{border-bottom:none;}
 .section-label{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;}
-.section-num{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:14px;font-weight:500;}
+.section-num{font-family:'IBM Plex Mono',monospace;color:var(--accent-dim);font-size:14px;font-weight:600;}
 .section-tag{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);}
-h2{font-size:clamp(24px,3.4vw,32px);margin-bottom:6px;}
-.section-sub{color:var(--ink-secondary);max-width:66ch;margin-top:10px;font-size:15.5px;}
-h3{font-size:18px;margin:36px 0 6px;}
-h3 .n{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:14px;margin-right:8px;}
+h2{font-size:clamp(22px,3vw,29px);margin-bottom:6px;color:var(--ink);}
+.section-sub{color:var(--ink-secondary);max-width:70ch;margin-top:8px;font-size:15px;}
+h3{font-size:17px;margin:34px 0 4px;color:var(--ink);}
+h3 .n{font-family:'IBM Plex Mono',monospace;color:var(--accent-dim);font-size:13px;margin-right:8px;}
+h4{font-size:14.5px;font-weight:600;color:var(--ink);margin:0 0 2px;}
 
-.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:28px 0;}
-.stat{background:var(--surface);padding:20px 18px;}
-.stat .v{font-family:'Sora',sans-serif;font-size:28px;font-weight:700;color:var(--ink);}
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:22px 0;}
+.stat{background:var(--surface);padding:18px 16px;}
+.stat .v{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;color:var(--ink);}
 .stat .v.crit{color:var(--critical);}
-.stat .v.acc{color:var(--accent);}
+.stat .v.acc{color:var(--accent-dim);}
 .stat .v.warn{color:var(--warn);}
-.stat .l{font-size:12.5px;color:var(--ink-muted);margin-top:4px;line-height:1.4;}
+.stat .l{font-size:12px;color:var(--ink-muted);margin-top:4px;line-height:1.4;}
 @media(max-width:720px){.statgrid{grid-template-columns:repeat(2,1fr);}}
 
-.callout{border-radius:12px;padding:18px 20px;margin:22px 0;font-size:14.5px;line-height:1.6;border:1px solid var(--border);}
-.callout.crit{background:rgba(255,143,143,0.06);border-color:var(--critical-dim);}
-.callout.acc{background:rgba(116,242,184,0.06);border-color:var(--accent-dim);}
-.callout.warn{background:rgba(242,201,76,0.06);border-color:var(--warn-dim);}
+.callout{border-radius:12px;padding:16px 18px;margin:18px 0;font-size:14px;line-height:1.6;border:1px solid var(--border);}
+.callout.crit{background:var(--critical-soft);border-color:#e3b8ad;}
+.callout.acc{background:var(--accent-soft);border-color:#a9d9c2;}
+.callout.warn{background:var(--warn-soft);border-color:#e6cd94;}
 .callout b{color:var(--ink);}
-.callout .k{font-family:'IBM Plex Mono',monospace;font-weight:500;}
+.callout .k{font-family:'IBM Plex Mono',monospace;font-weight:600;}
 
-.chartcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 22px 12px;margin:24px 0;}
-.chartcard h4{font-size:15px;font-weight:600;color:var(--ink);margin:0;}
-.chartcard .chart-desc{font-size:13px;color:var(--ink-muted);margin-top:4px;}
-.legend{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0 4px;font-size:12.5px;color:var(--ink-secondary);}
+.chartcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 20px 14px;margin:18px 0;box-shadow:0 1px 2px rgba(20,23,15,.04);}
+.chartcard h4{margin:0;}
+.chartcard .chart-desc{font-size:12.5px;color:var(--ink-muted);margin-top:3px;}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0 2px;font-size:12px;color:var(--ink-secondary);}
 .legend span{display:inline-flex;align-items:center;gap:6px;}
 .legend i{width:10px;height:10px;border-radius:2px;display:inline-block;}
 svg{display:block;width:100%;height:auto;overflow:visible;}
 .chart-wrap{position:relative;}
+.chartgrid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:820px){.chartgrid2{grid-template-columns:1fr;}}
+.tooltip{position:absolute;pointer-events:none;background:var(--ink);border-radius:8px;padding:6px 9px;font-size:11.5px;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.18);transform:translate(-50%,-115%);white-space:nowrap;opacity:0;transition:opacity .1s;z-index:10;}
+.tooltip.show{opacity:1;}
+.bar-hit{fill:transparent;cursor:pointer;}
 
-.tblwrap{overflow-x:auto;margin:20px 0;border:1px solid var(--border);border-radius:12px;}
-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px;}
-th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border-soft);vertical-align:top;}
-th{background:var(--surface-alt);color:var(--ink-muted);font-weight:600;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;}
+.tblwrap{overflow-x:auto;margin:16px 0;border:1px solid var(--border);border-radius:12px;}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:520px;}
+th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--border-soft);vertical-align:top;}
+th{background:var(--surface-alt);color:var(--ink-muted);font-weight:600;font-size:11px;letter-spacing:.04em;text-transform:uppercase;}
 tr:last-child td{border-bottom:none;}
 td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
-.delta{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12.5px;}
+.delta{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12px;}
 .delta.up{color:var(--critical);}
-.delta.down{color:var(--accent);}
-.tag{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:999px;font-weight:600;letter-spacing:.02em;}
-.tag.real-up{background:rgba(255,143,143,.15);color:var(--critical);}
-.tag.real-down{background:rgba(116,242,184,.15);color:var(--accent);}
-.tag.artefato{background:rgba(242,201,76,.15);color:var(--warn);}
-.tag.estavel{background:rgba(201,221,208,.1);color:var(--ink-muted);}
+.delta.down{color:var(--accent-dim);}
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700;letter-spacing:.02em;}
+.tag.real-up{background:var(--critical-soft);color:var(--critical);}
+.tag.real-down{background:var(--accent-soft);color:var(--accent-dim);}
+.tag.artefato{background:var(--warn-soft);color:var(--warn);}
+.tag.estavel{background:var(--surface-sunken);color:var(--ink-muted);}
 
-.painbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px 26px 22px;margin:26px 0;}
+.painbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 22px 18px;margin:20px 0;box-shadow:0 1px 2px rgba(20,23,15,.04);}
 .painbox-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
-.painbox-num{font-family:'IBM Plex Mono',monospace;color:var(--critical);font-size:13px;font-weight:600;}
-.painbox-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:var(--ink);}
-.painbox p{font-size:14.5px;line-height:1.65;color:var(--ink-secondary);margin:10px 0;}
+.painbox-num{font-family:'IBM Plex Mono',monospace;color:var(--critical);font-size:12.5px;font-weight:700;}
+.painbox-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--ink);}
+.painbox p{font-size:14px;line-height:1.6;color:var(--ink-secondary);margin:8px 0;}
 .painbox p b{color:var(--ink);}
-.evidence{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;}
-.evidence .ev{background:var(--surface-sunken);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12.5px;color:var(--ink-secondary);}
+.evidence{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;}
+.evidence .ev{background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:7px 11px;font-size:12px;color:var(--ink-secondary);}
 .evidence .ev b{color:var(--warn);font-family:'IBM Plex Mono',monospace;}
-.bench{margin-top:14px;padding-top:14px;border-top:1px solid var(--border-soft);font-size:13.5px;color:var(--ink-muted);line-height:1.6;}
+.bench{margin-top:12px;padding-top:12px;border-top:1px solid var(--border-soft);font-size:13px;color:var(--ink-muted);line-height:1.6;}
 .bench b{color:var(--ink-secondary);}
-.statusrow{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;}
-.pill{font-size:12px;padding:5px 12px;border-radius:999px;border:1px solid var(--border);color:var(--ink-secondary);}
-.pill.done{border-color:var(--accent-dim);color:var(--accent);}
-.pill.todo{border-color:var(--critical-dim);color:var(--critical);}
+.statusrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;}
+.pill{font-size:11.5px;padding:4px 11px;border-radius:999px;border:1px solid var(--border);color:var(--ink-secondary);}
+.pill.done{border-color:var(--accent-dim);color:var(--accent-dim);background:var(--accent-soft);}
+.pill.todo{border-color:var(--critical);color:var(--critical);background:var(--critical-soft);}
 
-.tasklist{display:flex;flex-direction:column;gap:10px;margin:18px 0 30px;}
-.taskrow{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 18px;}
-.taskrow .tn{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--accent);width:26px;flex-shrink:0;}
-.taskrow .tt{font-size:14.5px;font-weight:600;color:var(--ink);}
-.taskrow .td{font-size:13px;color:var(--ink-muted);margin-top:4px;line-height:1.5;}
-.badge{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-left:8px;vertical-align:1px;}
-.badge.eng{background:rgba(116,242,184,.15);color:var(--accent);}
-.badge.jur{background:rgba(242,201,76,.15);color:var(--warn);}
-.badge.dado{background:rgba(255,143,143,.15);color:var(--critical);}
+.attcard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,23,15,.04);}
+.attcard-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.attcard-head .name{font-family:'Sora',sans-serif;font-size:15.5px;font-weight:700;color:var(--ink);}
+.attcard-head .role{font-size:11.5px;color:var(--ink-muted);font-family:'IBM Plex Mono',monospace;}
+.attmini{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+@media(max-width:700px){.attmini{grid-template-columns:repeat(2,1fr);}}
+.attmini .m{background:var(--surface-alt);border-radius:8px;padding:8px 10px;}
+.attmini .m .mv{font-family:'IBM Plex Mono',monospace;font-size:13.5px;font-weight:600;color:var(--ink);}
+.attmini .m .ml{font-size:10px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.03em;margin-top:1px;}
+.attmini .m .md{font-size:10.5px;margin-top:2px;font-family:'IBM Plex Mono',monospace;}
+.attmini .m .md.up{color:var(--accent-dim);}
+.attmini .m .md.down{color:var(--critical);}
+.note-inline{font-size:12px;color:var(--ink-muted);margin-top:8px;}
 
-.alignlist{display:flex;flex-direction:column;gap:10px;margin:18px 0;}
-.alignrow{background:var(--surface-sunken);border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-size:13.5px;line-height:1.6;color:var(--ink-secondary);}
+.tasklist{display:flex;flex-direction:column;gap:8px;margin:16px 0 26px;}
+.taskrow{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;}
+.taskrow .tn{font-family:'Sora',sans-serif;font-size:15px;font-weight:800;color:var(--accent-dim);width:22px;flex-shrink:0;}
+.taskrow .tt{font-size:14px;font-weight:600;color:var(--ink);}
+.taskrow .td{font-size:12.5px;color:var(--ink-muted);margin-top:3px;line-height:1.5;}
+.badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-left:7px;vertical-align:1px;}
+.badge.eng{background:var(--accent-soft);color:var(--accent-dim);}
+.badge.jur{background:var(--warn-soft);color:var(--warn);}
+.badge.dado{background:var(--critical-soft);color:var(--critical);}
+
+.alignlist{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.alignrow{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6;color:var(--ink-secondary);}
 .alignrow b{color:var(--ink);}
-.alignrow .who{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-muted);margin-top:6px;display:block;}
+.alignrow .who{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-muted);margin-top:5px;display:block;}
+.alignrow.new{border-left:3px solid var(--blue);}
+.alignrow.new .who{color:var(--blue);}
 
-.srcnote{font-size:12px;color:var(--ink-muted);margin-top:6px;}
-footer{padding:40px 0 60px;font-size:12.5px;color:var(--ink-muted);}
+.srcnote{font-size:11.5px;color:var(--ink-muted);margin-top:6px;}
+footer{padding:36px 0 56px;font-size:12px;color:var(--ink-muted);}
 footer a{color:var(--ink-muted);}
 </style>
 
@@ -135,82 +161,104 @@ footer a{color:var(--ink-muted);}
   <a href="#diagnostico">01 · Setembro</a>
   <a href="#comparacao">02 · Agosto vs. setembro</a>
   <a href="#dores">03 · As 3 dores</a>
-  <a href="#conclusoes">04 · Conclusões</a>
-  <a href="#tasks">05 · Tasks</a>
-  <a href="#alinhamentos">06 · Alinhamentos</a>
+  <a href="#atendentes">04 · Por atendente</a>
+  <a href="#conclusoes">05 · Conclusões</a>
+  <a href="#tasks">06 · Tasks</a>
+  <a href="#alinhamentos">07 · Alinhamentos</a>
 </div></nav>
 
 <div class="masthead"><div class="wrap">
   <div class="eyebrow">Kickoff · Fechamento de setembro / Abertura de outubro</div>
-  <h1>Setembro cresceu. As três dores que mais pesam no cliente continuam sem self-service.</h1>
-  <p class="thesis">O atendimento ficou mais rápido e mais gente está sendo resolvida por IA — bons sinais. Mas dois indicadores pedem atenção imediata: a nota do Reclame Aqui caiu de 5,1 para 3,7, e a taxa de solicitação de cancelamento voltou a subir depois da queda que agosto tinha conquistado. As três frentes que mais geram atrito com o cliente — upgrade, logística e cancelamento — já têm spec desenhada e nada disso foi implementado ainda.</p>
+  <h1>Setembro cresceu e ficou mais rápido — mas nem todo time melhorou junto.</h1>
+  <p class="thesis">O FCR da empresa subiu (87,3%→88,8%), mas o FCR do time de Suporte <b>caiu</b> na mesma janela (88,4%→84,9%), e o primeiro tempo de resposta do time piorou (1h52min→2h18min) mesmo com a média geral estável. A taxa de solicitação de cancelamento voltou a subir depois da queda que agosto tinha conquistado. E as três frentes que mais geram atrito com o cliente — upgrade, logística e cancelamento — seguem sem o self-service que já está desenhado.</p>
+  <div class="valid-badge">✓ Validado direto no BigQuery (v3_supabase_bot_ai_allu_gold + v3_gold_alluoffice) — não é mais leitura de print</div>
   <div class="meta-row">
-    <span>Base: dashboard "Métricas gerais de atendimento", agosto (01–31/08) e setembro (01–27/09) de 2026</span>
-    <span>Fonte: allu.office / BigQuery, v3_gold_alluoffice.vw_dash_cancelamento_atendimento</span>
+    <span>Base: agosto (01–31/08) e setembro (01–27/09) de 2026</span>
+    <span>Fonte: BigQuery — v3_supabase_bot_ai_allu_gold.vw_dash_performance_atendimento / vw_dash_csat_atendimento / vw_dash_resolucao_atendimento, v3_gold_alluoffice.vw_dash_cancelamento_atendimento</span>
     <span>Preparo: Arthur Freitas, gestão comercial</span>
   </div>
 </div></div>
 
-<!-- ============ 01 · DIAGNÓSTICO DE SETEMBRO ============ -->
+<!-- ============ 01 · DIAGNÓSTICO ============ -->
 <section id="diagnostico"><div class="wrap">
   <div class="section-label"><span class="section-num">01</span><span class="section-tag">Setembro, isolado</span></div>
   <h2>O mês em números</h2>
-  <p class="section-sub">01/09 a 27/09/2026 (mês ainda parcial — faltam 3 dias na hora do fechamento deste diagnóstico).</p>
+  <p class="section-sub">01/09 a 27/09/2026 (mês ainda parcial). Reclame Aqui fica de fora desta rodada — as métricas do dashboard pra essa fonte ainda estão incorretas.</p>
 
   <div class="statgrid">
     <div class="stat"><div class="v">25.632</div><div class="l">atendimentos humanos (24.718 clientes)</div></div>
     <div class="stat"><div class="v acc">88,8%</div><div class="l">FCR — acima do benchmark de mercado (70–75%)</div></div>
-    <div class="stat"><div class="v">4,0</div><div class="l">CSAT — abaixo da meta de 4,5 (90% do alvo)</div></div>
-    <div class="stat"><div class="v crit">16,2%</div><div class="l">taxa de solicitação de cancelamento — meta 13,5%, 83% do alvo</div></div>
+    <div class="stat"><div class="v">4,05</div><div class="l">CSAT (369 respostas)</div></div>
+    <div class="stat"><div class="v crit">16,2%</div><div class="l">taxa de solicitação de cancelamento — meta 13,5%</div></div>
   </div>
 
-  <div class="callout acc">
-    <b>O que está indo bem:</b> FCR de 88,8% no atendimento humano está acima da faixa considerada boa no mercado (70–75%), e o volume atendido por IA cresceu de 4.124/dia (agosto) para 5.604/dia (setembro) — <b>+36% por dia</b> — enquanto o volume que precisa de humano caiu <b>19% por dia</b> no mesmo período. Isso é o resultado esperado quando self-service funciona: menos gente precisando de humano pra resolver.
+  <div class="chartcard">
+    <h4>Volume de atendimento humano por dia</h4>
+    <div class="chart-desc">Conversas com pelo menos um atendente humano — exclui IA. 01/08 a 27/09.</div>
+    <div class="chart-wrap" id="wrap-vol"><svg viewBox="0 0 900 220" id="chart-vol"></svg></div>
   </div>
 
-  <div class="callout crit">
-    <b>O que precisa de atenção agora:</b> a nota do Reclame Aqui caiu de <b>5,1 para 3,7</b> (meta 7,0 — caiu de 73% para 54% do alvo), e a % de clientes que dizem que voltariam a fazer negócio caiu de <b>50,7% para 39,9%</b> (meta 75%). A allu usa o RA1000 como prova social ativa — essa queda é risco de reputação, não só métrica de CX.
+  <div class="chartcard">
+    <h4>FCR (%) por dia</h4>
+    <div class="chart-desc">First Contact Resolution diário — a linha pontilhada marca a meta de 85%.</div>
+    <div class="chart-wrap" id="wrap-fcr"><svg viewBox="0 0 900 200" id="chart-fcr"></svg></div>
   </div>
 
   <div class="tblwrap"><table>
-    <thead><tr><th>Cancelamento — visão macro (setembro)</th><th class="num">Realizado</th><th class="num">Meta</th><th class="num">Atingimento</th></tr></thead>
+    <thead><tr><th>Cancelamento — visão macro (setembro)</th><th class="num">Realizado</th><th class="num">Meta</th></tr></thead>
     <tbody>
-      <tr><td>% Solicitação (solicitações / vendas)</td><td class="num">16,2%</td><td class="num">13,5%</td><td class="num" style="color:var(--critical)">83%</td></tr>
-      <tr><td>Retenção (revogadas / solicitações)</td><td class="num">12,9%</td><td class="num">20,0%</td><td class="num" style="color:var(--critical)">64%</td></tr>
-      <tr><td>Taxa de processamento (finished+revoked / solicitações)</td><td class="num">86,5%</td><td class="num">—</td><td class="num">projeção 77,9%</td></tr>
+      <tr><td>% Solicitação (solicitações / vendas)</td><td class="num">16,2%</td><td class="num">13,5%</td></tr>
+      <tr><td>Retenção (revogadas / solicitações)</td><td class="num">12,9%</td><td class="num">20,0%</td></tr>
+      <tr><td>Taxa de processamento (finalizadas / solicitações)</td><td class="num">86,5%</td><td class="num">—</td></tr>
     </tbody>
   </table></div>
-  <p class="srcnote">Bate com o achado do diagnóstico de cancelamento desta mesma área (ver seção 03): doc. aprovada foi a única etapa do funil que piorou de agosto pra setembro, e o churn mensal quase dobrou.</p>
+  <p class="srcnote">Validado direto na view v3_gold_alluoffice.vw_dash_cancelamento_atendimento: 1.894 solicitações, 245 revogadas, 1.650 finalizadas em setembro (vs. 1.895/244/1.639 do dashboard — diferença de 1 a 11 casos é normal, dado muda em tempo real). Bate com o achado da seção 03: doc. aprovada foi a única etapa do funil que piorou de agosto pra setembro.</p>
 </div></section>
 
 <!-- ============ 02 · AGOSTO VS SETEMBRO ============ -->
 <section id="comparacao"><div class="wrap">
   <div class="section-label"><span class="section-num">02</span><span class="section-tag">O que é sinal, o que é ruído</span></div>
-  <h2>Agosto vs. setembro, métrica por métrica</h2>
-  <p class="section-sub">Muita coisa muda de forma dramática entre os dois meses — mas nem toda mudança é real. CSAT, FCR, taxa de resolução interna e outras métricas <b style="color:var(--ink)">não existiam de forma consistente antes de agosto/setembro</b>: a área foi criando essa instrumentação do zero. Uma métrica saindo de 0,1% pra 19,2% não é a operação dez vezes melhor — é a métrica passando a ser preenchida. Separado abaixo: o que é operação de verdade, e o que é efeito de instrumentação nova.</p>
+  <h2>Agosto vs. setembro</h2>
+  <p class="section-sub">CSAT, FCR e taxa de resolução interna não existiam de forma consistente antes de agosto/setembro — a área foi criando essa instrumentação do zero. Uma métrica saindo de 0,4% pra 64,5% não é a operação sessenta vezes melhor, é a métrica passando a ser preenchida. Os gráficos abaixo separam o que é operação de verdade do que é efeito de instrumentação nova.</p>
+
+  <div class="chartgrid2">
+    <div class="chartcard">
+      <h4>FCR, resolução interna e retenção — ago vs. set</h4>
+      <div class="chart-desc">% em cada métrica.</div>
+      <div class="chart-wrap"><svg viewBox="0 0 460 260" id="chart-cmp1"></svg></div>
+      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
+    </div>
+    <div class="chartcard">
+      <h4>Duração e 1ª resposta — ago vs. set</h4>
+      <div class="chart-desc">Em minutos (escala log pra caber duração e resposta juntas).</div>
+      <div class="chart-wrap"><svg viewBox="0 0 460 260" id="chart-cmp2"></svg></div>
+      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
+    </div>
+  </div>
+
+  <div class="chartcard">
+    <h4>Distribuição de duração do atendimento — ago vs. set</h4>
+    <div class="chart-desc">Conversas com atendente humano, por faixa de tempo até o fechamento. Setembro tem bem menos casos acima de 24h.</div>
+    <div class="chart-wrap"><svg viewBox="0 0 700 260" id="chart-hist"></svg></div>
+    <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
+  </div>
 
   <div class="tblwrap"><table>
-    <thead><tr><th>Métrica</th><th class="num">Agosto</th><th class="num">Setembro</th><th class="num">Δ</th><th>Leitura</th></tr></thead>
+    <thead><tr><th>Métrica</th><th class="num">Agosto</th><th class="num">Setembro</th><th>Leitura</th></tr></thead>
     <tbody>
-      <tr><td>Atendimentos humanos (por dia)</td><td class="num">1.178/dia</td><td class="num">949/dia</td><td class="num"><span class="delta down">-19%</span></td><td><span class="tag real-down">real</span> mais deflection pra IA</td></tr>
-      <tr><td>Volume atendido por IA (por dia)</td><td class="num">4.124/dia</td><td class="num">5.604/dia</td><td class="num"><span class="delta down">+36%</span></td><td><span class="tag real-down">real</span> self-service crescendo</td></tr>
-      <tr><td>FCR — atendimento humano</td><td class="num">87,3%</td><td class="num">88,8%</td><td class="num"><span class="delta down">+1,5pp</span></td><td><span class="tag real-down">real</span> melhora leve, acima do benchmark</td></tr>
-      <tr><td>Duração do atendimento</td><td class="num">9h29min</td><td class="num">6h21min</td><td class="num"><span class="delta down">-33%</span></td><td><span class="tag real-down">real</span> provável efeito do fim da desatribuição pra IA</td></tr>
-      <tr><td>Reabertura (mesmo intent, 5 dias)</td><td class="num">12,7%</td><td class="num">11,2%</td><td class="num"><span class="delta down">-1,5pp</span></td><td><span class="tag real-down">real</span> melhora, abaixo da meta de 15%</td></tr>
-      <tr><td>CSAT</td><td class="num">4,0</td><td class="num">4,0</td><td class="num">—</td><td><span class="tag estavel">estável</span> abaixo da meta (4,5)</td></tr>
-      <tr><td>Resolução interna (atendente marcou resolvido)</td><td class="num">0,1%</td><td class="num">19,2%</td><td class="num"><span class="delta up">+19,1pp</span></td><td><span class="tag artefato">artefato</span> campo não era preenchido em agosto</td></tr>
-      <tr><td>Taxa de resolução por motivo de contato</td><td class="num">65,1% (n=63)</td><td class="num">88,3% (n=4.942)</td><td class="num"><span class="delta down">+23pp</span></td><td><span class="tag artefato">artefato</span> amostra de agosto pequena demais pra comparar</td></tr>
-      <tr><td>% Solicitação de cancelamento</td><td class="num">15,4%</td><td class="num">16,2%</td><td class="num"><span class="delta up">+0,8pp</span></td><td><span class="tag real-up">real piora</span> reverte a queda que agosto tinha conquistado (16%→13% dentro do próprio agosto)</td></tr>
-      <tr><td>Retenção de cancelamento</td><td class="num">13,4%</td><td class="num">12,9%</td><td class="num"><span class="delta up">-0,5pp</span></td><td><span class="tag real-up">real piora</span> ambos bem abaixo da meta de 20%</td></tr>
-      <tr><td>Taxa de processamento (cancelamento)</td><td class="num">98,4%</td><td class="num">86,5%</td><td class="num"><span class="delta up">-11,9pp</span></td><td><span class="tag artefato">parcial artefato</span> setembro ainda processando (mês incompleto) + consistente com os 12,4% de estouro de SLA já identificados</td></tr>
-      <tr><td>Nota Reclame Aqui</td><td class="num">5,1</td><td class="num">3,7</td><td class="num"><span class="delta up">-1,4 pts</span></td><td><span class="tag real-up">real piora</span> risco de reputação, meta é 7,0</td></tr>
-      <tr><td>% Voltaria a fazer negócio</td><td class="num">50,7%</td><td class="num">39,9%</td><td class="num"><span class="delta up">-10,8pp</span></td><td><span class="tag real-up">real piora</span> meta é 75%</td></tr>
-      <tr><td>Base ativa</td><td class="num">13.714</td><td class="num">16.891</td><td class="num"><span class="delta down">+23%</span></td><td><span class="tag real-down">real</span> crescimento de base</td></tr>
+      <tr><td>Atendimentos humanos (por dia)</td><td class="num">1.178/dia</td><td class="num">949/dia</td><td><span class="tag real-down">real</span> mais deflection pra IA</td></tr>
+      <tr><td>FCR — empresa toda</td><td class="num">87,3%</td><td class="num">88,8%</td><td><span class="tag real-down">real</span> melhora leve</td></tr>
+      <tr><td>FCR — time de Suporte</td><td class="num">88,4%</td><td class="num">84,9%</td><td><span class="tag real-up">real piora</span> caiu, na contramão da média geral</td></tr>
+      <tr><td>1ª resposta — time de Suporte</td><td class="num">1h52min</td><td class="num">2h18min</td><td><span class="tag real-up">real piora</span> empresa toda ficou estável (1h56→1h55)</td></tr>
+      <tr><td>Duração do atendimento — empresa toda</td><td class="num">9h31min</td><td class="num">6h21min</td><td><span class="tag real-down">real</span> -33%</td></tr>
+      <tr><td>Resolução interna</td><td class="num">0,1%–0,4%</td><td class="num">19,2%–71,7%</td><td><span class="tag artefato">artefato</span> campo não era preenchido em agosto</td></tr>
+      <tr><td>% Solicitação de cancelamento</td><td class="num">15,4%</td><td class="num">16,2%</td><td><span class="tag real-up">real piora</span> reverte a queda de agosto</td></tr>
+      <tr><td>Retenção de cancelamento</td><td class="num">13,4%</td><td class="num">12,9%</td><td><span class="tag real-up">real piora</span> meta é 20%</td></tr>
     </tbody>
   </table></div>
 
   <div class="callout warn">
-    <b>A tensão que vale destacar:</b> a base ativa cresceu 23% e o % de reclamações sobre a base até caiu levemente (1,1%→0,8%) — mas entre quem reclama, a satisfação caiu (nota RA e "voltaria a fazer negócio" ambos em queda forte). Não é que estamos gerando mais insatisfação proporcionalmente — é que quando a insatisfação acontece, estamos resolvendo pior do que em agosto.
+    <b>O achado que não aparecia nos prints:</b> a melhora de FCR e de tempo de resposta em setembro é puxada por <b>Cancelamento (Paulo)</b> e <b>AT (Amanda)</b>, não pelo time de Suporte. O time de Suporte piorou nas duas métricas na mesma janela em que a duração total do atendimento melhorou — detalhe na seção 04.
   </div>
 </div></section>
 
@@ -218,117 +266,463 @@ footer a{color:var(--ink-muted);}
 <section id="dores"><div class="wrap">
   <div class="section-label"><span class="section-num">03</span><span class="section-tag">Onde o cliente sente mais</span></div>
   <h2>As três dores da operação</h2>
-  <p class="section-sub">As três já têm spec ou desenho pronto. Nenhuma das três foi implementada ainda. O dado de setembro mostra exatamente onde cada uma dói.</p>
+  <p class="section-sub">As três já têm spec ou desenho pronto. Nenhuma foi implementada ainda.</p>
+
+  <div class="chartcard">
+    <h4>Volume e FCR por dor — setembro</h4>
+    <div class="chart-desc">Conversas humanas por intent e FCR de cada uma.</div>
+    <div class="chart-wrap"><svg viewBox="0 0 700 200" id="chart-dores"></svg></div>
+  </div>
 
   <div class="painbox">
     <div class="painbox-head"><span class="painbox-num">DOR 01</span><span class="painbox-title">Upgrade não é self-service</span></div>
     <p>Hoje o upgrade depende de atendimento humano de ponta a ponta: o cliente entra em contato, um analista consulta o pedido, calcula a diferença de valor manualmente e conduz o pagamento fora do fluxo self-service do app/site.</p>
-    <div class="evidence">
-      <div class="ev">Setembro: <b>750</b> conversas de "upgrade" no atendimento humano</div>
-      <div class="ev">Taxa de resolução: <b>46,5%</b> — a mais baixa entre os 5 maiores intents</div>
-      <div class="ev">FCR: <b>84,8%</b></div>
-    </div>
-    <p><b>Já desenhado:</b> spec completa de "Upgrade Self-Service" (App/Site + ferramenta assistida no allu.office), com elegibilidade, vitrine filtrada por categoria, cupom automático, cobrança em duas etapas, devolução automática do ativo antigo e critérios de aceite definidos. <b>Nada disso foi implementado ainda.</b></p>
+    <div class="evidence"><div class="ev">Setembro: <b>750</b> conversas</div><div class="ev">Taxa de resolução: <b>46,5%</b> — a mais baixa dos 5 maiores intents</div><div class="ev">FCR: <b>84,8%</b></div></div>
+    <p><b>Já desenhado:</b> spec completa de "Upgrade Self-Service" (App/Site + ferramenta assistida no allu.office). <b>Nada implementado ainda.</b></p>
     <div class="statusrow"><span class="pill done">Spec pronta</span><span class="pill todo">Implementação: 0%</span></div>
-    <div class="bench"><b>Benchmark:</b> em telecom e SaaS, mover upgrade de assistido para self-service tipicamente reduz o TMA de forma significativa e aumenta a taxa de conversão do funil — é o mesmo racional de self-service-por-padrão já validado no diagnóstico de cancelamento desta área.</div>
+    <div class="bench"><b>Benchmark:</b> em telecom/SaaS, mover upgrade de assistido pra self-service reduz TMA de forma significativa e aumenta conversão do funil.</div>
   </div>
 
   <div class="painbox">
     <div class="painbox-head"><span class="painbox-num">DOR 02</span><span class="painbox-title">Desalinhamento com logística</span></div>
-    <p>Falta comunicação clara com o cliente em cada etapa de cancelamento/reenvio/devolução, não existem SLAs formais para os casos de exceção (aparelho bloqueado, sem ligar, extraviado), e não há flags nem painel no allu.office/allu.flow pra dar visibilidade ao time.</p>
-    <div class="evidence">
-      <div class="ev">Setembro: <b>884</b> conversas de "logistics" no atendimento humano</div>
-      <div class="ev">FCR: <b>66,4%</b> — o mais baixo entre os 5 maiores intents</div>
-      <div class="ev">Taxa de resolução: <b>67,6%</b></div>
-    </div>
-    <p><b>Já desenhado:</b> spec completa de "Logística de Devoluções" fechada com o time de Log (23/set) — fluxos de cancelamento na fila e já enviado, reenvio por falha de entrega, validação de endereço, flags de devolução (divergência/extravio), SLAs por cenário (3 a 7 dias úteis), comunicações automáticas, regra de estorno, ranking de motivos com SLA e responsável por etapa no allu.flow, e painel de entrega/expedição/atraso. <b>Nada disso foi implementado ainda.</b> Também sai dessa reunião a nova tabela de multa por faixa de tempo de contrato (12/24/36 meses = 40/30/20% do valor remanescente), ainda não aplicada.</p>
+    <p>Falta comunicação clara em cada etapa de cancelamento/reenvio/devolução, sem SLA formal pra exceções (bloqueado, sem ligar, extraviado), sem flags nem painel de acompanhamento.</p>
+    <div class="evidence"><div class="ev">Setembro: <b>884</b> conversas</div><div class="ev">FCR: <b>66,4%</b> — o mais baixo dos 5 maiores intents</div><div class="ev">Taxa de resolução: <b>67,6%</b></div></div>
+    <p><b>Já desenhado:</b> spec fechada com o time de Log (23/set) — SLAs, flags, painel, nova TDA por faixa de contrato. <b>Nada implementado ainda.</b></p>
     <div class="statusrow"><span class="pill done">Spec pronta</span><span class="pill todo">Implementação: 0%</span><span class="pill todo">6 perguntas em aberto</span></div>
-    <div class="bench"><b>Benchmark:</b> FCR de 66,4% está abaixo da faixa considerada boa (70–75%) — é hoje o intent com pior resolução na primeira interação de toda a operação, justamente o workstream sem SLA formal nem painel de acompanhamento.</div>
+    <div class="bench"><b>Benchmark:</b> FCR de 66,4% está abaixo da faixa boa de mercado (70–75%) — pior resolução na primeira interação de toda a operação.</div>
   </div>
 
   <div class="painbox">
     <div class="painbox-head"><span class="painbox-num">DOR 03</span><span class="painbox-title">Cancelamento moroso e com baixa retenção</span></div>
-    <p>O processo atual promete resposta em até 5 dias úteis e não cumpre em quase 1 de cada 8 solicitações (12,4%, pior caso 17 dias úteis). A retenção líquida real é bem menor que a bruta reportada — em doc. aprovada, 36,3% de retenção bruta vira só 13,5% líquida depois de descontar quem voltou a pedir. E é a única etapa do funil que piorou de agosto pra setembro (13,07%→14,97%), enquanto o churn mensal quase dobrou (0,57%→0,85%).</p>
-    <div class="evidence">
-      <div class="ev">Setembro: <b>2.315</b> conversas de "cancel" — o 2º maior intent depois de sales</div>
-      <div class="ev">FCR: <b>81,2%</b></div>
-      <div class="ev">Retenção macro: <b>12,9%</b> vs. meta de <b>20%</b></div>
-    </div>
-    <p><b>Já desenhado:</b> redesenho completo tela a tela — <a href="https://claude.ai/artifact/X65kfmW3TBV7mQ2FDCiHfY">Redesenho do Processo de Cancelamento</a> — com regras de negócio gerais, 5 das 6 jornadas desenhadas (pagamento aprovado, doc. em análise, doc. aprovada, enviado/trânsito, entregue ≤7 dias), modelo self-service-por-padrão com chat reservado pra risco real, e o mapeamento de quando o chat é obrigatório. <b>Falta desenhar a jornada de churn (entregue &gt;7 dias) e nada foi implementado ainda.</b></p>
+    <p>Promessa de resposta em até 5 dias úteis descumprida em quase 1 de cada 8 solicitações. Retenção líquida real bem menor que a bruta reportada. Única etapa do funil que piorou de agosto pra setembro (doc. aprovada: 13,07%→14,97%).</p>
+    <div class="evidence"><div class="ev">Setembro: <b>2.315</b> conversas — o 2º maior intent</div><div class="ev">FCR: <b>81,2%</b></div><div class="ev">Retenção macro: <b>12,9%</b> vs. meta <b>20%</b></div></div>
+    <p><b>Já desenhado:</b> <a href="https://claude.ai/artifact/X65kfmW3TBV7mQ2FDCiHfY">Redesenho do Processo de Cancelamento</a> — 5 das 6 jornadas prontas. <b>Falta desenhar churn e nada foi implementado ainda.</b></p>
     <div class="statusrow"><span class="pill done">5 de 6 jornadas desenhadas</span><span class="pill todo">Implementação: 0%</span></div>
-    <div class="bench"><b>Benchmark:</b> fluxo de cancelamento bem desenhado retém entre 10–34% (média 15%, melhores 20%+). A allu está em 12,9% — dentro da faixa, mas abaixo da média e longe da própria meta interna de 20%. FTC "click-to-cancel" reforça: uma oferta só, sem prender o cliente atrás de atendimento pra completar o cancelamento.</div>
+    <div class="bench"><b>Benchmark:</b> fluxo bem desenhado retém 10–34% (média 15%). Allu está em 12,9% — dentro da faixa, abaixo da média, longe da meta interna de 20%.</div>
   </div>
 </div></section>
 
-<!-- ============ 04 · CONCLUSÕES ============ -->
+<!-- ============ 04 · POR ATENDENTE ============ -->
+<section id="atendentes"><div class="wrap">
+  <div class="section-label"><span class="section-num">04</span><span class="section-tag">Desempenho individual</span></div>
+  <h2>Por atendente</h2>
+  <p class="section-sub">Suporte consolidado (Wanessa, Winnie, Giselle, Débora, Kelly) e depois pessoa por pessoa. Cancelamento (Paulo Aranha) e AT (Amanda) à parte, times de uma pessoa só.</p>
+
+  <div class="chartgrid2">
+    <div class="chartcard">
+      <h4>FCR por atendente — ago vs. set</h4>
+      <div class="chart-wrap"><svg viewBox="0 0 460 300" id="chart-att-fcr"></svg></div>
+      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
+    </div>
+    <div class="chartcard">
+      <h4>CSAT por atendente — ago vs. set</h4>
+      <div class="chart-desc">Escala 1–5. Kelly e Débora sem dado de agosto (chegaram/começaram a atender em setembro).</div>
+      <div class="chart-wrap"><svg viewBox="0 0 460 300" id="chart-att-csat"></svg></div>
+      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
+    </div>
+  </div>
+
+  <div class="chartgrid2">
+    <div class="chartcard">
+      <h4>Volume de conversas por atendente — ago vs. set</h4>
+      <div class="chart-wrap"><svg viewBox="0 0 460 300" id="chart-att-vol"></svg></div>
+      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
+    </div>
+    <div class="chartcard">
+      <h4>Duração do atendimento por atendente — ago vs. set</h4>
+      <div class="chart-desc">Em horas. Amanda (AT) inclui tempo de laudo técnico — não é comparável 1:1 com o resto.</div>
+      <div class="chart-wrap"><svg viewBox="0 0 460 300" id="chart-att-dur"></svg></div>
+      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
+    </div>
+  </div>
+
+  <h3><span class="n">A</span>Suporte — consolidado</h3>
+  <div class="attcard">
+    <div class="attcard-head"><span class="name">Time Suporte (5 pessoas)</span><span class="role">wanessa · winnie · giselle · débora · kelly</span></div>
+    <div class="attmini">
+      <div class="m"><div class="mv">5.829</div><div class="ml">conversas (set)</div><div class="md down">6.102 em ago</div></div>
+      <div class="m"><div class="mv">84,9%</div><div class="ml">FCR (set)</div><div class="md down">88,4% em ago</div></div>
+      <div class="m"><div class="mv">2h18min</div><div class="ml">1ª resposta (set)</div><div class="md down">1h52min em ago</div></div>
+      <div class="m"><div class="mv">7h58min</div><div class="ml">duração (set)</div><div class="md up">14h23min em ago</div></div>
+      <div class="m"><div class="mv">4,09</div><div class="ml">CSAT (set)</div><div class="md up">4,08 em ago</div></div>
+    </div>
+    <p class="note-inline">Duração melhorou muito, mas FCR e 1ª resposta pioraram — o time está fechando os casos mais rápido, só que resolvendo pior de primeira e demorando mais pra dar a primeira resposta.</p>
+  </div>
+
+  <h3><span class="n">B</span>Suporte — individual</h3>
+  <div class="attcard">
+    <div class="attcard-head"><span class="name">Wanessa Aparecida dos Santos Maia</span></div>
+    <div class="attmini">
+      <div class="m"><div class="mv">1.419</div><div class="ml">conversas (set)</div><div class="md down">1.865 em ago</div></div>
+      <div class="m"><div class="mv">86,0%</div><div class="ml">FCR (set)</div><div class="md down">87,0% em ago</div></div>
+      <div class="m"><div class="mv">1h58min</div><div class="ml">1ª resposta (set)</div><div class="md down">1h46min em ago</div></div>
+      <div class="m"><div class="mv">9h31min</div><div class="ml">duração (set)</div><div class="md up">18h52min em ago</div></div>
+      <div class="m"><div class="mv">4,37</div><div class="ml">CSAT (set)</div><div class="md up">4,23 em ago</div></div>
+    </div>
+  </div>
+  <div class="attcard">
+    <div class="attcard-head"><span class="name">Winnie Marina Couto dos Santos</span></div>
+    <div class="attmini">
+      <div class="m"><div class="mv">1.398</div><div class="ml">conversas (set)</div><div class="md down">1.519 em ago</div></div>
+      <div class="m"><div class="mv">83,0%</div><div class="ml">FCR (set)</div><div class="md down">86,6% em ago</div></div>
+      <div class="m"><div class="mv">2h53min</div><div class="ml">1ª resposta (set)</div><div class="md down">2h14min em ago</div></div>
+      <div class="m"><div class="mv">6h47min</div><div class="ml">duração (set)</div><div class="md up">15h24min em ago</div></div>
+      <div class="m"><div class="mv">3,83</div><div class="ml">CSAT (set)</div><div class="md down">4,33 em ago</div></div>
+    </div>
+    <p class="note-inline">Maior queda de CSAT do time (4,33→3,83) junto com queda de FCR e 1ª resposta mais lenta — vale conversa individual.</p>
+  </div>
+  <div class="attcard">
+    <div class="attcard-head"><span class="name">Giselle Resende</span></div>
+    <div class="attmini">
+      <div class="m"><div class="mv">1.714</div><div class="ml">conversas (set)</div><div class="md down">2.724 em ago</div></div>
+      <div class="m"><div class="mv">85,1%</div><div class="ml">FCR (set)</div><div class="md down">90,3% em ago</div></div>
+      <div class="m"><div class="mv">2h04min</div><div class="ml">1ª resposta (set)</div><div class="md down">1h43min em ago</div></div>
+      <div class="m"><div class="mv">7h58min</div><div class="ml">duração (set)</div><div class="md up">10h41min em ago</div></div>
+      <div class="m"><div class="mv">3,84</div><div class="ml">CSAT (set)</div><div class="md down">3,86 em ago</div></div>
+    </div>
+    <p class="note-inline">Maior volume individual do time nos dois meses — FCR mais alto de agosto (90,3%) caiu junto com o do resto do time em setembro.</p>
+  </div>
+  <div class="attcard">
+    <div class="attcard-head"><span class="name">Kelly Pereira</span></div>
+    <div class="attmini">
+      <div class="m"><div class="mv">846</div><div class="ml">conversas (set)</div><div class="md">— em ago (n=1)</div></div>
+      <div class="m"><div class="mv">82,9%</div><div class="ml">FCR (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">2h15min</div><div class="ml">1ª resposta (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">5h03min</div><div class="ml">duração (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">4,58</div><div class="ml">CSAT (set)</div><div class="md">maior CSAT do time</div></div>
+    </div>
+    <p class="note-inline">Praticamente sem volume em agosto — setembro é o primeiro mês real dela no time, e já com o melhor CSAT entre todos os 7 atendentes analisados.</p>
+  </div>
+  <div class="attcard">
+    <div class="attcard-head"><span class="name">Débora Freitas</span></div>
+    <div class="attmini">
+      <div class="m"><div class="mv">449</div><div class="ml">conversas (set)</div><div class="md">0 em ago</div></div>
+      <div class="m"><div class="mv">90,6%</div><div class="ml">FCR (set)</div><div class="md">maior FCR do time</div></div>
+      <div class="m"><div class="mv">2h30min</div><div class="ml">1ª resposta (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">12h18min</div><div class="ml">duração (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">3,77</div><div class="ml">CSAT (set)</div><div class="md">13 respostas</div></div>
+    </div>
+    <p class="note-inline">Contratação nova (consistente com o recap de agosto: "1ª contratação, entra na segunda"). Setembro é o primeiro mês completo — já com o melhor FCR do time.</p>
+  </div>
+
+  <h3><span class="n">C</span>Cancelamento e AT</h3>
+  <div class="attcard">
+    <div class="attcard-head"><span class="name">Paulo Aranha Marques</span><span class="role">cancelamento</span></div>
+    <div class="attmini">
+      <div class="m"><div class="mv">847</div><div class="ml">conversas (set)</div><div class="md down">1.608 em ago</div></div>
+      <div class="m"><div class="mv">84,5%</div><div class="ml">FCR (set)</div><div class="md up">80,7% em ago</div></div>
+      <div class="m"><div class="mv">2h00min</div><div class="ml">1ª resposta (set)</div><div class="md up">3h08min em ago</div></div>
+      <div class="m"><div class="mv">7h49min</div><div class="ml">duração (set)</div><div class="md up">19h45min em ago</div></div>
+      <div class="m"><div class="mv">3,85</div><div class="ml">CSAT (set)</div><div class="md up">3,80 em ago</div></div>
+    </div>
+    <p class="note-inline">Melhorou em tudo — volume caiu quase pela metade, mas toda métrica de qualidade subiu. É o oposto do padrão visto no time de Suporte.</p>
+  </div>
+  <div class="attcard">
+    <div class="attcard-head"><span class="name">Amanda Gabriela Alves Silva</span><span class="role">assistência técnica</span></div>
+    <div class="attmini">
+      <div class="m"><div class="mv">799</div><div class="ml">conversas (set)</div><div class="md down">1.379 em ago</div></div>
+      <div class="m"><div class="mv">82,9%</div><div class="ml">FCR (set)</div><div class="md up">80,6% em ago</div></div>
+      <div class="m"><div class="mv">2h20min</div><div class="ml">1ª resposta (set)</div><div class="md up">3h50min em ago</div></div>
+      <div class="m"><div class="mv">20h41min</div><div class="ml">duração (set)</div><div class="md up">38h58min em ago</div></div>
+      <div class="m"><div class="mv">3,77</div><div class="ml">CSAT (set)</div><div class="md up">3,76 em ago</div></div>
+    </div>
+    <p class="note-inline">Duração muito mais alta que o resto — natural do fluxo de AT (envio, diagnóstico e laudo do aparelho), não é atraso de atendimento. Mesmo assim, caiu quase pela metade e toda métrica de qualidade melhorou.</p>
+  </div>
+</div></section>
+
+<!-- ============ 05 · CONCLUSÕES ============ -->
 <section id="conclusoes"><div class="wrap">
-  <div class="section-label"><span class="section-num">04</span><span class="section-tag">Juntando os pontos</span></div>
+  <div class="section-label"><span class="section-num">05</span><span class="section-tag">Juntando os pontos</span></div>
   <h2>Conclusões consolidadas</h2>
-  <ul style="font-size:15px;line-height:1.8;color:var(--ink-secondary);padding-left:22px;max-width:70ch;">
-    <li><b style="color:var(--ink)">A operação está ficando mais eficiente</b> — duração do atendimento caiu 33%, reabertura caiu, FCR subiu e mais gente é resolvida por IA sem precisar de humano. Isso é resultado de decisões já tomadas (fim da desatribuição pra IA, réguas de comunicação novas).</li>
-    <li><b style="color:var(--ink)">A melhora de agosto no cancelamento não se sustentou.</b> A taxa de solicitação caiu de 16% pra 13% dentro de agosto, mas voltou a subir em setembro (15,4%→16,2% na visão macro; 13,07%→14,97% especificamente em doc. aprovada). O que funcionou em agosto foi comunicação e correção de bug — não resolve sozinho a causa estrutural, que é o processo de cancelamento em si.</li>
-    <li><b style="color:var(--ink)">Dois sinais de reputação pioraram de forma que não pode ser ignorada</b>: nota Reclame Aqui (5,1→3,7) e % que voltaria a fazer negócio (50,7%→39,9%). Isso não aparece nas métricas internas de FCR/CSAT — é sinal externo, de quem já reclamou e não ficou satisfeito com a resolução.</li>
-    <li><b style="color:var(--ink)">As três dores mais caras pro cliente já têm solução desenhada.</b> Upgrade, logística e cancelamento somam <b>3.949 conversas humanas em setembro</b> (upgrade 750 + logistics 884 + cancel 2.315) — quase 1 em cada 6 atendimentos humanos do mês — e as três specs já existem. O gargalo não é desenho, é implementação.</li>
-    <li><b style="color:var(--ink)">Não confundir métrica nova com operação melhor.</b> Resolução interna saindo de 0,1% pra 19,2%, ou taxa de resolução por motivo saindo de 65,1% (n=63) pra 88,3% (n=4.942), são instrumentação amadurecendo — reais, mas não comparáveis ano a ano como "melhoria de performance".</li>
+  <ul style="font-size:14.5px;line-height:1.75;color:var(--ink-secondary);padding-left:20px;max-width:72ch;">
+    <li><b style="color:var(--ink)">A melhora de setembro não é uniforme.</b> FCR da empresa subiu, mas isso esconde uma queda real no time de Suporte (88,4%→84,9%) compensada por uma melhora forte em Cancelamento e AT. Olhar só a média geral escondia esse sinal.</li>
+    <li><b style="color:var(--ink)">Duração caiu em todo mundo, sem exceção</b> — inclusive no time de Suporte, que piorou em FCR e 1ª resposta. Vale entender se o time está fechando conversa rápido demais, à custa de resolver de primeira.</li>
+    <li><b style="color:var(--ink)">Winnie e Giselle tiveram a maior queda de FCR e CSAT do time</b> — merece conversa 1:1 antes de virar tendência.</li>
+    <li><b style="color:var(--ink)">Kelly e Débora, ambas praticamente novas no time, já entregam os melhores números de CSAT e FCR</b> respectivamente — bom sinal de onboarding, vale entender o que estão fazendo diferente.</li>
+    <li><b style="color:var(--ink)">A melhora de agosto no cancelamento não se sustentou</b> — taxa de solicitação voltou a subir em setembro, reforçando que comunicação sozinha não resolve a causa estrutural.</li>
+    <li><b style="color:var(--ink)">As três dores mais caras pro cliente já têm solução desenhada</b> — upgrade, logística e cancelamento somam <b>3.949 conversas humanas em setembro</b>, quase 1 em cada 6 atendimentos do mês. O gargalo é implementação, não desenho.</li>
+    <li><b style="color:var(--ink)">Todos os números desta seção foram validados direto no BigQuery</b> — a leitura original feita a partir dos prints do dashboard bateu quase exatamente com o dado bruto, o que dá confiança nas duas fontes.</li>
   </ul>
 </div></section>
 
-<!-- ============ 05 · TASKS ============ -->
+<!-- ============ 06 · TASKS ============ -->
 <section id="tasks"><div class="wrap">
-  <div class="section-label"><span class="section-num">05</span><span class="section-tag">Pra produto e tecnologia</span></div>
+  <div class="section-label"><span class="section-num">06</span><span class="section-tag">Pra produto e tecnologia</span></div>
   <h2>Tasks de outubro</h2>
-  <p class="section-sub">Puxadas direto das 3 specs já fechadas — nada aqui é novo desenho, é execução do que já foi combinado.</p>
+  <p class="section-sub">Puxadas das 3 specs já fechadas — execução, não desenho novo.</p>
 
   <h3><span class="n">A</span>Upgrade self-service</h3>
   <div class="tasklist">
-    <div class="taskrow"><div class="tn">1</div><div><div class="tt">Fluxo self-service de upgrade no App/Site<span class="badge eng">Eng</span></div><div class="td">CTA "Fazer upgrade" na tela de assinatura, validação de elegibilidade em tempo real (ativo, adimplente, sem pendência, 12+ meses), vitrine filtrada por categoria com cupom aplicado, endereço/plano/pagamento e confirmação — tudo sem sair do app/site.</div></div></div>
-    <div class="taskrow"><div class="tn">2</div><div><div class="tt">Ferramenta de upgrade assistido no allu.office<span class="badge eng">Eng</span></div><div class="td">Nova aba "Upgrades" no pedido, busca por CPF/ID/nome, geração de link de pagamento com preço personalizado por CPF, mesma engine de pricing do self-service.</div></div></div>
-    <div class="taskrow"><div class="tn">3</div><div><div class="tt">Geração automática do código de devolução do ativo antigo<span class="badge eng">Eng</span></div><div class="td">Disparo no evento de entrega do novo ativo, prazo de 3 dias úteis, card na assinatura antiga com instruções de logística reversa.</div></div></div>
-    <div class="taskrow"><div class="tn">4</div><div><div class="tt">Atualizar Termos de Uso — upgrade por categoria<span class="badge jur">Jurídico</span></div><div class="td">Cláusulas 2.15 a 2.19: upgrade passa a valer pra mesma categoria (não mais só categoria superior), aplicação do cupom no lugar do cálculo de diferença, e previsão explícita de estorno/cancelamento do pedido de upgrade.</div></div></div>
+    <div class="taskrow"><div class="tn">1</div><div><div class="tt">Fluxo self-service de upgrade no App/Site<span class="badge eng">Eng</span></div><div class="td">CTA "Fazer upgrade", validação de elegibilidade em tempo real, vitrine filtrada por categoria com cupom aplicado, endereço/plano/pagamento e confirmação sem sair do app/site.</div></div></div>
+    <div class="taskrow"><div class="tn">2</div><div><div class="tt">Ferramenta de upgrade assistido no allu.office<span class="badge eng">Eng</span></div><div class="td">Aba "Upgrades" no pedido, busca por CPF/ID/nome, link de pagamento com preço personalizado por CPF.</div></div></div>
+    <div class="taskrow"><div class="tn">3</div><div><div class="tt">Geração automática do código de devolução do ativo antigo<span class="badge eng">Eng</span></div><div class="td">Disparo no evento de entrega do novo ativo, prazo de 3 dias úteis.</div></div></div>
+    <div class="taskrow"><div class="tn">4</div><div><div class="tt">Atualizar Termos de Uso — upgrade por categoria<span class="badge jur">Jurídico</span></div><div class="td">Cláusulas 2.15–2.19: upgrade pra mesma categoria, cupom no lugar do cálculo de diferença, estorno/cancelamento previstos.</div></div></div>
   </div>
 
   <h3><span class="n">B</span>Logística de devoluções</h3>
   <div class="tasklist">
-    <div class="taskrow"><div class="tn">1</div><div><div class="tt">Flags de devolução no allu.office<span class="badge eng">Eng</span></div><div class="td">"Devolvido com divergência" e "Extravio", visíveis no pedido — base pro painel e pras comunicações automáticas corretas.</div></div></div>
-    <div class="taskrow"><div class="tn">2</div><div><div class="tt">SLAs e responsáveis por motivo no allu.flow<span class="badge eng">Eng</span></div><div class="td">Configurar os 14 motivos já ranqueados (recebimento de ativos 26%, B2B 13%, problema na entrega 11%, atraso 10%...) com SLA de 1ª avaliação, tratativa simples e casos complexos, responsável fixo por etapa, e corte de horário (16h geral, 14h pra problema/atraso na entrega).</div></div></div>
-    <div class="taskrow"><div class="tn">3</div><div><div class="tt">Automação de reenvio por falha de entrega<span class="badge eng">Eng</span></div><div class="td">Mensagem automática ao cliente + Forms de confirmação de endereço quando a entrega falha; sem resposta, cancela e devolve o ativo ao estoque.</div></div></div>
-    <div class="taskrow"><div class="tn">4</div><div><div class="tt">Validação de endereço no cadastro/checkout<span class="badge eng">Eng</span></div><div class="td">Bloquear caracteres especiais e tornar o campo obrigatório — reduz a taxa de falha de entrega na origem.</div></div></div>
-    <div class="taskrow"><div class="tn">5</div><div><div class="tt">Estorno automático de cobranças durante a devolução<span class="badge eng">Eng</span></div><div class="td">Comparar data da cobrança com data de postagem na validação do recebimento; se cobrança &gt; postagem, estornar automaticamente.</div></div></div>
-    <div class="taskrow"><div class="tn">6</div><div><div class="tt">Painel de entrega, expedição e atraso<span class="badge eng">Eng</span></div><div class="td">Visão consolidada de pedidos em expedição, em atraso, aguardando confirmação de endereço e devolvidos por flag — allu.office ou allu.flow.</div></div></div>
-    <div class="taskrow"><div class="tn">7</div><div><div class="tt">Engine de cálculo da nova TDA por faixa de contrato<span class="badge eng">Eng</span></div><div class="td">12 meses = 40%, 24 meses = 30%, 36 meses = 20% do valor remanescente — remove a negociação atual pra 1 mensalidade, mesma engine no app/site e no allu.office.</div></div></div>
+    <div class="taskrow"><div class="tn">1</div><div><div class="tt">Flags de devolução no allu.office<span class="badge eng">Eng</span></div><div class="td">"Devolvido com divergência" e "Extravio", visíveis no pedido.</div></div></div>
+    <div class="taskrow"><div class="tn">2</div><div><div class="tt">SLAs e responsáveis por motivo no allu.flow<span class="badge eng">Eng</span></div><div class="td">14 motivos ranqueados, SLA por etapa, responsável fixo, corte de horário (16h geral, 14h problema/atraso na entrega).</div></div></div>
+    <div class="taskrow"><div class="tn">3</div><div><div class="tt">Automação de reenvio por falha de entrega<span class="badge eng">Eng</span></div><div class="td">Mensagem + Forms de confirmação de endereço; sem resposta, cancela e devolve ao estoque.</div></div></div>
+    <div class="taskrow"><div class="tn">4</div><div><div class="tt">Validação de endereço no cadastro/checkout<span class="badge eng">Eng</span></div><div class="td">Bloquear caracteres especiais, campo obrigatório.</div></div></div>
+    <div class="taskrow"><div class="tn">5</div><div><div class="tt">Estorno automático de cobranças durante a devolução<span class="badge eng">Eng</span></div><div class="td">Comparar data da cobrança com data de postagem na validação do recebimento.</div></div></div>
+    <div class="taskrow"><div class="tn">6</div><div><div class="tt">Painel de entrega, expedição e atraso<span class="badge eng">Eng</span></div><div class="td">Visão consolidada de pedidos em expedição, atraso, aguardando endereço e devolvidos por flag.</div></div></div>
+    <div class="taskrow"><div class="tn">7</div><div><div class="tt">Engine de cálculo da nova TDA por faixa de contrato<span class="badge eng">Eng</span></div><div class="td">12/24/36 meses = 40/30/20% do valor remanescente, mesma engine app/site e allu.office.</div></div></div>
     <div class="taskrow"><div class="tn">8</div><div><div class="tt">Atualizar cláusula 6.6 dos Termos de Uso (TDA)<span class="badge jur">Jurídico</span></div><div class="td">Refletir a tabela de multa por faixa de tempo cumprido.</div></div></div>
   </div>
 
   <h3><span class="n">C</span>Cancelamento self-service</h3>
   <div class="tasklist">
-    <div class="taskrow"><div class="tn">1</div><div><div class="tt">Implementar as 5 jornadas já desenhadas<span class="badge eng">Eng</span></div><div class="td">Pagamento aprovado, doc. em análise, doc. aprovada, enviado/trânsito e entregue ≤7 dias — regras de negócio, modais e formulário de motivo/submotivo, conforme <a href="https://claude.ai/artifact/X65kfmW3TBV7mQ2FDCiHfY">o desenho completo</a>.</div></div></div>
-    <div class="taskrow"><div class="tn">2</div><div><div class="tt">Desenhar a jornada de churn (entregue &gt;7 dias)<span class="badge eng">Eng</span></div><div class="td">Única etapa ainda sem tela desenhada — self-service direto, sem oferta condicionada a ficar, conforme já definido na matriz por etapa.</div></div></div>
-    <div class="taskrow"><div class="tn">3</div><div><div class="tt">Corrigir o bug de multa de 20% exibida em qualquer etapa<span class="badge dado">Dado incorreto</span></div><div class="td">O formulário atual mostra 20% de multa pra qualquer etapa de cancelamento — incorreto pra toda etapa pré-entrega, que não tem multa nenhuma.</div></div></div>
-    <div class="taskrow"><div class="tn">4</div><div><div class="tt">Registrar motivo em toda revogação de churn feita pelo time<span class="badge eng">Eng</span></div><div class="td">Hoje não existe campo que separe "convenci" de "segurei" — sem esse registro não dá pra saber se a resposta da allu está ajudando ou represando o churn, que quase dobrou.</div></div></div>
-    <div class="taskrow"><div class="tn">5</div><div><div class="tt">Cumprir o prazo de 5 dias úteis já comunicado ao cliente<span class="badge eng">Eng</span></div><div class="td">12,4% das solicitações furam o prazo, pior caso 17 dias úteis — risco concreto e fácil de virar meta operacional com dono.</div></div></div>
+    <div class="taskrow"><div class="tn">1</div><div><div class="tt">Implementar as 5 jornadas já desenhadas<span class="badge eng">Eng</span></div><div class="td">Pagamento aprovado, doc. em análise, doc. aprovada, enviado/trânsito e entregue ≤7 dias.</div></div></div>
+    <div class="taskrow"><div class="tn">2</div><div><div class="tt">Desenhar a jornada de churn (entregue &gt;7 dias)<span class="badge eng">Eng</span></div><div class="td">Única etapa ainda sem tela — self-service direto, sem oferta condicionada a ficar.</div></div></div>
+    <div class="taskrow"><div class="tn">3</div><div><div class="tt">Corrigir o bug de multa de 20% exibida em qualquer etapa<span class="badge dado">Dado incorreto</span></div><div class="td">Formulário atual mostra multa em etapa pré-entrega, que não tem multa nenhuma.</div></div></div>
+    <div class="taskrow"><div class="tn">4</div><div><div class="tt">Registrar motivo em toda revogação de churn feita pelo time<span class="badge eng">Eng</span></div><div class="td">Sem esse registro, não dá pra saber se a resposta da allu ajuda ou represa o churn.</div></div></div>
+    <div class="taskrow"><div class="tn">5</div><div><div class="tt">Cumprir o prazo de 5 dias úteis já comunicado ao cliente<span class="badge eng">Eng</span></div><div class="td">12,4% das solicitações furam o prazo, pior caso 17 dias úteis.</div></div></div>
   </div>
 </div></section>
 
-<!-- ============ 06 · ALINHAMENTOS ============ -->
+<!-- ============ 07 · ALINHAMENTOS ============ -->
 <section id="alinhamentos"><div class="wrap">
-  <div class="section-label"><span class="section-num">06</span><span class="section-tag">Com o time</span></div>
+  <div class="section-label"><span class="section-num">07</span><span class="section-tag">Com o time</span></div>
   <h2>Alinhamentos pendentes</h2>
-  <p class="section-sub">Não são tickets de engenharia — são decisões e validações que precisam de conversa antes de virar task.</p>
+  <p class="section-sub">Não são tickets de engenharia — decisões e validações que precisam de conversa antes de virar task.</p>
 
   <div class="alignlist">
-    <div class="alignrow"><b>Reclame Aqui e "voltaria a fazer negócio" em queda forte</b> — entender com CX o que mudou no atendimento de reclamação entre agosto e setembro. Prioridade alta: risco de reputação, não só métrica interna.<span class="who">Dono sugerido: CX / atendimento</span></div>
+    <div class="alignrow new"><b>Vagas abertas</b> — atendente de CX no Manguezal, Business Analyst estagiário, estagiário Conversacional. Priorizar contratação dado o volume que o time de Suporte já carrega.<span class="who">Dono: Arthur / RH</span></div>
+    <div class="alignrow new"><b>Painel de acompanhamento de SLA no allu.flow</b> — visibilidade de aderência por motivo/responsável, conecta direto com a task de SLAs por motivo já mapeada na spec de logística.<span class="who">Dono sugerido: Tecnologia</span></div>
+    <div class="alignrow new"><b>CSAT integrado na Intercom</b> — hoje depende de pedir separado; integrado dá rastreabilidade real (quem respondeu, qual assunto, qual atendente) sem esforço manual de coleta.<span class="who">Dono sugerido: Tecnologia + CX</span></div>
+    <div class="alignrow new"><b>Comunicados de atraso futuro — iPhone 15 e 17</b> — alinhar mensagem proativa antes do atraso virar reclamação.<span class="who">Dono sugerido: CX / Logística</span></div>
+    <div class="alignrow new"><b>Clube allu</b> — explicar pro time o que é e começar a implementar comunicações e respostas prontas de atendimento.<span class="who">Dono sugerido: Arthur / CX</span></div>
     <div class="alignrow"><b>Volume de entregas que retornam por falta de sucesso</b> — não temos esse número hoje; é a base pra priorizar a automação de reenvio.<span class="who">Dono sugerido: Logística</span></div>
-    <div class="alignrow"><b>Falha de entrega: integração direta com transportadora, ou card manual?</b> — define se a automação de reenvio pode começar já ou depende de integração nova.<span class="who">Dono sugerido: Logística + Tecnologia</span></div>
+    <div class="alignrow"><b>Falha de entrega: integração direta com transportadora, ou card manual?</b><span class="who">Dono sugerido: Logística + Tecnologia</span></div>
     <div class="alignrow"><b>Estorno automático na devolução: gatilho direto, ou aprovação manual do financeiro?</b><span class="who">Dono sugerido: Financeiro + Logística</span></div>
     <div class="alignrow"><b>Onde mora o painel de entrega/expedição/atraso</b> — allu.office, allu.flow, ou tela nova.<span class="who">Dono sugerido: Tecnologia</span></div>
     <div class="alignrow"><b>Valor de referência pra multa/ressarcimento</b> quando o cliente não desbloqueia o aparelho devolvido bloqueado.<span class="who">Dono sugerido: Jurídico + Financeiro</span></div>
-    <div class="alignrow"><b>Validar com a Yngredy como foi feita a comunicação de mudança de plano pros clientes de 36 meses</b>, antes de desenhar a comunicação da nova regra de multa por faixa pra esse público — não replicar template sem essa validação.<span class="who">Dono sugerido: CRM/CX</span></div>
-    <div class="alignrow"><b>Ajuste de cobrança em troca de plano/produto com preço diferente</b> (crédito, complemento, novo link de pagamento) — precisa alinhar com o financeiro antes de liberar troca como self-service no fluxo de cancelamento.<span class="who">Dono sugerido: Financeiro</span></div>
-    <div class="alignrow"><b>Trocar de produto/plano em doc. aprovada exige liberar a unidade já separada/roteada e gerar nova expedição</b> — confirmar com logística se o sistema suporta isso em tempo real ou se cai numa fila separada.<span class="who">Dono sugerido: Logística + Tecnologia</span></div>
-    <div class="alignrow"><b>Apresentar a calculadora de bônus pro time</b> — fechar o kickoff com clareza de como o resultado de outubro (as tasks acima) conecta com remuneração variável.<span class="who">Dono: Arthur</span></div>
+    <div class="alignrow"><b>Validar com a Yngredy a comunicação de mudança de plano pros clientes de 36 meses</b> antes de desenhar a comunicação da nova TDA por faixa pra esse público.<span class="who">Dono sugerido: CRM/CX</span></div>
+    <div class="alignrow"><b>Ajuste de cobrança em troca de plano/produto com preço diferente</b> — alinhar com financeiro antes de liberar troca como self-service.<span class="who">Dono sugerido: Financeiro</span></div>
+    <div class="alignrow"><b>Trocar de produto/plano em doc. aprovada exige liberar a unidade já roteada</b> — confirmar com logística se o sistema suporta isso em tempo real.<span class="who">Dono sugerido: Logística + Tecnologia</span></div>
+    <div class="alignrow"><b>Queda de FCR/CSAT em Winnie e Giselle</b> — entender causa (volume, motivo de contato, algo pontual) antes de virar tendência do time.<span class="who">Dono sugerido: Gestão do time de Suporte</span></div>
+    <div class="alignrow"><b>Apresentar a calculadora de bônus pro time</b> — fechar o kickoff com clareza de como o resultado de outubro conecta com remuneração variável.<span class="who">Dono: Arthur</span></div>
   </div>
 </div></section>
 
 <footer><div class="wrap">
-  <p>Fontes: allu.office, dashboard "Métricas gerais de atendimento" (v3_gold_alluoffice.vw_dash_cancelamento_atendimento), agosto (01–31/08/2026, fechado) e setembro (01–27/09/2026, parcial). Comparações "por dia" normalizam pela diferença de dias corridos entre os dois recortes (31 vs. 27 dias). Histórico consultado: recap de agosto (Retenção &amp; CX), spec de Logística de Devoluções (reunião com Log, 23/set), spec de Upgrade Self-Service (23/set), e <a href="https://claude.ai/artifact/X65kfmW3TBV7mQ2FDCiHfY">Redesenho do Processo de Cancelamento</a> (BigQuery, v3_raw_alluoffice + v3_gold_alluoffice, setembro/2026).</p>
+  <p>Fontes: BigQuery — v3_supabase_bot_ai_allu_gold.vw_dash_performance_atendimento, vw_dash_csat_atendimento, vw_dash_resolucao_atendimento, fact_chat_conversations; v3_gold_alluoffice.vw_dash_cancelamento_atendimento. Agosto (01–31/08/2026, fechado) e setembro (01–27/09/2026, parcial). "Atendimento humano" exclui conversas 100% IA. Reclame Aqui excluído desta rodada — métricas do dashboard incorretas no momento da análise. Histórico consultado: recap de agosto (Retenção &amp; CX), spec de Logística de Devoluções (23/set), spec de Upgrade Self-Service (23/set), e <a href="https://claude.ai/artifact/X65kfmW3TBV7mQ2FDCiHfY">Redesenho do Processo de Cancelamento</a>.</p>
 </div></footer>
+
+<script>
+(function(){
+  var svgNS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){ var e = document.createElementNS(svgNS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+  function ensureTooltip(wrapId){ var wrap = document.getElementById(wrapId); var tt = document.createElement('div'); tt.className='tooltip'; wrap.appendChild(tt); return tt; }
+  function showTip(tt, wrap, x, y, title, val){ tt.innerHTML = '<div style="opacity:.7;font-size:10.5px;margin-bottom:2px">'+title+'</div><div style="font-weight:600">'+val+'</div>'; tt.style.left=x+'px'; tt.style.top=y+'px'; tt.classList.add('show'); }
+  function hideTip(tt){ tt.classList.remove('show'); }
+  var GREY = '#c7ccbb', GREEN = '#0a5d40';
+
+  /* ---- generic grouped bar chart: categories x [agoVal,setVal] ---- */
+  function groupedBar(svgId, cats, agoVals, setVals, opts){
+    opts = opts||{};
+    var svg = document.getElementById(svgId);
+    var vb = svg.viewBox.baseVal;
+    var W = vb.width, H = vb.height;
+    var n = cats.length;
+    var catFont = n>6 ? 8 : 10.5;
+    var hasMultiline = cats.some(function(c){return c.indexOf('\n')>=0;});
+    var top=16, bottom = hasMultiline ? 44 : 34, left=8, right=8;
+    var plotH = H-top-bottom, plotW = W-left-right;
+    var maxV = Math.max.apply(null, agoVals.concat(setVals)) * 1.22 || 1;
+    var groupW = plotW/n;
+    var innerGap = 3;
+    var barW = Math.min((groupW*0.7-innerGap)/2, 26);
+    var minLabelGap = n>6 ? 22 : 16;
+    var labelFont = n>6 ? 7.5 : 8.5;
+    cats.forEach(function(cat,i){
+      var gx = left + i*groupW + groupW/2;
+      var labelYs = {};
+      [['ago',agoVals[i],GREY,-1],['set',setVals[i],GREEN,1]].forEach(function(s){
+        var val = s[1], color = s[2], side = s[3];
+        var h = (val/maxV)*plotH;
+        var x = side<0 ? gx-innerGap/2-barW : gx+innerGap/2;
+        var y = top+plotH-h;
+        var bar = el('rect',{x:x,y:y,width:barW,height:Math.max(h,1),rx:3,fill:color});
+        svg.appendChild(bar);
+        labelYs[side] = {y:y-4, cx:x+barW/2 + side*(n>6?4:0)};
+      });
+      // if bars are close in height, stack both labels above the taller bar (never let a label sit over the other bar's fill)
+      if(Math.abs(labelYs[-1].y - labelYs[1].y) < minLabelGap){
+        var topY = Math.min(labelYs[-1].y, labelYs[1].y);
+        if(labelYs[-1].y <= labelYs[1].y){ labelYs[1].y = topY - minLabelGap; }
+        else { labelYs[-1].y = topY - minLabelGap; }
+      }
+      [-1,1].forEach(function(side){
+        var val = side<0?agoVals[i]:setVals[i];
+        var lbl = el('text',{x:labelYs[side].cx,y:labelYs[side].y,'text-anchor':'middle','font-size':labelFont,'font-family':'IBM Plex Mono, monospace',fill:'#454a3c'});
+        lbl.textContent = (opts.fmt?opts.fmt(val):val);
+        svg.appendChild(lbl);
+      });
+      var lines = cat.split('\n');
+      lines.forEach(function(line, li){
+        var catlabel = el('text',{x:gx,y:H-14+li*10,'text-anchor':'middle','font-size':catFont,fill:'#454a3c'});
+        catlabel.textContent = line;
+        svg.appendChild(catlabel);
+      });
+    });
+    svg.appendChild(el('line',{x1:left,y1:top+plotH,x2:left+plotW,y2:top+plotH,stroke:'#dde2d5','stroke-width':1}));
+  }
+
+  /* ---- horizontal bar ---- */
+  function hBar(svgId, cats, vals, colors, opts){
+    opts = opts||{};
+    var svg = document.getElementById(svgId);
+    var vb = svg.viewBox.baseVal;
+    var W=vb.width, H=vb.height;
+    var left=170, right=60, top=10, bottom=10;
+    var plotW = W-left-right, plotH = H-top-bottom;
+    var n = cats.length, rowH = plotH/n;
+    var maxV = Math.max.apply(null, vals)*1.15||1;
+    cats.forEach(function(cat,i){
+      var y = top + i*rowH + rowH*0.22;
+      var h = rowH*0.56;
+      var w = (vals[i]/maxV)*plotW;
+      svg.appendChild(el('text',{x:left-10,y:y+h/2+4,'text-anchor':'end','font-size':'12',fill:'#14170f','font-weight':'600'})).textContent=cat;
+      svg.appendChild(el('rect',{x:left,y:y,width:Math.max(w,2),height:h,rx:5,fill:colors[i]}));
+      var vlabel = el('text',{x:left+w+8,y:y+h/2+4,'font-size':'12','font-family':'IBM Plex Mono, monospace',fill:'#454a3c','font-weight':'600'});
+      vlabel.textContent = opts.fmt?opts.fmt(vals[i],i):vals[i];
+      svg.appendChild(vlabel);
+    });
+  }
+
+  /* ---- line/area chart with tooltip ---- */
+  function lineChart(svgId, wrapId, data, opts){
+    opts = opts||{};
+    var svg = document.getElementById(svgId);
+    var tt = ensureTooltip(wrapId);
+    var wrap = document.getElementById(wrapId);
+    var vb = svg.viewBox.baseVal;
+    var W=vb.width, H=vb.height;
+    var left=10, right=10, top=14, bottom=22;
+    var plotW=W-left-right, plotH=H-top-bottom;
+    var maxV = opts.max || Math.max.apply(null, data.map(function(d){return d[1];}))*1.15;
+    var n = data.length;
+    var pts = data.map(function(d,i){ return [left+(i/(n-1))*plotW, top+plotH-(d[1]/maxV)*plotH]; });
+    if(opts.targetLine){
+      var ty = top+plotH-(opts.targetLine/maxV)*plotH;
+      svg.appendChild(el('line',{x1:left,y1:ty,x2:left+plotW,y2:ty,stroke:'#a53a2c','stroke-width':1,'stroke-dasharray':'4,3'}));
+    }
+    if(opts.area){
+      var path = 'M'+pts[0][0]+','+(top+plotH)+' ';
+      pts.forEach(function(p){ path += 'L'+p[0]+','+p[1]+' '; });
+      path += 'L'+pts[pts.length-1][0]+','+(top+plotH)+' Z';
+      svg.appendChild(el('path',{d:path,fill:GREEN,opacity:'0.10'}));
+    }
+    var linePath = 'M'+pts.map(function(p){return p[0]+','+p[1];}).join(' L');
+    svg.appendChild(el('path',{d:linePath,fill:'none',stroke:GREEN,'stroke-width':2}));
+    // month divider
+    var sepIdx = data.findIndex(function(d){return d[0].indexOf('09-01')>=0;});
+    if(sepIdx>0){
+      var sx = left+(sepIdx/(n-1))*plotW;
+      svg.appendChild(el('line',{x1:sx,y1:top,x2:sx,y2:top+plotH,stroke:'#dde2d5','stroke-width':1,'stroke-dasharray':'2,3'}));
+      svg.appendChild(el('text',{x:sx+4,y:top+10,'font-size':'9',fill:'#6c7161'})).textContent='set →';
+    }
+    svg.appendChild(el('line',{x1:left,y1:top+plotH,x2:left+plotW,y2:top+plotH,stroke:'#dde2d5','stroke-width':1}));
+    pts.forEach(function(p,i){
+      var hit = el('rect',{x:p[0]-plotW/n/2,y:top,width:plotW/n,height:plotH,class:'bar-hit'});
+      hit.addEventListener('mousemove', function(e){
+        var r = wrap.getBoundingClientRect();
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, data[i][0], (opts.suffix?data[i][1]+opts.suffix:data[i][1]));
+      });
+      hit.addEventListener('mouseleave', function(){hideTip(tt);});
+      svg.appendChild(hit);
+    });
+    // x-axis month labels
+    ['08/08','22/08','08/09','22/09'].forEach(function(lbl){
+      var idx = data.findIndex(function(d){return d[0].endsWith(lbl.split('/').reverse().join('-').slice(0,0)+lbl.slice(3)+'-'+lbl.slice(0,2));});
+    });
+  }
+
+  /* ---- histogram (grouped bar by bucket) ---- */
+  function histChart(svgId, buckets, agoVals, setVals){
+    groupedBar(svgId, buckets, agoVals, setVals, {fmt:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}});
+  }
+
+  /* ================= DATA ================= */
+  var daily = [
+    ["2026-08-01", 56, 82.1, 471.3],
+    ["2026-08-02", 406, 79.3, 631.4],
+    ["2026-08-03", 2102, 86.4, 547.6],
+    ["2026-08-04", 1798, 89.7, 474.4],
+    ["2026-08-05", 1779, 90.4, 534.9],
+    ["2026-08-06", 1894, 89.3, 558.0],
+    ["2026-08-07", 1199, 84.6, 1603.7],
+    ["2026-08-08", 65, 70.8, 1375.2],
+    ["2026-08-09", 286, 80.1, 404.6],
+    ["2026-08-10", 1578, 87.6, 572.8],
+    ["2026-08-11", 1440, 88.8, 646.3],
+    ["2026-08-12", 1919, 91.5, 591.9],
+    ["2026-08-13", 1858, 91.8, 422.6],
+    ["2026-08-14", 910, 87.1, 1350.6],
+    ["2026-08-15", 15, 73.3, 2122.5],
+    ["2026-08-16", 451, 86.3, 282.4],
+    ["2026-08-17", 1363, 87.8, 795.1],
+    ["2026-08-18", 1669, 89.3, 475.4],
+    ["2026-08-19", 1621, 89.0, 509.1],
+    ["2026-08-20", 1674, 91.3, 459.9],
+    ["2026-08-21", 637, 80.2, 1023.0],
+    ["2026-08-22", 36, 86.1, 4986.0],
+    ["2026-08-23", 107, 75.7, 395.5],
+    ["2026-08-24", 1845, 84.1, 426.5],
+    ["2026-08-25", 1534, 84.2, 468.2],
+    ["2026-08-26", 1985, 85.1, 329.8],
+    ["2026-08-27", 2546, 86.8, 274.8],
+    ["2026-08-28", 913, 85.0, 1095.8],
+    ["2026-08-29", 17, 88.2, 1409.7],
+    ["2026-08-30", 154, 72.7, 559.9],
+    ["2026-08-31", 2664, 84.7, 384.2],
+    ["2026-09-01", 1603, 88.2, 417.1],
+    ["2026-09-02", 1704, 87.9, 299.2],
+    ["2026-09-03", 1644, 93.0, 260.3],
+    ["2026-09-04", 1036, 89.5, 216.9],
+    ["2026-09-06", 6, 83.3, 393.1],
+    ["2026-09-07", 116, 79.3, 345.2],
+    ["2026-09-08", 1263, 87.8, 457.8],
+    ["2026-09-09", 1259, 89.0, 403.4],
+    ["2026-09-10", 1458, 87.1, 325.1],
+    ["2026-09-11", 994, 88.2, 1035.6],
+    ["2026-09-12", 3, 100.0, 148.8],
+    ["2026-09-13", 172, 79.1, 444.3],
+    ["2026-09-14", 1540, 85.8, 532.9],
+    ["2026-09-15", 1377, 86.4, 321.1],
+    ["2026-09-16", 1295, 87.0, 388.4],
+    ["2026-09-17", 1170, 85.5, 431.3],
+    ["2026-09-18", 855, 83.7, 409.8],
+    ["2026-09-19", 7, 28.6, 970.8],
+    ["2026-09-20", 92, 71.7, 358.4],
+    ["2026-09-21", 1344, 86.9, 436.9],
+    ["2026-09-22", 1618, 86.8, 449.7],
+    ["2026-09-23", 2857, 92.1, 244.6],
+    ["2026-09-24", 1252, 93.4, 275.9],
+    ["2026-09-25", 959, 95.5, 773.6],
+    ["2026-09-26", 14, 92.9, 38.7],
+    ["2026-09-27", 30, 93.3, 93.4]
+  ];
+
+  var vol = daily.map(function(d){return [d[0], d[1]];});
+  var fcr = daily.map(function(d){return [d[0], d[2]];});
+
+  lineChart('chart-vol','wrap-vol', vol, {area:true});
+  lineChart('chart-fcr','wrap-fcr', fcr, {targetLine:85, suffix:'%', max:100});
+
+  groupedBar('chart-cmp1', ['FCR','Resol. interna','Retenção cancel.'], [87.3,0.3,13.4], [88.8,45.0,12.9], {fmt:function(v){return v+'%';}});
+  groupedBar('chart-cmp2', ['Duração (h)','1ª resposta (h)'], [9.5,1.9], [6.4,1.9], {fmt:function(v){return v+'h';}});
+
+  histChart('chart-hist', ['0-15min','15-60min','1-4h','4-8h','8-24h','24h+'], [761,6801,18904,3013,4360,3567], [1059,2733,15388,2392,3807,1926]);
+
+  hBar('chart-dores', ['Cancelamento','Logística','Upgrade'], [2315,884,750], ['#a53a2c','#8a5a12','#1c5d8c'], {fmt:function(v,i){ var fcrs=['81,2% FCR','66,4% FCR','84,8% FCR']; return v+' · '+fcrs[i]; }});
+
+  var attCats = ['Suporte\n(time)','Wanessa','Winnie','Giselle','Kelly','Débora','Paulo\n(cancel.)','Amanda\n(AT)'];
+  groupedBar('chart-att-fcr', attCats, [88.4,87.0,86.6,90.3,null,null,80.7,80.6].map(function(v){return v||0;}), [84.9,86.0,83.0,85.1,82.9,90.6,84.5,82.9], {fmt:function(v){return v?v+'%':'';}});
+  groupedBar('chart-att-csat', attCats, [4.08,4.23,4.33,3.86,0,0,3.80,3.76], [4.09,4.37,3.83,3.84,4.58,3.77,3.85,3.77], {fmt:function(v){return v?v.toFixed(2):'';}});
+  groupedBar('chart-att-vol', attCats, [6102,1865,1519,2724,1,0,1608,1379], [5829,1419,1398,1714,846,449,847,799], {fmt:function(v){return v;}});
+  groupedBar('chart-att-dur', attCats, [14.4,18.9,15.4,10.7,0,0,19.8,39.0], [8.0,9.5,6.8,8.0,5.1,12.3,7.8,20.7], {fmt:function(v){return v?v+'h':'';}});
+})();
+</script>
