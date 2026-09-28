@@ -140,6 +140,10 @@ td.num, th.num{text-align:right;font-family:'IBM Plex Mono',monospace;}
 .priobox .flowsteps{display:flex;flex-direction:column;gap:6px;margin:10px 0;}
 .priobox .flowstep{background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:9px 13px;font-size:13px;color:var(--ink-secondary);}
 .priobox .flowstep b{color:var(--ink);}
+.impactgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 4px;}
+.impactcard{background:var(--accent-soft);border:1px solid #a9d9c2;border-radius:10px;padding:11px 14px;font-size:12.5px;line-height:1.5;color:var(--ink-secondary);}
+.impactcard .it{display:block;color:var(--accent-dim);font-family:'Sora',sans-serif;font-weight:700;font-size:13.5px;margin-bottom:3px;}
+@media (max-width:640px){.impactgrid{grid-template-columns:1fr;}}
 .pill.blue{border-color:var(--blue);color:var(--blue);background:var(--blue-soft);}
 
 .attcard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,23,15,.04);}
@@ -194,14 +198,8 @@ footer a{color:var(--ink-muted);}
 
 <div class="masthead"><div class="wrap">
   <div class="eyebrow">Kickoff · Fechamento de setembro / Abertura de outubro</div>
-  <h1>Setembro ficou muito mais rápido — mas resolveu pior, puxado pelo Suporte.</h1>
-  <p class="thesis">O FCR caiu na empresa toda (86,6%→85,5%), puxado pelo time de Suporte — dois terços do volume de CX e o que mais caiu (88,8%→84,6%). Cancelamento (Paulo) e AT (Amanda) foram na direção contrária e melhoraram, mas não têm volume pra segurar a média. A duração do atendimento caiu quase pela metade (19h11min→8h59min), só que a 1ª resposta do time de Suporte piorou bastante (1h48min→2h17min) mesmo com a média geral estável. <b>Esta rodada exclui vendas, pré-vendas e recuperação de recorrência</b> — atendimento humano aqui é só CX de verdade, sem misturar com o funil de vendas.</p>
-  <div class="valid-badge">✓ Validado direto no BigQuery (v3_supabase_bot_ai_allu_gold + v3_gold_alluoffice) — não é mais leitura de print</div>
-  <div class="meta-row">
-    <span>Base: agosto (01–31/08) e setembro (01–27/09) de 2026</span>
-    <span>Fonte: BigQuery — v3_supabase_bot_ai_allu_gold.vw_dash_performance_atendimento / vw_dash_csat_atendimento / vw_dash_resolucao_atendimento, v3_gold_alluoffice.vw_dash_cancelamento_atendimento</span>
-    <span>Preparo: Arthur Freitas, gestão comercial</span>
-  </div>
+  <h1>Setembro ficou mais rápido — mas resolveu pior.</h1>
+  <p class="thesis">O atendimento ficou bem mais ágil em setembro, mas resolveu uma fatia menor dos clientes logo na primeira conversa — Cancelamento e AT foram na contramão e melhoraram. Os números já são só CX de verdade, sem vendas, pré-vendas ou recuperação misturados.</p>
 </div></div>
 
 <!-- ============ 01 · DIAGNÓSTICO ============ -->
@@ -315,10 +313,9 @@ footer a{color:var(--ink-muted);}
 
   <div class="priobox">
     <div class="priobox-head"><span class="priobox-badge">Plano de outubro · estrutural</span><span class="priobox-title">Canal único de atendimento: tudo passa a ser resolvido no app/site</span></div>
-    <p>Hoje, não importa em qual número de WhatsApp o cliente escreve — cai tudo no mesmo fluxo de IA, sem diferenciação de canal, número ou origem pro atendente. Na prática, o número usado pelo cliente é só um "front": o fluxo e as regras são idênticos em todos os canais.</p>
-    <p><b>O problema que isso causa:</b> o mesmo cliente acaba com mais de uma conversa aberta ao mesmo tempo — às vezes porque ele mesmo chama em números diferentes achando que está "voltando a falar com a Allu"; às vezes porque a própria Allu causa isso (um comunicado sai por outro número, o cliente responde lá, e nasce uma 3ª conversa sem querer). O time de CX então precisa identificar manualmente que é o mesmo cliente e encerrar o atendimento "duplicado" — o que também abre risco real de dois atendentes (ou IA e humano ao mesmo tempo) respondendo a mesma pessoa em paralelo, com informações conflitantes.</p>
-    <div class="evidence"><div class="ev">Hoje não existe identidade de cliente unificada entre canais nos nossos dados — validado no BigQuery: o campo de identidade do Intercom (<span style="font-family:'IBM Plex Mono',monospace">user_id</span>) é por contato/sessão daquele canal específico, não por conta Allu autenticada</div></div>
-    <p style="font-size:12.5px;color:var(--ink-muted);margin-top:-4px">Por isso não dá pra medir hoje, com precisão, quantas conversas duplicadas isso gera por mês — é exatamente essa lacuna de identidade que a proposta abaixo resolve.</p>
+    <p>Hoje, não importa em qual número de WhatsApp o cliente escreve — cai tudo no mesmo fluxo de IA, sem diferenciação de canal pro atendente. O número usado é só um "front": fluxo e regras são idênticos em todos.</p>
+    <div class="callout warn"><b>O problema:</b> o mesmo cliente acaba com mais de uma conversa aberta ao mesmo tempo — às vezes ele mesmo, em números diferentes; às vezes a própria Allu causa (comunicado sai por outro número, cliente responde lá, nasce uma 3ª conversa). CX precisa identificar e encerrar o "duplicado" na mão — com risco real de dois atendentes, ou IA e humano, respondendo em paralelo com informação conflitante.</div>
+    <div class="evidence"><div class="ev">Não existe identidade de cliente unificada entre canais — validado no BigQuery: o <span style="font-family:'IBM Plex Mono',monospace">user_id</span> do Intercom é por contato/sessão do canal, não por conta Allu autenticada</div></div>
 
     <h5>Proposta</h5>
     <div class="flowsteps">
@@ -330,14 +327,14 @@ footer a{color:var(--ink-muted);}
     </div>
 
     <h5>Impacto esperado</h5>
-    <ul>
-      <li>Elimina a duplicidade estrutural de conversas do mesmo cliente em canais/números diferentes.</li>
-      <li>Fim do trabalho manual do time de CX de identificar e encerrar atendimentos duplicados.</li>
-      <li>Cliente autenticado = identidade única por conta (não mais por número de telefone) — habilita histórico real e consolidado por cliente.</li>
-      <li>Reduz o risco de dois atendentes, ou IA e humano, respondendo o mesmo cliente ao mesmo tempo com informações conflitantes.</li>
-      <li>Atendimento passa a rodar em ambiente próprio (app/site) em vez de depender só da infraestrutura da Meta — mais controle e mais dado nosso.</li>
-      <li>Efeito colateral positivo: empurra adoção do app, o que já é pré-requisito de outras duas frentes deste documento (upgrade e cancelamento self-service).</li>
-    </ul>
+    <div class="impactgrid">
+      <div class="impactcard"><span class="it">Zero duplicidade</span>Acaba a conversa duplicada do mesmo cliente em canais diferentes.</div>
+      <div class="impactcard"><span class="it">Fim do trabalho manual</span>CX não precisa mais identificar e encerrar "duplicado" na mão.</div>
+      <div class="impactcard"><span class="it">Identidade única por conta</span>Não mais por telefone — habilita histórico real e consolidado do cliente.</div>
+      <div class="impactcard"><span class="it">Sem resposta conflitante</span>Menos risco de dois atendentes (ou IA + humano) respondendo em paralelo.</div>
+      <div class="impactcard"><span class="it">Mais controle do dado</span>Atendimento roda em ambiente próprio, não só na infra da Meta.</div>
+      <div class="impactcard"><span class="it">Empurra adoção do app</span>Pré-requisito de upgrade e cancelamento self-service, já mapeados aqui.</div>
+    </div>
 
     <div class="statusrow"><span class="pill blue">Conceito definido neste kickoff</span><span class="pill todo">Spec detalhada: a fazer</span><span class="pill todo">Implementação: 0%</span></div>
     <div class="bench"><b>Benchmark:</b> bancos digitais e fintechs (Nubank, Inter, C6 e similares) resolvem a imensa maioria do atendimento dentro do próprio app — WhatsApp/SMS funcionam só como canal de notificação e outbound, nunca como canal primário de suporte. É o padrão de quem depende de autenticação segura e quer controle do próprio dado, em vez de operar sobre a infraestrutura de um terceiro.</div>
