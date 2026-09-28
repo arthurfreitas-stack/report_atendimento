@@ -226,7 +226,7 @@ footer a{color:var(--ink-muted);}
 <section id="comparacao"><div class="wrap">
   <div class="section-label"><span class="section-num">02</span><span class="section-tag">O que é sinal, o que é ruído</span></div>
   <h2>Agosto vs. setembro</h2>
-  <p class="section-sub">CSAT, FCR e taxa de resolução interna não existiam de forma consistente antes de agosto/setembro — a área foi criando essa instrumentação do zero. Uma métrica saindo de 0,4% pra 64,5% não é a operação sessenta vezes melhor, é a métrica passando a ser preenchida. Os gráficos abaixo separam o que é operação de verdade do que é efeito de instrumentação nova.</p>
+  <p class="section-sub">CSAT, FCR e taxa de resolução interna não existiam de forma consistente antes de agosto/setembro — a área foi criando essa instrumentação do zero. Uma métrica saindo de 0,1% pra 19,2% não é a operação cento e noventa vezes melhor, é a tag do Intercom passando a ser preenchida. Os gráficos abaixo separam o que é operação de verdade do que é efeito de instrumentação nova.</p>
 
   <div class="chartcard">
     <h4>Onde é melhora real e onde é ruído — ago → set</h4>
@@ -234,7 +234,7 @@ footer a{color:var(--ink-muted);}
     <div class="chartgrid3">
       <div class="minicard"><h5>FCR</h5><div class="chart-wrap" id="wrap-cmp1-fcr"><svg viewBox="0 0 300 190" id="chart-cmp1-fcr"></svg></div></div>
       <div class="minicard"><h5>Retenção de cancelamento</h5><div class="chart-wrap" id="wrap-cmp1-ret"><svg viewBox="0 0 300 190" id="chart-cmp1-ret"></svg></div></div>
-      <div class="minicard"><h5>Resolução interna</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 190" id="chart-cmp1-resol"></svg></div><div class="note">⚠ campo não era preenchido em agosto — não é uma melhora real, é instrumentação nova (ver seção de leitura abaixo)</div></div>
+      <div class="minicard"><h5>Resolução interna</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 190" id="chart-cmp1-resol"></svg></div><div class="note">⚠ Regra: flag "resolvido" na tag de resolução do Intercom (não é o mesmo cálculo do FCR). Praticamente ninguém preenchia essa tag em agosto (0,1%) — bate com o "19% (atendimento humano)" que o próprio dashboard mostra hoje pra setembro. Não é melhora de qualidade, é adoção da tag.</div></div>
     </div>
     <div class="legend"><span><i style="background:#6c7161"></i>agosto (referência)</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span></div>
   </div>
@@ -264,7 +264,7 @@ footer a{color:var(--ink-muted);}
       <tr><td>FCR — time de Suporte</td><td class="num">88,4%</td><td class="num">84,9%</td><td><span class="tag real-up">real piora</span> caiu, na contramão da média geral</td></tr>
       <tr><td>1ª resposta — time de Suporte</td><td class="num">1h52min</td><td class="num">2h18min</td><td><span class="tag real-up">real piora</span> empresa toda ficou estável (1h56→1h55)</td></tr>
       <tr><td>Duração do atendimento — empresa toda</td><td class="num">9h31min</td><td class="num">6h21min</td><td><span class="tag real-down">real</span> -33%</td></tr>
-      <tr><td>Resolução interna</td><td class="num">0,1%–0,4%</td><td class="num">19,2%–71,7%</td><td><span class="tag artefato">artefato</span> campo não era preenchido em agosto</td></tr>
+      <tr><td>Resolução interna (empresa toda, atend. humano)</td><td class="num">0,1%</td><td class="num">19,2%</td><td><span class="tag artefato">artefato</span> tag do Intercom quase não era usada em agosto — bate com o dashboard</td></tr>
       <tr><td>% Solicitação de cancelamento</td><td class="num">15,4%</td><td class="num">16,2%</td><td><span class="tag real-up">real piora</span> reverte a queda de agosto</td></tr>
       <tr><td>Retenção de cancelamento</td><td class="num">13,4%</td><td class="num">12,9%</td><td><span class="tag real-up">real piora</span> meta é 20%</td></tr>
     </tbody>
@@ -844,7 +844,7 @@ footer a{color:var(--ink-muted);}
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
   groupedBar('chart-cmp1-ret','wrap-cmp1-ret', [''], [13.4], [12.9],
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
-  groupedBar('chart-cmp1-resol','wrap-cmp1-resol', [''], [0.3], [45.0],
+  groupedBar('chart-cmp1-resol','wrap-cmp1-resol', [''], [0.15], [19.16],
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, neutral:true, showDelta:true});
 
   var hFmt = function(v){return v.toFixed(1)+'h';}, hDeltaFmt = function(d){return d.toFixed(1)+'h';};
