@@ -86,8 +86,8 @@ svg{display:block;width:100%;height:auto;overflow:visible;}
 .chart-wrap{position:relative;}
 .chartgrid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 @media(max-width:820px){.chartgrid2{grid-template-columns:1fr;}}
-.chartgrid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-@media(max-width:820px){.chartgrid3{grid-template-columns:1fr;}}
+.chartgrid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
+@media(max-width:520px){.chartgrid3{grid-template-columns:1fr;}}
 .minicard{background:var(--surface-alt);border:1px solid var(--border-soft);border-radius:10px;padding:12px 14px 8px;}
 .minicard h5{font-size:12.5px;font-weight:600;color:var(--ink-secondary);margin:0 0 2px;}
 .minicard .note{font-size:10.5px;color:var(--warn);margin-top:4px;line-height:1.4;}
@@ -226,17 +226,22 @@ footer a{color:var(--ink-muted);}
 <section id="comparacao"><div class="wrap">
   <div class="section-label"><span class="section-num">02</span><span class="section-tag">O que é sinal, o que é ruído</span></div>
   <h2>Agosto vs. setembro</h2>
-  <p class="section-sub">CSAT, FCR e taxa de resolução interna não existiam de forma consistente antes de agosto/setembro — a área foi criando essa instrumentação do zero. Uma métrica saindo de 0,1% pra 19,2% não é a operação cento e noventa vezes melhor, é a tag do Intercom passando a ser preenchida. Os gráficos abaixo separam o que é operação de verdade do que é efeito de instrumentação nova.</p>
+  <p class="section-sub">CSAT, FCR e as duas taxas de resolução não existiam de forma consistente antes de agosto/setembro — a área foi criando essa instrumentação do zero. Os gráficos abaixo separam o que é operação de verdade do que é efeito de instrumentação nova ou amostra pequena demais pra significar algo.</p>
 
   <div class="chartcard">
     <h4>Onde é melhora real e onde é ruído — ago → set</h4>
-    <div class="chart-desc">Barra cinza é agosto, colorida é setembro. Verde = melhorou, vermelho = piorou, azul = mudança sem julgamento de qualidade. Valor exato em cima de cada barra e diferença (delta) embaixo.</div>
+    <div class="chart-desc">Barra cinza é agosto, colorida é setembro. Verde = melhorou, vermelho = piorou, azul = sem base de comparação confiável. Valor exato em cima de cada barra, diferença (delta) embaixo, tamanho da amostra (n) na nota de cada card.</div>
     <div class="chartgrid3">
       <div class="minicard"><h5>FCR</h5><div class="chart-wrap" id="wrap-cmp1-fcr"><svg viewBox="0 0 300 190" id="chart-cmp1-fcr"></svg></div></div>
       <div class="minicard"><h5>Retenção de cancelamento</h5><div class="chart-wrap" id="wrap-cmp1-ret"><svg viewBox="0 0 300 190" id="chart-cmp1-ret"></svg></div></div>
-      <div class="minicard"><h5>Resolução interna</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 190" id="chart-cmp1-resol"></svg></div><div class="note">⚠ Regra: flag "resolvido" na tag de resolução do Intercom (não é o mesmo cálculo do FCR). Praticamente ninguém preenchia essa tag em agosto (0,1%) — bate com o "19% (atendimento humano)" que o próprio dashboard mostra hoje pra setembro. Não é melhora de qualidade, é adoção da tag.</div></div>
+      <div class="minicard"><h5>Resolução externa (CSAT)</h5><div class="chart-wrap" id="wrap-cmp1-ext"><svg viewBox="0 0 300 190" id="chart-cmp1-ext"></svg></div><div class="note">Cliente marca "resolvido?" na pesquisa de CSAT enviada pelo link do atendente. Base: 357 respostas em ago, 369 em set — amostra pequena mas estável nos dois meses, dá pra comparar.</div></div>
+      <div class="minicard"><h5>Resolução interna (campo obrigatório)</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 190" id="chart-cmp1-resol"></svg></div><div class="note">Toda conversa fechada na Intercom exige o atendente preencher resolvido: true/false. Agosto não entra na comparação — só 63 conversas em 36.521 tiveram o campo preenchido (0,17%), amostra pequena demais. Setembro: 4.942 preenchidas de 25.669 (19,3% de adesão) → 88,3% marcadas como resolvidas.</div></div>
     </div>
-    <div class="legend"><span><i style="background:#6c7161"></i>agosto (referência)</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span></div>
+    <div class="legend"><span><i style="background:#6c7161"></i>agosto (referência)</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span><span><i style="background:var(--blue)"></i>sem base em agosto</span></div>
+  </div>
+
+  <div class="callout warn">
+    <b>Achado operacional, não só de instrumentação:</b> em setembro, só 19,3% das conversas com atendente humano tiveram o campo obrigatório "resolvido" preenchido na Intercom (4.942 de 25.669) — mesmo sendo campo exigido no fechamento. E desse total preenchido, <b>98,4% vem de só 7 pessoas</b> (o time de Suporte + Cancelamento + Paulo + Amanda, que juntos são 29% do volume da empresa). Ou seja: o resto da operação — outras filas, outros times — praticamente não preenche esse campo. Isso não é "instrumentação nova esperando adoção geral", é adesão concentrada num time só. Vale entender com Tecnologia se é rotina quebrada, fila que não passa por esse fluxo de fechamento, ou falta de cobrança com os outros times.
   </div>
 
   <div class="chartcard">
@@ -264,7 +269,8 @@ footer a{color:var(--ink-muted);}
       <tr><td>FCR — time de Suporte</td><td class="num">88,4%</td><td class="num">84,9%</td><td><span class="tag real-up">real piora</span> caiu, na contramão da média geral</td></tr>
       <tr><td>1ª resposta — time de Suporte</td><td class="num">1h52min</td><td class="num">2h18min</td><td><span class="tag real-up">real piora</span> empresa toda ficou estável (1h56→1h55)</td></tr>
       <tr><td>Duração do atendimento — empresa toda</td><td class="num">9h31min</td><td class="num">6h21min</td><td><span class="tag real-down">real</span> -33%</td></tr>
-      <tr><td>Resolução interna (empresa toda, atend. humano)</td><td class="num">0,1%</td><td class="num">19,2%</td><td><span class="tag artefato">artefato</span> tag do Intercom quase não era usada em agosto — bate com o dashboard</td></tr>
+      <tr><td>Resolução externa (CSAT, empresa toda)</td><td class="num">73,1%</td><td class="num">76,7%</td><td><span class="tag real-down">real</span> amostra pequena (n≈360) mas estável nos 2 meses</td></tr>
+      <tr><td>Resolução interna (campo obrigatório, empresa toda)</td><td class="num">n/a</td><td class="num">88,3%</td><td><span class="tag artefato">amostra</span> ago tem só n=63 (0,17% de adesão) — não comparável. Set: n=4.942 (19,3% de adesão)</td></tr>
       <tr><td>% Solicitação de cancelamento</td><td class="num">15,4%</td><td class="num">16,2%</td><td><span class="tag real-up">real piora</span> reverte a queda de agosto</td></tr>
       <tr><td>Retenção de cancelamento</td><td class="num">13,4%</td><td class="num">12,9%</td><td><span class="tag real-up">real piora</span> meta é 20%</td></tr>
     </tbody>
@@ -453,6 +459,7 @@ footer a{color:var(--ink-muted);}
     <li><b style="color:var(--ink)">Winnie e Giselle tiveram a maior queda de FCR e CSAT do time</b> — merece conversa 1:1 antes de virar tendência.</li>
     <li><b style="color:var(--ink)">Kelly e Débora, ambas praticamente novas no time, já entregam os melhores números de CSAT e FCR</b> respectivamente — bom sinal de onboarding, vale entender o que estão fazendo diferente.</li>
     <li><b style="color:var(--ink)">A melhora de agosto no cancelamento não se sustentou</b> — taxa de solicitação voltou a subir em setembro, reforçando que comunicação sozinha não resolve a causa estrutural.</li>
+    <li><b style="color:var(--ink)">O campo obrigatório "resolvido" da Intercom só é preenchido pelo time de Suporte/Cancelamento/AT</b> — 98,4% dos preenchimentos da empresa inteira vêm dessas 7 pessoas, que são só 29% do volume total. O resto da operação não está cumprindo um campo obrigatório, e isso é maior que um problema de instrumentação: é processo quebrado ou falta de cobrança em outros times.</li>
     <li><b style="color:var(--ink)">As três dores mais caras pro cliente já têm solução desenhada</b> — upgrade, logística e cancelamento somam <b>3.949 conversas humanas em setembro</b>, quase 1 em cada 6 atendimentos do mês. O gargalo é implementação, não desenho.</li>
     <li><b style="color:var(--ink)">Todos os números desta seção foram validados direto no BigQuery</b> — a leitura original feita a partir dos prints do dashboard bateu quase exatamente com o dado bruto, o que dá confiança nas duas fontes.</li>
   </ul>
@@ -504,6 +511,7 @@ footer a{color:var(--ink-muted);}
     <div class="alignrow new"><b>Vagas abertas</b> — atendente de CX no Manguezal, Business Analyst estagiário, estagiário Conversacional. Priorizar contratação dado o volume que o time de Suporte já carrega.<span class="who">Dono: Arthur / RH</span></div>
     <div class="alignrow new"><b>Painel de acompanhamento de SLA no allu.flow</b> — visibilidade de aderência por motivo/responsável, conecta direto com a task de SLAs por motivo já mapeada na spec de logística.<span class="who">Dono sugerido: Tecnologia</span></div>
     <div class="alignrow new"><b>CSAT integrado na Intercom</b> — hoje depende de pedir separado; integrado dá rastreabilidade real (quem respondeu, qual assunto, qual atendente) sem esforço manual de coleta.<span class="who">Dono sugerido: Tecnologia + CX</span></div>
+    <div class="alignrow new"><b>Campo obrigatório "resolvido" da Intercom não é preenchido fora de Suporte/Cancelamento/AT</b> — em setembro, 98,4% dos preenchimentos vieram de só 7 pessoas (29% do volume da empresa). Entender com Tecnologia se é rotina quebrada, fila que não passa pelo fluxo de fechamento, ou falta de cobrança com os outros times.<span class="who">Dono sugerido: Tecnologia + Gestão de CX</span></div>
     <div class="alignrow new"><b>Comunicados de atraso futuro — iPhone 15 e 17</b> — alinhar mensagem proativa antes do atraso virar reclamação.<span class="who">Dono sugerido: CX / Logística</span></div>
     <div class="alignrow new"><b>Clube allu</b> — explicar pro time o que é e começar a implementar comunicações e respostas prontas de atendimento.<span class="who">Dono sugerido: Arthur / CX</span></div>
     <div class="alignrow"><b>Volume de entregas que retornam por falta de sucesso</b> — não temos esse número hoje; é a base pra priorizar a automação de reenvio.<span class="who">Dono sugerido: Logística</span></div>
@@ -844,7 +852,9 @@ footer a{color:var(--ink-muted);}
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
   groupedBar('chart-cmp1-ret','wrap-cmp1-ret', [''], [13.4], [12.9],
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
-  groupedBar('chart-cmp1-resol','wrap-cmp1-resol', [''], [0.15], [19.16],
+  groupedBar('chart-cmp1-ext','wrap-cmp1-ext', [''], [73.1], [76.7],
+    {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
+  groupedBar('chart-cmp1-resol','wrap-cmp1-resol', [''], [null], [88.3],
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, neutral:true, showDelta:true});
 
   var hFmt = function(v){return v.toFixed(1)+'h';}, hDeltaFmt = function(d){return d.toFixed(1)+'h';};
