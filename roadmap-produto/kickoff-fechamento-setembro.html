@@ -176,8 +176,8 @@ footer a{color:var(--ink-muted);}
 
 <div class="masthead"><div class="wrap">
   <div class="eyebrow">Kickoff · Fechamento de setembro / Abertura de outubro</div>
-  <h1>Setembro cresceu e ficou mais rápido — mas nem todo time melhorou junto.</h1>
-  <p class="thesis">O FCR da empresa subiu (87,3%→88,8%), mas o FCR do time de Suporte <b>caiu</b> na mesma janela (88,4%→84,9%), e o primeiro tempo de resposta do time piorou (1h52min→2h18min) mesmo com a média geral estável. A taxa de solicitação de cancelamento voltou a subir depois da queda que agosto tinha conquistado. E as três frentes que mais geram atrito com o cliente — upgrade, logística e cancelamento — seguem sem o self-service que já está desenhado.</p>
+  <h1>Setembro ficou muito mais rápido — mas resolveu pior, puxado pelo Suporte.</h1>
+  <p class="thesis">O FCR caiu na empresa toda (86,6%→85,5%), puxado pelo time de Suporte — dois terços do volume de CX e o que mais caiu (88,8%→84,6%). Cancelamento (Paulo) e AT (Amanda) foram na direção contrária e melhoraram, mas não têm volume pra segurar a média. A duração do atendimento caiu quase pela metade (19h11min→8h59min), só que a 1ª resposta do time de Suporte piorou bastante (1h48min→2h17min) mesmo com a média geral estável. <b>Esta rodada exclui vendas, pré-vendas e recuperação de recorrência</b> — atendimento humano aqui é só CX de verdade, sem misturar com o funil de vendas.</p>
   <div class="valid-badge">✓ Validado direto no BigQuery (v3_supabase_bot_ai_allu_gold + v3_gold_alluoffice) — não é mais leitura de print</div>
   <div class="meta-row">
     <span>Base: agosto (01–31/08) e setembro (01–27/09) de 2026</span>
@@ -190,24 +190,31 @@ footer a{color:var(--ink-muted);}
 <section id="diagnostico"><div class="wrap">
   <div class="section-label"><span class="section-num">01</span><span class="section-tag">Setembro, isolado</span></div>
   <h2>O mês em números</h2>
-  <p class="section-sub">01/09 a 27/09/2026 (mês ainda parcial). Reclame Aqui fica de fora desta rodada — as métricas do dashboard pra essa fonte ainda estão incorretas.</p>
+  <p class="section-sub">01/09 a 27/09/2026 (mês ainda parcial). Reclame Aqui fica de fora desta rodada — métricas do dashboard incorretas no momento. <b>Vendas, pré-vendas (fila e intent "vendas", inclusive a conta "Esther Cecilia dos Santos Silva" — 99,7% da fila vendas sozinha) e recuperação de recorrência foram excluídos de toda a análise</b> — ver nota abaixo.</p>
 
   <div class="statgrid">
-    <div class="stat"><div class="v">25.632</div><div class="l">atendimentos humanos (24.718 clientes)</div></div>
-    <div class="stat"><div class="v acc">88,8%</div><div class="l">FCR — acima do benchmark de mercado (70–75%)</div></div>
-    <div class="stat"><div class="v">4,05</div><div class="l">CSAT (369 respostas)</div></div>
-    <div class="stat"><div class="v crit">16,2%</div><div class="l">taxa de solicitação de cancelamento — meta 13,5%</div></div>
+    <div class="stat"><div class="v">42.223</div><div class="l">atendimentos de CX no total (IA + humano), excluindo vendas/recuperação</div></div>
+    <div class="stat"><div class="v">34.192</div><div class="l">resolvidos só pela IA — 81,0% do total</div></div>
+    <div class="stat"><div class="v acc">8.030</div><div class="l">passaram por atendente humano — 19,0% do total (7.537 clientes)</div></div>
+    <div class="stat"><div class="v crit">85,5%</div><div class="l">FCR do atendimento humano — caiu de 86,6% em agosto</div></div>
   </div>
+  <div class="statgrid">
+    <div class="stat"><div class="v">4,05</div><div class="l">CSAT (369 respostas) — view já é só CX, sem contaminação</div></div>
+    <div class="stat"><div class="v crit">16,2%</div><div class="l">taxa de solicitação de cancelamento — meta 13,5%</div></div>
+    <div class="stat"><div class="v">4.683</div><div class="l">dos 8.030 atendimentos humanos têm a propriedade "resolvido" preenchida (58,3%)</div></div>
+    <div class="stat"><div class="v acc">88,1%</div><div class="l">desses 4.683, % marcada como resolvida pelo atendente</div></div>
+  </div>
+  <p class="srcnote">Metodologia da exclusão: removemos fila_transferencia = "vendas" e "recuperacao_recorrencia", classified_intent = "sales" (em qualquer fila) e o attendant "Esther Cecilia dos Santos Silva" (vendedora — 17.075 conversas em setembro, 84% delas fila/intent vendas, volume humanamente impossível pra uma pessoa só, e só 22 com a propriedade "resolvido" preenchida). Sem essa limpeza, "atendimento humano" chegava a 25.632 em setembro e 36.521 em agosto — inflado em 2 a 3x por vendas.</p>
 
   <div class="chartcard">
-    <h4>Volume oscila por dia da semana — sem tendência de alta ou queda no período</h4>
-    <div class="chart-desc">Conversas com pelo menos um atendente humano por dia — exclui IA. Os vales são fins de semana (volume real cai, não é falha de coleta). Passe o mouse pra ver o valor exato de cada dia.</div>
+    <h4>Volume oscila por dia da semana, sem misturar mais com vendas</h4>
+    <div class="chart-desc">Conversas com pelo menos um atendente humano por dia, só CX (vendas/recuperação excluídos) — exclui IA. Os vales são fins de semana. Passe o mouse pra ver o valor exato de cada dia.</div>
     <div class="chart-wrap" id="wrap-vol"><svg viewBox="0 0 900 260" id="chart-vol"></svg></div>
   </div>
 
   <div class="chartcard">
-    <h4>FCR fica estável acima da meta, com uma queda pontual explicada por volume baixo</h4>
-    <div class="chart-desc">First Contact Resolution diário. A linha vermelha pontilhada marca a meta de 85% — a maior parte dos dias fica em cima ou acima dela.</div>
+    <h4>FCR de CX caiu ao longo de setembro, com uma queda pontual de amostra baixa</h4>
+    <div class="chart-desc">First Contact Resolution diário, só CX. A linha vermelha pontilhada marca a meta de 85% — setembro passa a maior parte do tempo abaixo dela, diferente de agosto.</div>
     <div class="chart-wrap" id="wrap-fcr"><svg viewBox="0 0 900 240" id="chart-fcr"></svg></div>
   </div>
 
@@ -235,18 +242,18 @@ footer a{color:var(--ink-muted);}
       <div class="minicard"><h5>FCR</h5><div class="chart-wrap" id="wrap-cmp1-fcr"><svg viewBox="0 0 300 190" id="chart-cmp1-fcr"></svg></div></div>
       <div class="minicard"><h5>Retenção de cancelamento</h5><div class="chart-wrap" id="wrap-cmp1-ret"><svg viewBox="0 0 300 190" id="chart-cmp1-ret"></svg></div></div>
       <div class="minicard"><h5>Resolução externa (CSAT)</h5><div class="chart-wrap" id="wrap-cmp1-ext"><svg viewBox="0 0 300 190" id="chart-cmp1-ext"></svg></div><div class="note">Cliente marca "resolvido?" na pesquisa de CSAT enviada pelo link do atendente. Base: 357 respostas em ago, 369 em set — amostra pequena mas estável nos dois meses, dá pra comparar.</div></div>
-      <div class="minicard"><h5>Resolução interna (campo obrigatório)</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 190" id="chart-cmp1-resol"></svg></div><div class="note">Toda conversa fechada na Intercom exige o atendente preencher resolvido: true/false. Agosto não entra na comparação — só 63 conversas em 36.521 tiveram o campo preenchido (0,17%), amostra pequena demais. Setembro: 4.942 preenchidas de 25.669 (19,3% de adesão) → 88,3% marcadas como resolvidas.</div></div>
+      <div class="minicard"><h5>Resolução interna (campo obrigatório)</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 190" id="chart-cmp1-resol"></svg></div><div class="note">Toda conversa fechada na Intercom exige o atendente preencher resolvido: true/false. Agosto não entra na comparação — só 55 conversas de CX em 9.283 tiveram o campo preenchido (0,59%), amostra pequena demais. Setembro: 4.683 preenchidas de 8.030 (58,3% de adesão) → 88,1% marcadas como resolvidas.</div></div>
     </div>
     <div class="legend"><span><i style="background:#6c7161"></i>agosto (referência)</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span><span><i style="background:var(--blue)"></i>sem base em agosto</span></div>
   </div>
 
   <div class="callout warn">
-    <b>Achado operacional, não só de instrumentação:</b> em setembro, só 19,3% das conversas com atendente humano tiveram o campo obrigatório "resolvido" preenchido na Intercom (4.942 de 25.669) — mesmo sendo campo exigido no fechamento. E desse total preenchido, <b>98,4% vem de só 7 pessoas</b> (o time de Suporte + Cancelamento + Paulo + Amanda, que juntos são 29% do volume da empresa). Ou seja: o resto da operação — outras filas, outros times — praticamente não preenche esse campo. Isso não é "instrumentação nova esperando adoção geral", é adesão concentrada num time só. Vale entender com Tecnologia se é rotina quebrada, fila que não passa por esse fluxo de fechamento, ou falta de cobrança com os outros times.
+    <b>Achado operacional, com o CX limpo de vendas:</b> em setembro, 58,3% das conversas de CX com atendente humano tiveram o campo obrigatório "resolvido" preenchido na Intercom (4.683 de 8.030) — mesmo sendo campo exigido no fechamento. Os 7 atendentes de Suporte/Cancelamento/AT já são <b>87,3% de todo o volume de CX</b> (7.010 de 8.030) e preenchem o campo 66,2% das vezes — adesão razoável, não total. O <b>resto do CX</b> (13% do volume, outros atendentes fora desses 7) preenche só 4,4% das vezes (45 de 1.020) — esse pedaço sim está com adesão quebrada, e vale entender com Tecnologia se é rotina de fechamento diferente ou falta de cobrança com esses outros atendentes.
   </div>
 
   <div class="chartcard">
     <h4>Atendimento ficou mais rápido de ponta a ponta — ago → set</h4>
-    <div class="chart-desc">Em horas. 1ª resposta não teve variação prática (1h56min→1h55min na média geral).</div>
+    <div class="chart-desc">Em horas, só CX. 1ª resposta não teve variação prática na média geral (2h16min→2h17min) — mas o time de Suporte especificamente piorou bastante (ver seção 04).</div>
     <div class="chartgrid2">
       <div class="minicard"><h5>Duração total do atendimento</h5><div class="chart-wrap" id="wrap-cmp2-dur"><svg viewBox="0 0 380 190" id="chart-cmp2-dur"></svg></div></div>
       <div class="minicard"><h5>Tempo até a 1ª resposta</h5><div class="chart-wrap" id="wrap-cmp2-resp"><svg viewBox="0 0 380 190" id="chart-cmp2-resp"></svg></div></div>
@@ -264,20 +271,21 @@ footer a{color:var(--ink-muted);}
   <div class="tblwrap"><table>
     <thead><tr><th>Métrica</th><th class="num">Agosto</th><th class="num">Setembro</th><th>Leitura</th></tr></thead>
     <tbody>
-      <tr><td>Atendimentos humanos (por dia)</td><td class="num">1.178/dia</td><td class="num">949/dia</td><td><span class="tag real-down">real</span> mais deflection pra IA</td></tr>
-      <tr><td>FCR — empresa toda</td><td class="num">87,3%</td><td class="num">88,8%</td><td><span class="tag real-down">real</span> melhora leve</td></tr>
-      <tr><td>FCR — time de Suporte</td><td class="num">88,4%</td><td class="num">84,9%</td><td><span class="tag real-up">real piora</span> caiu, na contramão da média geral</td></tr>
-      <tr><td>1ª resposta — time de Suporte</td><td class="num">1h52min</td><td class="num">2h18min</td><td><span class="tag real-up">real piora</span> empresa toda ficou estável (1h56→1h55)</td></tr>
-      <tr><td>Duração do atendimento — empresa toda</td><td class="num">9h31min</td><td class="num">6h21min</td><td><span class="tag real-down">real</span> -33%</td></tr>
+      <tr><td>Atendimentos humanos (CX, total no mês)</td><td class="num">9.283</td><td class="num">8.030</td><td><span class="tag real-down">real</span> -13,5%, mais deflection pra IA (80,1%→81,0% do total)</td></tr>
+      <tr><td>FCR — empresa toda (CX)</td><td class="num">86,6%</td><td class="num">85,5%</td><td><span class="tag real-up">real piora</span> caiu, puxado pelo Suporte</td></tr>
+      <tr><td>FCR — time de Suporte</td><td class="num">88,8%</td><td class="num">84,6%</td><td><span class="tag real-up">real piora</span> caiu mais que a média — é 2/3 do volume</td></tr>
+      <tr><td>1ª resposta — time de Suporte</td><td class="num">1h48min</td><td class="num">2h17min</td><td><span class="tag real-up">real piora</span> empresa toda ficou estável (2h16→2h17)</td></tr>
+      <tr><td>Duração do atendimento — empresa toda</td><td class="num">19h11min</td><td class="num">8h59min</td><td><span class="tag real-down">real</span> -53%</td></tr>
       <tr><td>Resolução externa (CSAT, empresa toda)</td><td class="num">73,1%</td><td class="num">76,7%</td><td><span class="tag real-down">real</span> amostra pequena (n≈360) mas estável nos 2 meses</td></tr>
-      <tr><td>Resolução interna (campo obrigatório, empresa toda)</td><td class="num">n/a</td><td class="num">88,3%</td><td><span class="tag artefato">amostra</span> ago tem só n=63 (0,17% de adesão) — não comparável. Set: n=4.942 (19,3% de adesão)</td></tr>
+      <tr><td>Resolução interna (campo obrigatório, empresa toda)</td><td class="num">n/a</td><td class="num">88,1%</td><td><span class="tag artefato">amostra</span> ago tem só n=55 (0,59% de adesão) — não comparável. Set: n=4.683 de 8.030 (58,3% de adesão)</td></tr>
       <tr><td>% Solicitação de cancelamento</td><td class="num">15,4%</td><td class="num">16,2%</td><td><span class="tag real-up">real piora</span> reverte a queda de agosto</td></tr>
       <tr><td>Retenção de cancelamento</td><td class="num">13,4%</td><td class="num">12,9%</td><td><span class="tag real-up">real piora</span> meta é 20%</td></tr>
     </tbody>
   </table></div>
+  <p class="srcnote">Todas as linhas de atendimento humano (volume, FCR, duração, 1ª resposta, resolução interna) já excluem vendas, pré-vendas e recuperação de recorrência — ver metodologia na seção 01.</p>
 
   <div class="callout warn">
-    <b>O achado que não aparecia nos prints:</b> a melhora de FCR e de tempo de resposta em setembro é puxada por <b>Cancelamento (Paulo)</b> e <b>AT (Amanda)</b>, não pelo time de Suporte. O time de Suporte piorou nas duas métricas na mesma janela em que a duração total do atendimento melhorou — detalhe na seção 04.
+    <b>O achado que só aparece limpando vendas da conta:</b> o FCR da empresa não subiu em setembro — caiu, igual ao time de Suporte, só que menos (85,5% vs 84,6%). O time de Suporte é 2/3 do volume humano de CX, então puxa a média. <b>Cancelamento (Paulo)</b> e <b>AT (Amanda)</b> foram na direção contrária — FCR subiu pros dois — mas não têm volume suficiente pra reverter a média geral. Detalhe pessoa por pessoa na seção 04.
   </div>
 </div></section>
 
@@ -296,7 +304,7 @@ footer a{color:var(--ink-muted);}
   <div class="painbox">
     <div class="painbox-head"><span class="painbox-num">DOR 01</span><span class="painbox-title">Upgrade não é self-service</span></div>
     <p>Hoje o upgrade depende de atendimento humano de ponta a ponta: o cliente entra em contato, um analista consulta o pedido, calcula a diferença de valor manualmente e conduz o pagamento fora do fluxo self-service do app/site.</p>
-    <div class="evidence"><div class="ev">Setembro: <b>750</b> conversas</div><div class="ev">Taxa de resolução: <b>46,5%</b> — a mais baixa dos 5 maiores intents</div><div class="ev">FCR: <b>84,8%</b></div></div>
+    <div class="evidence"><div class="ev">Setembro: <b>693</b> conversas</div><div class="ev">Taxa de resolução: <b>46,5%</b> — a mais baixa dos 5 maiores intents</div><div class="ev">FCR: <b>85,6%</b></div></div>
     <p><b>Já desenhado:</b> spec completa de "Upgrade Self-Service" (App/Site + ferramenta assistida no allu.office). <b>Nada implementado ainda.</b></p>
     <div class="statusrow"><span class="pill done">Spec pronta</span><span class="pill todo">Implementação: 0%</span></div>
     <div class="bench"><b>Benchmark:</b> em telecom/SaaS, mover upgrade de assistido pra self-service reduz TMA de forma significativa e aumenta conversão do funil.</div>
@@ -305,16 +313,16 @@ footer a{color:var(--ink-muted);}
   <div class="painbox">
     <div class="painbox-head"><span class="painbox-num">DOR 02</span><span class="painbox-title">Desalinhamento com logística</span></div>
     <p>Falta comunicação clara em cada etapa de cancelamento/reenvio/devolução, sem SLA formal pra exceções (bloqueado, sem ligar, extraviado), sem flags nem painel de acompanhamento.</p>
-    <div class="evidence"><div class="ev">Setembro: <b>884</b> conversas</div><div class="ev">FCR: <b>66,4%</b> — o mais baixo dos 5 maiores intents</div><div class="ev">Taxa de resolução: <b>67,6%</b></div></div>
+    <div class="evidence"><div class="ev">Setembro: <b>853</b> conversas</div><div class="ev">FCR: <b>68,3%</b> — o mais baixo dos 5 maiores intents</div><div class="ev">Taxa de resolução: <b>67,6%</b></div></div>
     <p><b>Já desenhado:</b> spec fechada com o time de Log (23/set) — SLAs, flags, painel, nova TDA por faixa de contrato. <b>Nada implementado ainda.</b></p>
     <div class="statusrow"><span class="pill done">Spec pronta</span><span class="pill todo">Implementação: 0%</span><span class="pill todo">6 perguntas em aberto</span></div>
-    <div class="bench"><b>Benchmark:</b> FCR de 66,4% está abaixo da faixa boa de mercado (70–75%) — pior resolução na primeira interação de toda a operação.</div>
+    <div class="bench"><b>Benchmark:</b> FCR de 68,3% está abaixo da faixa boa de mercado (70–75%) — pior resolução na primeira interação de toda a operação.</div>
   </div>
 
   <div class="painbox">
     <div class="painbox-head"><span class="painbox-num">DOR 03</span><span class="painbox-title">Cancelamento moroso e com baixa retenção</span></div>
     <p>Promessa de resposta em até 5 dias úteis descumprida em quase 1 de cada 8 solicitações. Retenção líquida real bem menor que a bruta reportada. Única etapa do funil que piorou de agosto pra setembro (doc. aprovada: 13,07%→14,97%).</p>
-    <div class="evidence"><div class="ev">Setembro: <b>2.315</b> conversas — o 2º maior intent</div><div class="ev">FCR: <b>81,2%</b></div><div class="ev">Retenção macro: <b>12,9%</b> vs. meta <b>20%</b></div></div>
+    <div class="evidence"><div class="ev">Setembro: <b>2.222</b> conversas — o 2º maior intent</div><div class="ev">FCR: <b>82,0%</b></div><div class="ev">Retenção macro: <b>12,9%</b> vs. meta <b>20%</b></div></div>
     <p><b>Já desenhado:</b> <a href="https://claude.ai/artifact/X65kfmW3TBV7mQ2FDCiHfY">Redesenho do Processo de Cancelamento</a> — 5 das 6 jornadas prontas. <b>Falta desenhar churn e nada foi implementado ainda.</b></p>
     <div class="statusrow"><span class="pill done">5 de 6 jornadas desenhadas</span><span class="pill todo">Implementação: 0%</span></div>
     <div class="bench"><b>Benchmark:</b> fluxo bem desenhado retém 10–34% (média 15%). Allu está em 12,9% — dentro da faixa, abaixo da média, longe da meta interna de 20%.</div>
@@ -328,7 +336,7 @@ footer a{color:var(--ink-muted);}
   <p class="section-sub">Suporte consolidado (Wanessa, Winnie, Giselle, Débora, Kelly) e depois pessoa por pessoa. Cancelamento (Paulo Aranha) e AT (Amanda) à parte, times de uma pessoa só.</p>
 
   <div class="chartcard">
-    <h4>FCR piorou pra 5 dos 6 atendentes com histórico em agosto</h4>
+    <h4>FCR piorou pra 4 dos 6 atendentes com histórico em agosto</h4>
     <div class="chart-desc">Barra cinza é agosto, barra colorida é setembro (verde = melhorou, vermelho = piorou). Delta em pontos percentuais embaixo do nome. Kelly e Débora sem barra cinza — chegaram/passaram a atender em setembro.</div>
     <div class="chart-wrap" id="wrap-att-fcr"><svg viewBox="0 0 920 340" id="chart-att-fcr"></svg></div>
     <div class="legend"><span><i style="background:#6c7161"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span></div>
@@ -359,10 +367,10 @@ footer a{color:var(--ink-muted);}
   <div class="attcard">
     <div class="attcard-head"><span class="name">Time Suporte (5 pessoas)</span><span class="role">wanessa · winnie · giselle · débora · kelly</span></div>
     <div class="attmini">
-      <div class="m"><div class="mv">5.829</div><div class="ml">conversas (set)</div><div class="md down">6.102 em ago</div></div>
-      <div class="m"><div class="mv">84,9%</div><div class="ml">FCR (set)</div><div class="md down">88,4% em ago</div></div>
-      <div class="m"><div class="mv">2h18min</div><div class="ml">1ª resposta (set)</div><div class="md down">1h52min em ago</div></div>
-      <div class="m"><div class="mv">7h58min</div><div class="ml">duração (set)</div><div class="md up">14h23min em ago</div></div>
+      <div class="m"><div class="mv">5.410</div><div class="ml">conversas (set)</div><div class="md">5.327 em ago</div></div>
+      <div class="m"><div class="mv">84,6%</div><div class="ml">FCR (set)</div><div class="md down">88,8% em ago</div></div>
+      <div class="m"><div class="mv">2h17min</div><div class="ml">1ª resposta (set)</div><div class="md down">1h48min em ago</div></div>
+      <div class="m"><div class="mv">7h37min</div><div class="ml">duração (set)</div><div class="md up">14h32min em ago</div></div>
       <div class="m"><div class="mv">4,09</div><div class="ml">CSAT (set)</div><div class="md up">4,08 em ago</div></div>
     </div>
     <p class="note-inline">Duração melhorou muito, mas FCR e 1ª resposta pioraram — o time está fechando os casos mais rápido, só que resolvendo pior de primeira e demorando mais pra dar a primeira resposta.</p>
@@ -372,20 +380,20 @@ footer a{color:var(--ink-muted);}
   <div class="attcard">
     <div class="attcard-head"><span class="name">Wanessa Aparecida dos Santos Maia</span></div>
     <div class="attmini">
-      <div class="m"><div class="mv">1.419</div><div class="ml">conversas (set)</div><div class="md down">1.865 em ago</div></div>
-      <div class="m"><div class="mv">86,0%</div><div class="ml">FCR (set)</div><div class="md down">87,0% em ago</div></div>
-      <div class="m"><div class="mv">1h58min</div><div class="ml">1ª resposta (set)</div><div class="md down">1h46min em ago</div></div>
-      <div class="m"><div class="mv">9h31min</div><div class="ml">duração (set)</div><div class="md up">18h52min em ago</div></div>
+      <div class="m"><div class="mv">1.330</div><div class="ml">conversas (set)</div><div class="md">1.630 em ago</div></div>
+      <div class="m"><div class="mv">85,1%</div><div class="ml">FCR (set)</div><div class="md down">86,6% em ago</div></div>
+      <div class="m"><div class="mv">1h57min</div><div class="ml">1ª resposta (set)</div><div class="md down">1h42min em ago</div></div>
+      <div class="m"><div class="mv">9h21min</div><div class="ml">duração (set)</div><div class="md up">19h35min em ago</div></div>
       <div class="m"><div class="mv">4,37</div><div class="ml">CSAT (set)</div><div class="md up">4,23 em ago</div></div>
     </div>
   </div>
   <div class="attcard">
     <div class="attcard-head"><span class="name">Winnie Marina Couto dos Santos</span></div>
     <div class="attmini">
-      <div class="m"><div class="mv">1.398</div><div class="ml">conversas (set)</div><div class="md down">1.519 em ago</div></div>
-      <div class="m"><div class="mv">83,0%</div><div class="ml">FCR (set)</div><div class="md down">86,6% em ago</div></div>
-      <div class="m"><div class="mv">2h53min</div><div class="ml">1ª resposta (set)</div><div class="md down">2h14min em ago</div></div>
-      <div class="m"><div class="mv">6h47min</div><div class="ml">duração (set)</div><div class="md up">15h24min em ago</div></div>
+      <div class="m"><div class="mv">1.342</div><div class="ml">conversas (set)</div><div class="md">1.337 em ago</div></div>
+      <div class="m"><div class="mv">83,3%</div><div class="ml">FCR (set)</div><div class="md down">87,5% em ago</div></div>
+      <div class="m"><div class="mv">2h54min</div><div class="ml">1ª resposta (set)</div><div class="md down">2h11min em ago</div></div>
+      <div class="m"><div class="mv">6h38min</div><div class="ml">duração (set)</div><div class="md up">15h20min em ago</div></div>
       <div class="m"><div class="mv">3,83</div><div class="ml">CSAT (set)</div><div class="md down">4,33 em ago</div></div>
     </div>
     <p class="note-inline">Maior queda de CSAT do time (4,33→3,83) junto com queda de FCR e 1ª resposta mais lenta — vale conversa individual.</p>
@@ -393,21 +401,21 @@ footer a{color:var(--ink-muted);}
   <div class="attcard">
     <div class="attcard-head"><span class="name">Giselle Resende</span></div>
     <div class="attmini">
-      <div class="m"><div class="mv">1.714</div><div class="ml">conversas (set)</div><div class="md down">2.724 em ago</div></div>
-      <div class="m"><div class="mv">85,1%</div><div class="ml">FCR (set)</div><div class="md down">90,3% em ago</div></div>
-      <div class="m"><div class="mv">2h04min</div><div class="ml">1ª resposta (set)</div><div class="md down">1h43min em ago</div></div>
-      <div class="m"><div class="mv">7h58min</div><div class="ml">duração (set)</div><div class="md up">10h41min em ago</div></div>
+      <div class="m"><div class="mv">1.520</div><div class="ml">conversas (set)</div><div class="md">2.356 em ago</div></div>
+      <div class="m"><div class="mv">84,5%</div><div class="ml">FCR (set)</div><div class="md down">90,9% em ago</div></div>
+      <div class="m"><div class="mv">2h02min</div><div class="ml">1ª resposta (set)</div><div class="md down">1h39min em ago</div></div>
+      <div class="m"><div class="mv">7h32min</div><div class="ml">duração (set)</div><div class="md up">10h43min em ago</div></div>
       <div class="m"><div class="mv">3,84</div><div class="ml">CSAT (set)</div><div class="md down">3,86 em ago</div></div>
     </div>
-    <p class="note-inline">Maior volume individual do time nos dois meses — FCR mais alto de agosto (90,3%) caiu junto com o do resto do time em setembro.</p>
+    <p class="note-inline">Maior volume individual do time nos dois meses — FCR mais alto de agosto (90,9%) caiu junto com o do resto do time em setembro.</p>
   </div>
   <div class="attcard">
     <div class="attcard-head"><span class="name">Kelly Pereira</span></div>
     <div class="attmini">
-      <div class="m"><div class="mv">846</div><div class="ml">conversas (set)</div><div class="md">— em ago (n=1)</div></div>
-      <div class="m"><div class="mv">82,9%</div><div class="ml">FCR (set)</div><div class="md">—</div></div>
-      <div class="m"><div class="mv">2h15min</div><div class="ml">1ª resposta (set)</div><div class="md">—</div></div>
-      <div class="m"><div class="mv">5h03min</div><div class="ml">duração (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">820</div><div class="ml">conversas (set)</div><div class="md">— em ago (n=1)</div></div>
+      <div class="m"><div class="mv">82,6%</div><div class="ml">FCR (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">2h12min</div><div class="ml">1ª resposta (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">4h35min</div><div class="ml">duração (set)</div><div class="md">—</div></div>
       <div class="m"><div class="mv">4,58</div><div class="ml">CSAT (set)</div><div class="md">maior CSAT do time</div></div>
     </div>
     <p class="note-inline">Praticamente sem volume em agosto — setembro é o primeiro mês real dela no time, e já com o melhor CSAT entre todos os 7 atendentes analisados.</p>
@@ -415,10 +423,10 @@ footer a{color:var(--ink-muted);}
   <div class="attcard">
     <div class="attcard-head"><span class="name">Débora Freitas</span></div>
     <div class="attmini">
-      <div class="m"><div class="mv">449</div><div class="ml">conversas (set)</div><div class="md">0 em ago</div></div>
-      <div class="m"><div class="mv">90,6%</div><div class="ml">FCR (set)</div><div class="md">maior FCR do time</div></div>
-      <div class="m"><div class="mv">2h30min</div><div class="ml">1ª resposta (set)</div><div class="md">—</div></div>
-      <div class="m"><div class="mv">12h18min</div><div class="ml">duração (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">394</div><div class="ml">conversas (set)</div><div class="md">0 em ago</div></div>
+      <div class="m"><div class="mv">92,1%</div><div class="ml">FCR (set)</div><div class="md">maior FCR do time</div></div>
+      <div class="m"><div class="mv">2h32min</div><div class="ml">1ª resposta (set)</div><div class="md">—</div></div>
+      <div class="m"><div class="mv">11h47min</div><div class="ml">duração (set)</div><div class="md">—</div></div>
       <div class="m"><div class="mv">3,77</div><div class="ml">CSAT (set)</div><div class="md">13 respostas</div></div>
     </div>
     <p class="note-inline">Contratação nova (consistente com o recap de agosto: "1ª contratação, entra na segunda"). Setembro é o primeiro mês completo — já com o melhor FCR do time.</p>
@@ -428,10 +436,10 @@ footer a{color:var(--ink-muted);}
   <div class="attcard">
     <div class="attcard-head"><span class="name">Paulo Aranha Marques</span><span class="role">cancelamento</span></div>
     <div class="attmini">
-      <div class="m"><div class="mv">847</div><div class="ml">conversas (set)</div><div class="md down">1.608 em ago</div></div>
-      <div class="m"><div class="mv">84,5%</div><div class="ml">FCR (set)</div><div class="md up">80,7% em ago</div></div>
-      <div class="m"><div class="mv">2h00min</div><div class="ml">1ª resposta (set)</div><div class="md up">3h08min em ago</div></div>
-      <div class="m"><div class="mv">7h49min</div><div class="ml">duração (set)</div><div class="md up">19h45min em ago</div></div>
+      <div class="m"><div class="mv">833</div><div class="ml">conversas (set)</div><div class="md">1.554 em ago</div></div>
+      <div class="m"><div class="mv">84,0%</div><div class="ml">FCR (set)</div><div class="md up">80,3% em ago</div></div>
+      <div class="m"><div class="mv">2h00min</div><div class="ml">1ª resposta (set)</div><div class="md up">3h07min em ago</div></div>
+      <div class="m"><div class="mv">7h28min</div><div class="ml">duração (set)</div><div class="md up">19h02min em ago</div></div>
       <div class="m"><div class="mv">3,85</div><div class="ml">CSAT (set)</div><div class="md up">3,80 em ago</div></div>
     </div>
     <p class="note-inline">Melhorou em tudo — volume caiu quase pela metade, mas toda métrica de qualidade subiu. É o oposto do padrão visto no time de Suporte.</p>
@@ -439,10 +447,10 @@ footer a{color:var(--ink-muted);}
   <div class="attcard">
     <div class="attcard-head"><span class="name">Amanda Gabriela Alves Silva</span><span class="role">assistência técnica</span></div>
     <div class="attmini">
-      <div class="m"><div class="mv">799</div><div class="ml">conversas (set)</div><div class="md down">1.379 em ago</div></div>
-      <div class="m"><div class="mv">82,9%</div><div class="ml">FCR (set)</div><div class="md up">80,6% em ago</div></div>
-      <div class="m"><div class="mv">2h20min</div><div class="ml">1ª resposta (set)</div><div class="md up">3h50min em ago</div></div>
-      <div class="m"><div class="mv">20h41min</div><div class="ml">duração (set)</div><div class="md up">38h58min em ago</div></div>
+      <div class="m"><div class="mv">772</div><div class="ml">conversas (set)</div><div class="md">1.298 em ago</div></div>
+      <div class="m"><div class="mv">82,0%</div><div class="ml">FCR (set)</div><div class="md up">80,8% em ago</div></div>
+      <div class="m"><div class="mv">2h22min</div><div class="ml">1ª resposta (set)</div><div class="md up">3h48min em ago</div></div>
+      <div class="m"><div class="mv">19h12min</div><div class="ml">duração (set)</div><div class="md up">38h00min em ago</div></div>
       <div class="m"><div class="mv">3,77</div><div class="ml">CSAT (set)</div><div class="md up">3,76 em ago</div></div>
     </div>
     <p class="note-inline">Duração muito mais alta que o resto — natural do fluxo de AT (envio, diagnóstico e laudo do aparelho), não é atraso de atendimento. Mesmo assim, caiu quase pela metade e toda métrica de qualidade melhorou.</p>
@@ -454,13 +462,14 @@ footer a{color:var(--ink-muted);}
   <div class="section-label"><span class="section-num">05</span><span class="section-tag">Juntando os pontos</span></div>
   <h2>Conclusões consolidadas</h2>
   <ul style="font-size:14.5px;line-height:1.75;color:var(--ink-secondary);padding-left:20px;max-width:72ch;">
-    <li><b style="color:var(--ink)">A melhora de setembro não é uniforme.</b> FCR da empresa subiu, mas isso esconde uma queda real no time de Suporte (88,4%→84,9%) compensada por uma melhora forte em Cancelamento e AT. Olhar só a média geral escondia esse sinal.</li>
+    <li><b style="color:var(--ink)">A queda de FCR em setembro não é uniforme.</b> A empresa caiu (86,6%→85,5%), puxada pelo time de Suporte, que é 2/3 do volume e caiu mais (88,8%→84,6%). Cancelamento e AT foram na direção contrária e melhoraram, mas não têm volume pra segurar a média. Olhar só a média geral escondia essa divergência.</li>
     <li><b style="color:var(--ink)">Duração caiu em todo mundo, sem exceção</b> — inclusive no time de Suporte, que piorou em FCR e 1ª resposta. Vale entender se o time está fechando conversa rápido demais, à custa de resolver de primeira.</li>
     <li><b style="color:var(--ink)">Winnie e Giselle tiveram a maior queda de FCR e CSAT do time</b> — merece conversa 1:1 antes de virar tendência.</li>
     <li><b style="color:var(--ink)">Kelly e Débora, ambas praticamente novas no time, já entregam os melhores números de CSAT e FCR</b> respectivamente — bom sinal de onboarding, vale entender o que estão fazendo diferente.</li>
     <li><b style="color:var(--ink)">A melhora de agosto no cancelamento não se sustentou</b> — taxa de solicitação voltou a subir em setembro, reforçando que comunicação sozinha não resolve a causa estrutural.</li>
-    <li><b style="color:var(--ink)">O campo obrigatório "resolvido" da Intercom só é preenchido pelo time de Suporte/Cancelamento/AT</b> — 98,4% dos preenchimentos da empresa inteira vêm dessas 7 pessoas, que são só 29% do volume total. O resto da operação não está cumprindo um campo obrigatório, e isso é maior que um problema de instrumentação: é processo quebrado ou falta de cobrança em outros times.</li>
-    <li><b style="color:var(--ink)">As três dores mais caras pro cliente já têm solução desenhada</b> — upgrade, logística e cancelamento somam <b>3.949 conversas humanas em setembro</b>, quase 1 em cada 6 atendimentos do mês. O gargalo é implementação, não desenho.</li>
+    <li><b style="color:var(--ink)">O campo obrigatório "resolvido" tem adesão razoável (66,2%) no time de Suporte/Cancelamento/AT, que já é 87,3% de todo o CX humano</b> — mas o resto do CX (13% do volume, outros atendentes) preenche só 4,4% das vezes. É um pedaço pequeno da operação, mas com adesão claramente quebrada.</li>
+    <li><b style="color:var(--ink)">"Atendimento humano" estava inflado em 2 a 3x por vendas misturada na conta</b> — a fila "vendas" e a conta "Esther Cecilia dos Santos Silva" (vendedora, 17 mil conversas em setembro, volume impossível pra uma pessoa) respondiam por mais de metade do que eu tinha reportado como atendimento humano. Com o CX limpo, o FCR da empresa não subiu em setembro — caiu, na mesma direção do time de Suporte, só que com magnitude menor porque Cancelamento e AT melhoraram na contramão.</li>
+    <li><b style="color:var(--ink)">As três dores mais caras pro cliente já têm solução desenhada</b> — upgrade, logística e cancelamento somam <b>3.768 conversas humanas em setembro</b>, quase metade do atendimento humano de CX do mês. O gargalo é implementação, não desenho.</li>
     <li><b style="color:var(--ink)">Todos os números desta seção foram validados direto no BigQuery</b> — a leitura original feita a partir dos prints do dashboard bateu quase exatamente com o dado bruto, o que dá confiança nas duas fontes.</li>
   </ul>
 </div></section>
@@ -511,7 +520,7 @@ footer a{color:var(--ink-muted);}
     <div class="alignrow new"><b>Vagas abertas</b> — atendente de CX no Manguezal, Business Analyst estagiário, estagiário Conversacional. Priorizar contratação dado o volume que o time de Suporte já carrega.<span class="who">Dono: Arthur / RH</span></div>
     <div class="alignrow new"><b>Painel de acompanhamento de SLA no allu.flow</b> — visibilidade de aderência por motivo/responsável, conecta direto com a task de SLAs por motivo já mapeada na spec de logística.<span class="who">Dono sugerido: Tecnologia</span></div>
     <div class="alignrow new"><b>CSAT integrado na Intercom</b> — hoje depende de pedir separado; integrado dá rastreabilidade real (quem respondeu, qual assunto, qual atendente) sem esforço manual de coleta.<span class="who">Dono sugerido: Tecnologia + CX</span></div>
-    <div class="alignrow new"><b>Campo obrigatório "resolvido" da Intercom não é preenchido fora de Suporte/Cancelamento/AT</b> — em setembro, 98,4% dos preenchimentos vieram de só 7 pessoas (29% do volume da empresa). Entender com Tecnologia se é rotina quebrada, fila que não passa pelo fluxo de fechamento, ou falta de cobrança com os outros times.<span class="who">Dono sugerido: Tecnologia + Gestão de CX</span></div>
+    <div class="alignrow new"><b>Campo obrigatório "resolvido" tem adesão fraca fora de Suporte/Cancelamento/AT</b> — esses 7 já são 87,3% do CX humano e preenchem 66,2% das vezes; o resto do CX (13% do volume) preenche só 4,4%. Entender com Tecnologia se é rotina de fechamento diferente pra esses outros atendentes ou falta de cobrança.<span class="who">Dono sugerido: Tecnologia + Gestão de CX</span></div>
     <div class="alignrow new"><b>Comunicados de atraso futuro — iPhone 15 e 17</b> — alinhar mensagem proativa antes do atraso virar reclamação.<span class="who">Dono sugerido: CX / Logística</span></div>
     <div class="alignrow new"><b>Clube allu</b> — explicar pro time o que é e começar a implementar comunicações e respostas prontas de atendimento.<span class="who">Dono sugerido: Arthur / CX</span></div>
     <div class="alignrow"><b>Volume de entregas que retornam por falta de sucesso</b> — não temos esse número hoje; é a base pra priorizar a automação de reenvio.<span class="who">Dono sugerido: Logística</span></div>
@@ -528,7 +537,7 @@ footer a{color:var(--ink-muted);}
 </div></section>
 
 <footer><div class="wrap">
-  <p>Fontes: BigQuery — v3_supabase_bot_ai_allu_gold.vw_dash_performance_atendimento, vw_dash_csat_atendimento, vw_dash_resolucao_atendimento, fact_chat_conversations; v3_gold_alluoffice.vw_dash_cancelamento_atendimento. Agosto (01–31/08/2026, fechado) e setembro (01–27/09/2026, parcial). "Atendimento humano" exclui conversas 100% IA. Reclame Aqui excluído desta rodada — métricas do dashboard incorretas no momento da análise. Histórico consultado: recap de agosto (Retenção &amp; CX), spec de Logística de Devoluções (23/set), spec de Upgrade Self-Service (23/set), e <a href="https://claude.ai/artifact/X65kfmW3TBV7mQ2FDCiHfY">Redesenho do Processo de Cancelamento</a>.</p>
+  <p>Fontes: BigQuery — v3_supabase_bot_ai_allu_gold.vw_dash_performance_atendimento, vw_dash_csat_atendimento, vw_dash_resolucao_atendimento, fact_chat_conversations; v3_gold_alluoffice.vw_dash_cancelamento_atendimento. Agosto (01–31/08/2026, fechado) e setembro (01–27/09/2026, parcial). "Atendimento humano" exclui conversas 100% IA, a fila/intent "vendas", "recuperacao_recorrencia" e a conta "Esther Cecilia dos Santos Silva" (vendedora) — ver metodologia completa na seção 01. Reclame Aqui excluído desta rodada — métricas do dashboard incorretas no momento da análise. Histórico consultado: recap de agosto (Retenção &amp; CX), spec de Logística de Devoluções (23/set), spec de Upgrade Self-Service (23/set), e <a href="https://claude.ai/artifact/X65kfmW3TBV7mQ2FDCiHfY">Redesenho do Processo de Cancelamento</a>.</p>
 </div></footer>
 
 <script>
@@ -780,75 +789,75 @@ footer a{color:var(--ink-muted);}
 
   /* ================= DATA ================= */
   var daily = [
-    ["2026-08-01", 56, 82.1, 471.3],
-    ["2026-08-02", 406, 79.3, 631.4],
-    ["2026-08-03", 2102, 86.4, 547.6],
-    ["2026-08-04", 1798, 89.7, 474.4],
-    ["2026-08-05", 1779, 90.4, 534.9],
-    ["2026-08-06", 1894, 89.3, 558.0],
-    ["2026-08-07", 1199, 84.6, 1603.7],
-    ["2026-08-08", 65, 70.8, 1375.2],
-    ["2026-08-09", 286, 80.1, 404.6],
-    ["2026-08-10", 1578, 87.6, 572.8],
-    ["2026-08-11", 1440, 88.8, 646.3],
-    ["2026-08-12", 1919, 91.5, 591.9],
-    ["2026-08-13", 1858, 91.8, 422.6],
-    ["2026-08-14", 910, 87.1, 1350.6],
-    ["2026-08-15", 15, 73.3, 2122.5],
-    ["2026-08-16", 451, 86.3, 282.4],
-    ["2026-08-17", 1363, 87.8, 795.1],
-    ["2026-08-18", 1669, 89.3, 475.4],
-    ["2026-08-19", 1621, 89.0, 509.1],
-    ["2026-08-20", 1674, 91.3, 459.9],
-    ["2026-08-21", 637, 80.2, 1023.0],
-    ["2026-08-22", 36, 86.1, 4986.0],
-    ["2026-08-23", 107, 75.7, 395.5],
-    ["2026-08-24", 1845, 84.1, 426.5],
-    ["2026-08-25", 1534, 84.2, 468.2],
-    ["2026-08-26", 1985, 85.1, 329.8],
-    ["2026-08-27", 2546, 86.8, 274.8],
-    ["2026-08-28", 913, 85.0, 1095.8],
-    ["2026-08-29", 17, 88.2, 1409.7],
-    ["2026-08-30", 154, 72.7, 559.9],
-    ["2026-08-31", 2664, 84.7, 384.2],
-    ["2026-09-01", 1603, 88.2, 417.1],
-    ["2026-09-02", 1704, 87.9, 299.2],
-    ["2026-09-03", 1644, 93.0, 260.3],
-    ["2026-09-04", 1036, 89.5, 216.9],
-    ["2026-09-06", 6, 83.3, 393.1],
-    ["2026-09-07", 116, 79.3, 345.2],
-    ["2026-09-08", 1263, 87.8, 457.8],
-    ["2026-09-09", 1259, 89.0, 403.4],
-    ["2026-09-10", 1458, 87.1, 325.1],
-    ["2026-09-11", 994, 88.2, 1035.6],
+    ["2026-08-01", 24, 83.3, 667.9],
+    ["2026-08-02", 96, 83.3, 1546.0],
+    ["2026-08-03", 745, 83.8, 867.9],
+    ["2026-08-04", 494, 91.7, 879.4],
+    ["2026-08-05", 447, 91.7, 1053.2],
+    ["2026-08-06", 580, 89.1, 1023.1],
+    ["2026-08-07", 356, 81.7, 2361.2],
+    ["2026-08-08", 24, 83.3, 2876.1],
+    ["2026-08-09", 72, 76.4, 951.6],
+    ["2026-08-10", 514, 87.7, 1114.5],
+    ["2026-08-11", 384, 87.8, 1255.6],
+    ["2026-08-12", 432, 89.1, 1339.5],
+    ["2026-08-13", 346, 85.8, 1392.3],
+    ["2026-08-14", 236, 84.7, 1991.1],
+    ["2026-08-15", 7, 85.7, 4192.6],
+    ["2026-08-16", 65, 81.5, 957.5],
+    ["2026-08-17", 455, 84.4, 1267.4],
+    ["2026-08-18", 362, 89.2, 1225.4],
+    ["2026-08-19", 313, 86.3, 1374.7],
+    ["2026-08-20", 310, 85.2, 1255.6],
+    ["2026-08-21", 242, 80.6, 1005.4],
+    ["2026-08-22", 30, 86.7, 4893.0],
+    ["2026-08-23", 36, 83.3, 908.4],
+    ["2026-08-24", 468, 88.7, 971.8],
+    ["2026-08-25", 353, 88.4, 1116.0],
+    ["2026-08-26", 392, 87.8, 883.4],
+    ["2026-08-27", 383, 88.0, 761.7],
+    ["2026-08-28", 339, 84.7, 856.4],
+    ["2026-08-29", 10, 90.0, 672.8],
+    ["2026-08-30", 69, 78.3, 787.3],
+    ["2026-08-31", 701, 84.2, 985.4],
+    ["2026-09-01", 426, 89.2, 567.5],
+    ["2026-09-02", 489, 89.6, 535.0],
+    ["2026-09-03", 491, 92.3, 406.0],
+    ["2026-09-04", 291, 88.7, 452.1],
+    ["2026-09-06", 5, 80.0, 480.3],
+    ["2026-09-07", 87, 80.5, 361.1],
+    ["2026-09-08", 495, 81.6, 655.2],
+    ["2026-09-09", 428, 85.5, 524.8],
+    ["2026-09-10", 441, 76.6, 415.2],
+    ["2026-09-11", 320, 80.6, 1166.6],
     ["2026-09-12", 3, 100.0, 148.8],
-    ["2026-09-13", 172, 79.1, 444.3],
-    ["2026-09-14", 1540, 85.8, 532.9],
-    ["2026-09-15", 1377, 86.4, 321.1],
-    ["2026-09-16", 1295, 87.0, 388.4],
-    ["2026-09-17", 1170, 85.5, 431.3],
-    ["2026-09-18", 855, 83.7, 409.8],
-    ["2026-09-19", 7, 28.6, 970.8],
-    ["2026-09-20", 92, 71.7, 358.4],
-    ["2026-09-21", 1344, 86.9, 436.9],
-    ["2026-09-22", 1618, 86.8, 449.7],
-    ["2026-09-23", 2857, 92.1, 244.6],
-    ["2026-09-24", 1252, 93.4, 275.9],
-    ["2026-09-25", 959, 95.5, 773.6],
-    ["2026-09-26", 14, 92.9, 38.7],
-    ["2026-09-27", 30, 93.3, 93.4]
+    ["2026-09-13", 46, 87.0, 548.5],
+    ["2026-09-14", 449, 82.2, 587.3],
+    ["2026-09-15", 582, 82.1, 391.3],
+    ["2026-09-16", 446, 81.8, 515.3],
+    ["2026-09-17", 384, 84.6, 431.5],
+    ["2026-09-18", 255, 81.6, 722.1],
+    ["2026-09-19", 5, 20.0, 103.8],
+    ["2026-09-20", 42, 76.2, 309.7],
+    ["2026-09-21", 557, 83.5, 558.9],
+    ["2026-09-22", 478, 87.2, 651.5],
+    ["2026-09-23", 546, 89.0, 468.2],
+    ["2026-09-24", 407, 92.6, 328.4],
+    ["2026-09-25", 325, 93.5, 711.0],
+    ["2026-09-26", 6, 83.3, 79.8],
+    ["2026-09-27", 24, 95.8, 110.6]
   ];
 
   var vol = daily.map(function(d){return [d[0], d[1]];});
   var fcr = daily.map(function(d){return [d[0], d[2]];});
 
-  lineChart('chart-vol','wrap-vol', vol, {area:true, yTicks:[0,1000,2000,3000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, tickEvery:7});
+  lineChart('chart-vol','wrap-vol', vol, {area:true, yTicks:[0,250,500,750], tickFmt:function(v){return v;}, tickEvery:7});
   lineChart('chart-fcr','wrap-fcr', fcr, {targetLine:85, suffix:'%', max:100, yTicks:[0,25,50,75,100], tickFmt:function(v){return v+'%';}, tickEvery:7,
-    annotate:[{date:'2026-09-19', text:'19/set: 28,6% em só 7 conversas — amostra pequena, não é queda real', anchor:'end'}]});
+    annotate:[{date:'2026-09-19', text:'19/set: 20,0% em só 5 conversas — amostra pequena, não é queda real', anchor:'end'}]});
 
   /* -- 02: agosto vs. setembro — coluna por métrica, cada uma com o eixo próprio da sua escala -- */
   var pctFmt = function(v){return v.toFixed(1)+'%';}, ppFmt = function(d){return d.toFixed(1)+'pp';};
-  groupedBar('chart-cmp1-fcr','wrap-cmp1-fcr', [''], [87.3], [88.8],
+  groupedBar('chart-cmp1-fcr','wrap-cmp1-fcr', [''], [86.6], [85.5],
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
   groupedBar('chart-cmp1-ret','wrap-cmp1-ret', [''], [13.4], [12.9],
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
@@ -863,11 +872,11 @@ footer a{color:var(--ink-muted);}
   groupedBar('chart-cmp2-resp','wrap-cmp2-resp', [''], [1.9], [1.9],
     {max:4, ticks:[0,2,4],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', showDelta:true});
 
-  groupedBar('chart-hist','wrap-hist', ['0–15min','15–60min','1–4h','4–8h','8–24h','24h+'], [761,6801,18904,3013,4360,3567], [1059,2733,15388,2392,3807,1926],
-    {ticks:[0,5000,10000,15000,20000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, fmt:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}});
+  groupedBar('chart-hist','wrap-hist', ['0–15min','15–60min','1–4h','4–8h','8–24h','24h+'], [84,203,1918,1663,2525,1632], [102,223,2690,1717,2068,441],
+    {ticks:[0,1000,2000,3000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, fmt:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}});
 
-  hBar('chart-dores','wrap-dores', ['Cancelamento','Logística','Upgrade'], [2315,884,750], [RED,'#8a5a12',NEUTRAL_C],
-    {ticks:[0,1000,2000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, fmt:function(v,i){ var fcrs=['81,2% FCR','66,4% FCR','84,8% FCR']; return v.toLocaleString('pt-BR')+' · '+fcrs[i]; }});
+  hBar('chart-dores','wrap-dores', ['Cancelamento','Logística','Upgrade'], [2222,853,693], [RED,'#8a5a12',NEUTRAL_C],
+    {ticks:[0,1000,2000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, fmt:function(v,i){ var fcrs=['82,0% FCR','68,3% FCR','85,6% FCR']; return v.toLocaleString('pt-BR')+' · '+fcrs[i]; }});
 
   /* -- 04: por atendente — coluna por métrica, eixo compartilhado entre as 8 pessoas (comparável 1:1), cor da barra de setembro = direção -- */
   var attCats = ['Suporte (time)','Wanessa','Winnie','Giselle','Kelly','Débora','Paulo (cancel.)','Amanda (AT)'];
@@ -875,7 +884,7 @@ footer a{color:var(--ink-muted);}
   var countFmt = function(v){return Math.round(v).toLocaleString('pt-BR');};
 
   groupedBar('chart-att-fcr','wrap-att-fcr', attCats,
-    [88.4,87.0,86.6,90.3,null,null,80.7,80.6], [84.9,86.0,83.0,85.1,82.9,90.6,84.5,82.9],
+    [88.8,86.6,87.5,90.9,null,null,80.3,80.8], [84.6,85.1,83.3,84.5,82.6,92.1,84.0,82.0],
     {max:100, ticks:[0,50,100],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', showDelta:true});
 
   groupedBar('chart-att-csat','wrap-att-csat', attCats,
@@ -883,11 +892,11 @@ footer a{color:var(--ink-muted);}
     {max:5, ticks:[0,2.5,5],tickFmt:function(t){return t.toFixed(1);}, fmt:csatFmt, deltaFmt:csatFmt, goodDirection:'up', showDelta:true});
 
   groupedBar('chart-att-vol','wrap-att-vol', attCats,
-    [6102,1865,1519,2724,null,null,1608,1379], [5829,1419,1398,1714,846,449,847,799],
+    [5327,1630,1337,2356,null,null,1554,1298], [5410,1330,1342,1520,820,394,833,772],
     {ticks:[0,2000,4000,6000],tickFmt:function(t){return t>=1000?(t/1000)+'k':t;}, fmt:countFmt, deltaFmt:countFmt, neutral:true, showDelta:true});
 
   groupedBar('chart-att-dur','wrap-att-dur', attCats,
-    [14.4,18.9,15.4,10.7,null,null,19.8,39.0], [8.0,9.5,6.8,8.0,5.1,12.3,7.8,20.7],
+    [14.5,19.6,15.3,10.7,null,null,19.0,38.0], [7.6,9.3,6.6,7.5,4.6,11.8,7.5,19.2],
     {ticks:[0,10,20,30,40],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', showDelta:true});
 })();
 </script>
