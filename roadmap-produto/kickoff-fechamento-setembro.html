@@ -81,11 +81,18 @@ h4{font-size:14.5px;font-weight:600;color:var(--ink);margin:0 0 2px;}
 .chartcard .chart-desc{font-size:12.5px;color:var(--ink-muted);margin-top:3px;}
 .legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0 2px;font-size:12px;color:var(--ink-secondary);}
 .legend span{display:inline-flex;align-items:center;gap:6px;}
-.legend i{width:10px;height:10px;border-radius:2px;display:inline-block;}
+.legend i{width:10px;height:10px;border-radius:999px;display:inline-block;}
 svg{display:block;width:100%;height:auto;overflow:visible;}
 .chart-wrap{position:relative;}
 .chartgrid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 @media(max-width:820px){.chartgrid2{grid-template-columns:1fr;}}
+.chartgrid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:820px){.chartgrid3{grid-template-columns:1fr;}}
+.minicard{background:var(--surface-alt);border:1px solid var(--border-soft);border-radius:10px;padding:12px 14px 8px;}
+.minicard h5{font-size:12.5px;font-weight:600;color:var(--ink-secondary);margin:0 0 2px;}
+.minicard .note{font-size:10.5px;color:var(--warn);margin-top:4px;line-height:1.4;}
+.readnote{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--ink-muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--border-soft);line-height:1.5;}
+.readnote b{color:var(--ink-secondary);}
 .tooltip{position:absolute;pointer-events:none;background:var(--ink);border-radius:8px;padding:6px 9px;font-size:11.5px;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.18);transform:translate(-50%,-115%);white-space:nowrap;opacity:0;transition:opacity .1s;z-index:10;}
 .tooltip.show{opacity:1;}
 .bar-hit{fill:transparent;cursor:pointer;}
@@ -193,15 +200,15 @@ footer a{color:var(--ink-muted);}
   </div>
 
   <div class="chartcard">
-    <h4>Volume de atendimento humano por dia</h4>
-    <div class="chart-desc">Conversas com pelo menos um atendente humano — exclui IA. 01/08 a 27/09.</div>
-    <div class="chart-wrap" id="wrap-vol"><svg viewBox="0 0 900 220" id="chart-vol"></svg></div>
+    <h4>Volume oscila por dia da semana — sem tendência de alta ou queda no período</h4>
+    <div class="chart-desc">Conversas com pelo menos um atendente humano por dia — exclui IA. Os vales são fins de semana (volume real cai, não é falha de coleta). Passe o mouse pra ver o valor exato de cada dia.</div>
+    <div class="chart-wrap" id="wrap-vol"><svg viewBox="0 0 900 260" id="chart-vol"></svg></div>
   </div>
 
   <div class="chartcard">
-    <h4>FCR (%) por dia</h4>
-    <div class="chart-desc">First Contact Resolution diário — a linha pontilhada marca a meta de 85%.</div>
-    <div class="chart-wrap" id="wrap-fcr"><svg viewBox="0 0 900 200" id="chart-fcr"></svg></div>
+    <h4>FCR fica estável acima da meta, com uma queda pontual explicada por volume baixo</h4>
+    <div class="chart-desc">First Contact Resolution diário. A linha vermelha pontilhada marca a meta de 85% — a maior parte dos dias fica em cima ou acima dela.</div>
+    <div class="chart-wrap" id="wrap-fcr"><svg viewBox="0 0 900 240" id="chart-fcr"></svg></div>
   </div>
 
   <div class="tblwrap"><table>
@@ -221,25 +228,31 @@ footer a{color:var(--ink-muted);}
   <h2>Agosto vs. setembro</h2>
   <p class="section-sub">CSAT, FCR e taxa de resolução interna não existiam de forma consistente antes de agosto/setembro — a área foi criando essa instrumentação do zero. Uma métrica saindo de 0,4% pra 64,5% não é a operação sessenta vezes melhor, é a métrica passando a ser preenchida. Os gráficos abaixo separam o que é operação de verdade do que é efeito de instrumentação nova.</p>
 
-  <div class="chartgrid2">
-    <div class="chartcard">
-      <h4>FCR, resolução interna e retenção — ago vs. set</h4>
-      <div class="chart-desc">% em cada métrica.</div>
-      <div class="chart-wrap"><svg viewBox="0 0 460 260" id="chart-cmp1"></svg></div>
-      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
+  <div class="chartcard">
+    <h4>Onde é melhora real e onde é ruído — ago → set</h4>
+    <div class="chart-desc">Cada bolinha cinza é agosto, a colorida é setembro. Verde = melhorou, vermelho = piorou, azul = mudança sem julgamento de qualidade. Eixo de cada métrica ampliado pra caber só a faixa onde os dados estão — valor exato sempre no hover.</div>
+    <div class="chartgrid3">
+      <div class="minicard"><h5>FCR</h5><div class="chart-wrap" id="wrap-cmp1-fcr"><svg viewBox="0 0 300 108" id="chart-cmp1-fcr"></svg></div></div>
+      <div class="minicard"><h5>Retenção de cancelamento</h5><div class="chart-wrap" id="wrap-cmp1-ret"><svg viewBox="0 0 300 108" id="chart-cmp1-ret"></svg></div></div>
+      <div class="minicard"><h5>Resolução interna</h5><div class="chart-wrap" id="wrap-cmp1-resol"><svg viewBox="0 0 300 108" id="chart-cmp1-resol"></svg></div><div class="note">⚠ campo não era preenchido em agosto — não é uma melhora real, é instrumentação nova (ver seção de leitura abaixo)</div></div>
     </div>
-    <div class="chartcard">
-      <h4>Duração e 1ª resposta — ago vs. set</h4>
-      <div class="chart-desc">Em minutos (escala log pra caber duração e resposta juntas).</div>
-      <div class="chart-wrap"><svg viewBox="0 0 460 260" id="chart-cmp2"></svg></div>
-      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
-    </div>
+    <div class="legend"><span><i style="background:#6c7161"></i>agosto (referência)</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span></div>
   </div>
 
   <div class="chartcard">
-    <h4>Distribuição de duração do atendimento — ago vs. set</h4>
-    <div class="chart-desc">Conversas com atendente humano, por faixa de tempo até o fechamento. Setembro tem bem menos casos acima de 24h.</div>
-    <div class="chart-wrap"><svg viewBox="0 0 700 260" id="chart-hist"></svg></div>
+    <h4>Atendimento ficou mais rápido de ponta a ponta — ago → set</h4>
+    <div class="chart-desc">Em horas. 1ª resposta não teve variação prática (1h56min→1h55min na média geral).</div>
+    <div class="chartgrid2">
+      <div class="minicard"><h5>Duração total do atendimento</h5><div class="chart-wrap" id="wrap-cmp2-dur"><svg viewBox="0 0 380 108" id="chart-cmp2-dur"></svg></div></div>
+      <div class="minicard"><h5>Tempo até a 1ª resposta</h5><div class="chart-wrap" id="wrap-cmp2-resp"><svg viewBox="0 0 380 108" id="chart-cmp2-resp"></svg></div></div>
+    </div>
+    <div class="legend"><span><i style="background:#6c7161"></i>agosto (referência)</span><span><i style="background:var(--accent-dim)"></i>melhorou (mais rápido)</span><span><i style="background:var(--ink-muted)"></i>estável</span></div>
+  </div>
+
+  <div class="chartcard">
+    <h4>Setembro concentrou os atendimentos nas faixas mais rápidas</h4>
+    <div class="chart-desc">Conversas com atendente humano, por faixa de tempo até o fechamento. Setembro tem bem menos casos acima de 24h e mais casos resolvidos em até 15 minutos.</div>
+    <div class="chart-wrap" id="wrap-hist"><svg viewBox="0 0 700 280" id="chart-hist"></svg></div>
     <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
   </div>
 
@@ -269,9 +282,9 @@ footer a{color:var(--ink-muted);}
   <p class="section-sub">As três já têm spec ou desenho pronto. Nenhuma foi implementada ainda.</p>
 
   <div class="chartcard">
-    <h4>Volume e FCR por dor — setembro</h4>
-    <div class="chart-desc">Conversas humanas por intent e FCR de cada uma.</div>
-    <div class="chart-wrap"><svg viewBox="0 0 700 200" id="chart-dores"></svg></div>
+    <h4>Cancelamento concentra quase o triplo do volume de Logística ou Upgrade</h4>
+    <div class="chart-desc">Conversas humanas por intent em setembro. FCR de cada dor ao lado da barra — Logística tem o pior FCR das três.</div>
+    <div class="chart-wrap" id="wrap-dores"><svg viewBox="0 0 700 220" id="chart-dores"></svg></div>
   </div>
 
   <div class="painbox">
@@ -308,32 +321,32 @@ footer a{color:var(--ink-muted);}
   <h2>Por atendente</h2>
   <p class="section-sub">Suporte consolidado (Wanessa, Winnie, Giselle, Débora, Kelly) e depois pessoa por pessoa. Cancelamento (Paulo Aranha) e AT (Amanda) à parte, times de uma pessoa só.</p>
 
-  <div class="chartgrid2">
-    <div class="chartcard">
-      <h4>FCR por atendente — ago vs. set</h4>
-      <div class="chart-wrap"><svg viewBox="0 0 460 300" id="chart-att-fcr"></svg></div>
-      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
-    </div>
-    <div class="chartcard">
-      <h4>CSAT por atendente — ago vs. set</h4>
-      <div class="chart-desc">Escala 1–5. Kelly e Débora sem dado de agosto (chegaram/começaram a atender em setembro).</div>
-      <div class="chart-wrap"><svg viewBox="0 0 460 300" id="chart-att-csat"></svg></div>
-      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
-    </div>
+  <div class="chartcard">
+    <h4>FCR piorou pra 5 dos 6 atendentes com histórico em agosto</h4>
+    <div class="chart-desc">Eixo ampliado (78%–93%) pra mostrar a diferença — posição, não comprimento, então a bolinha não precisa começar do zero. Kelly e Débora não têm bolinha cinza: chegaram/passaram a atender em setembro.</div>
+    <div class="chart-wrap" id="wrap-att-fcr"><svg viewBox="0 0 920 340" id="chart-att-fcr"></svg></div>
+    <div class="legend"><span><i style="background:#6c7161"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span></div>
   </div>
 
-  <div class="chartgrid2">
-    <div class="chartcard">
-      <h4>Volume de conversas por atendente — ago vs. set</h4>
-      <div class="chart-wrap"><svg viewBox="0 0 460 300" id="chart-att-vol"></svg></div>
-      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
-    </div>
-    <div class="chartcard">
-      <h4>Duração do atendimento por atendente — ago vs. set</h4>
-      <div class="chart-desc">Em horas. Amanda (AT) inclui tempo de laudo técnico — não é comparável 1:1 com o resto.</div>
-      <div class="chart-wrap"><svg viewBox="0 0 460 300" id="chart-att-dur"></svg></div>
-      <div class="legend"><span><i style="background:#c7ccbb"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>setembro</span></div>
-    </div>
+  <div class="chartcard">
+    <h4>CSAT caiu para Winnie e Giselle, subiu pro resto do time</h4>
+    <div class="chart-desc">Escala 1–5, eixo ampliado (3,5–5,0) pra mostrar a diferença entre pessoas. Kelly e Débora sem bolinha de agosto — chegaram/começaram a atender em setembro, e já entregam os 2 melhores CSAT do time.</div>
+    <div class="chart-wrap" id="wrap-att-csat"><svg viewBox="0 0 920 340" id="chart-att-csat"></svg></div>
+    <div class="legend"><span><i style="background:#6c7161"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>melhorou</span><span><i style="background:var(--critical)"></i>piorou</span></div>
+  </div>
+
+  <div class="chartcard">
+    <h4>Volume caiu pra quase todo mundo — mais deflection pra IA, não queda de produtividade</h4>
+    <div class="chart-desc">Conversas por pessoa. Aqui a cor é neutra (azul): volume mais baixo não é "melhor" nem "pior" por si só — é o efeito principal da IA absorvendo mais o primeiro contato.</div>
+    <div class="chart-wrap" id="wrap-att-vol"><svg viewBox="0 0 920 340" id="chart-att-vol"></svg></div>
+    <div class="legend"><span><i style="background:#6c7161"></i>agosto</span><span><i style="background:var(--blue)"></i>setembro</span></div>
+  </div>
+
+  <div class="chartcard">
+    <h4>Duração caiu pra todo mundo, sem exceção — inclusive quem piorou em FCR</h4>
+    <div class="chart-desc">Em horas até o fechamento da conversa. Amanda (AT) inclui tempo de laudo técnico do aparelho — não é comparável 1:1 com o resto do time.</div>
+    <div class="chart-wrap" id="wrap-att-dur"><svg viewBox="0 0 920 340" id="chart-att-dur"></svg></div>
+    <div class="legend"><span><i style="background:#6c7161"></i>agosto</span><span><i style="background:var(--accent-dim)"></i>melhorou (mais rápido)</span></div>
   </div>
 
   <h3><span class="n">A</span>Suporte — consolidado</h3>
@@ -515,84 +528,217 @@ footer a{color:var(--ink-muted);}
   var svgNS = "http://www.w3.org/2000/svg";
   function el(tag, attrs){ var e = document.createElementNS(svgNS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
   function ensureTooltip(wrapId){ var wrap = document.getElementById(wrapId); var tt = document.createElement('div'); tt.className='tooltip'; wrap.appendChild(tt); return tt; }
-  function showTip(tt, wrap, x, y, title, val){ tt.innerHTML = '<div style="opacity:.7;font-size:10.5px;margin-bottom:2px">'+title+'</div><div style="font-weight:600">'+val+'</div>'; tt.style.left=x+'px'; tt.style.top=y+'px'; tt.classList.add('show'); }
+  function showTip(tt, wrap, x, y, title, val){
+    tt.textContent = '';
+    var t1 = document.createElement('div'); t1.style.cssText='opacity:.7;font-size:10.5px;margin-bottom:2px'; t1.textContent = title;
+    var t2 = document.createElement('div'); t2.style.fontWeight = '600'; t2.textContent = val;
+    tt.appendChild(t1); tt.appendChild(t2);
+    tt.style.left=x+'px'; tt.style.top=y+'px'; tt.classList.add('show');
+  }
   function hideTip(tt){ tt.classList.remove('show'); }
-  var GREY = '#c7ccbb', GREEN = '#0a5d40';
+  var GREY = '#c7ccbb', GREEN = '#0a5d40', RED = '#a53a2c', NEUTRAL_C = '#1c5d8c', BEFORE_DOT = '#6c7161', UNCHANGED_C = '#6c7161';
 
-  /* ---- generic grouped bar chart: categories x [agoVal,setVal] ---- */
-  function groupedBar(svgId, cats, agoVals, setVals, opts){
+  function niceStep(raw){
+    if(!isFinite(raw) || raw<=0) return 1;
+    var mag = Math.pow(10, Math.floor(Math.log(raw)/Math.LN10));
+    var norm = raw/mag;
+    var step = norm<1.5?1:(norm<3?2:(norm<7?5:10));
+    return step*mag;
+  }
+  function niceTicks(min,max,count){
+    count = count||4;
+    var step = niceStep((max-min)/(count-1));
+    var niceMin = Math.floor(min/step)*step;
+    var niceMax = Math.ceil(max/step)*step;
+    var out=[];
+    for(var v=niceMin; v<=niceMax+step*1e-6; v+=step) out.push(Math.round(v*1000)/1000);
+    return out;
+  }
+  var MESES_PT = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  function fmtDatePt(iso){
+    var p = iso.split('-'); var d = parseInt(p[2],10), m = parseInt(p[1],10)-1;
+    return d+' '+MESES_PT[m];
+  }
+
+  /* ---- dumbbell (before -> after per item): the default form for any ago-vs-set comparison ---- */
+  function dumbbell(svgId, wrapId, rows, opts){
     opts = opts||{};
     var svg = document.getElementById(svgId);
+    var tt = wrapId ? ensureTooltip(wrapId) : null;
+    var wrap = wrapId ? document.getElementById(wrapId) : null;
     var vb = svg.viewBox.baseVal;
     var W = vb.width, H = vb.height;
-    var n = cats.length;
-    var catFont = n>6 ? 8 : 10.5;
-    var hasMultiline = cats.some(function(c){return c.indexOf('\n')>=0;});
-    var top=16, bottom = hasMultiline ? 44 : 34, left=8, right=8;
+    var labelW = opts.labelW!=null ? opts.labelW : 0;
+    var deltaW = opts.deltaW!=null ? opts.deltaW : 70;
+    var top = 28, bottom = 4;
+    var left = labelW + (labelW>0?10:6), right = deltaW;
+    var plotW = W-left-right, plotH = H-top-bottom;
+    var n = rows.length;
+    var rowH = plotH/n;
+    var min = opts.min, max = opts.max;
+    var ticks = opts.ticks || niceTicks(min,max,4);
+    var scaleX = function(v){ return left + ((v-min)/(max-min))*plotW; };
+
+    ticks.forEach(function(t){
+      var x = scaleX(t);
+      svg.appendChild(el('line',{x1:x,y1:top-6,x2:x,y2:top+plotH,stroke:'#e7ebdf','stroke-width':1}));
+      var lbl = el('text',{x:x,y:top-12,'text-anchor':'middle','font-size':'10','font-family':'IBM Plex Mono, monospace',fill:'#9aa08c'});
+      lbl.textContent = opts.tickFmt?opts.tickFmt(t):t;
+      svg.appendChild(lbl);
+    });
+
+    rows.forEach(function(row,i){
+      var cy = top + i*rowH + rowH/2;
+      var hasBefore = row.before!=null;
+      var forceNeutral = !!(opts.neutral || row.neutral);
+      var improved = hasBefore && (opts.goodDirection==='down' ? row.after<row.before : row.after>row.before);
+      var unchanged = hasBefore && row.after===row.before;
+      var color = forceNeutral ? NEUTRAL_C : (!hasBefore ? NEUTRAL_C : (unchanged ? UNCHANGED_C : (improved?GREEN:RED)));
+
+      var hit = el('rect',{x:0,y:top+i*rowH,width:W,height:rowH,fill:'transparent',style:'cursor:pointer'});
+      svg.appendChild(hit);
+
+      if(labelW>0){
+        var lbl = el('text',{x:0,y:cy+4,'font-size':'12.5','font-weight':'600',fill:'#14170f'});
+        lbl.textContent = row.label;
+        svg.appendChild(lbl);
+      }
+
+      var ax = scaleX(row.after);
+      var cyBefore = cy, cyAfter = cy;
+      if(hasBefore){
+        var bx = scaleX(row.before);
+        // near-coincident dots (tiny or no delta): separate them vertically so they never draw as one overlapping blob
+        if(Math.abs(ax-bx) < 12){ cyBefore = cy-5.5; cyAfter = cy+5.5; }
+        svg.appendChild(el('line',{x1:bx,y1:cyBefore,x2:ax,y2:cyAfter,stroke:color,'stroke-width':2.5,'stroke-linecap':'round'}));
+        svg.appendChild(el('circle',{cx:bx,cy:cyBefore,r:4.5,fill:BEFORE_DOT,stroke:'#fff','stroke-width':2}));
+        // labels always grow AWAY from the other dot (outward), whichever side before/after land on — never toward each other
+        var beforeIsLeft = bx <= ax;
+        var beforeLbl = el('text',{x: beforeIsLeft ? bx-9 : bx+9, y:cyBefore-7,'text-anchor': beforeIsLeft?'end':'start','font-size':'9','font-family':'IBM Plex Mono, monospace',fill:'#9aa08c'});
+        beforeLbl.textContent = opts.fmt?opts.fmt(row.before):row.before;
+        svg.appendChild(beforeLbl);
+      }
+      svg.appendChild(el('circle',{cx:ax,cy:cyAfter,r:5.5,fill:color,stroke:'#fff','stroke-width':2}));
+      var afterIsLeft = !hasBefore || ax < bx;
+      var afterLbl = el('text',{x: afterIsLeft ? ax-9 : ax+9, y:cyAfter-7,'text-anchor': afterIsLeft?'end':'start','font-size':'9.5','font-family':'IBM Plex Mono, monospace',fill:'#454a3c','font-weight':'600'});
+      afterLbl.textContent = opts.fmt?opts.fmt(row.after):row.after;
+      svg.appendChild(afterLbl);
+
+      var deltaText, deltaColor;
+      if(!hasBefore){
+        deltaText = 'novo em set'; deltaColor = '#6c7161';
+      } else {
+        var d = row.after-row.before;
+        var sign = d>0.0005?'+':(d<-0.0005?'−':'');
+        deltaText = unchanged ? 'sem variação' : sign+(opts.deltaFmt?opts.deltaFmt(Math.abs(d)):Math.abs(d).toFixed(1));
+        deltaColor = forceNeutral ? '#454a3c' : (unchanged?'#6c7161':(improved?GREEN:RED));
+      }
+      var dl = el('text',{x:W-2,y:cy+4,'text-anchor':'end','font-size':'11.5','font-family':'IBM Plex Mono, monospace','font-weight':'700',fill:deltaColor});
+      dl.textContent = deltaText;
+      svg.appendChild(dl);
+
+      if(tt){
+        var titleTx = row.label || opts.metricName || '';
+        var valTx = hasBefore
+          ? 'ago '+(opts.fmt?opts.fmt(row.before):row.before)+'  →  set '+(opts.fmt?opts.fmt(row.after):row.after)
+          : (opts.fmt?opts.fmt(row.after):row.after)+' em set (sem dado de agosto)';
+        hit.addEventListener('mousemove', function(e){
+          var r = wrap.getBoundingClientRect();
+          showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, titleTx, valTx);
+        });
+        hit.addEventListener('mouseleave', function(){hideTip(tt);});
+      }
+    });
+
+    svg.appendChild(el('line',{x1:left,y1:top+plotH,x2:left+plotW,y2:top+plotH,stroke:'#dde2d5','stroke-width':1}));
+  }
+
+  /* ---- grouped column chart: ordered categories x [agoVal,setVal] (distributions/buckets) ---- */
+  function groupedBar(svgId, wrapId, cats, agoVals, setVals, opts){
+    opts = opts||{};
+    var svg = document.getElementById(svgId);
+    var tt = wrapId ? ensureTooltip(wrapId) : null;
+    var wrap = wrapId ? document.getElementById(wrapId) : null;
+    var vb = svg.viewBox.baseVal;
+    var W = vb.width, H = vb.height;
+    var left=42, right=8, top=18, bottom=32;
     var plotH = H-top-bottom, plotW = W-left-right;
-    var maxV = Math.max.apply(null, agoVals.concat(setVals)) * 1.22 || 1;
+    var maxV = Math.max.apply(null, agoVals.concat(setVals)) * 1.2 || 1;
+    var ticks = opts.ticks || niceTicks(0,maxV,4);
+    ticks.forEach(function(t){
+      var y = top+plotH-(t/maxV)*plotH;
+      svg.appendChild(el('line',{x1:left,y1:y,x2:left+plotW,y2:y,stroke:'#eceee4','stroke-width':1}));
+      svg.appendChild(el('text',{x:left-6,y:y+3,'text-anchor':'end','font-size':'9.5','font-family':'IBM Plex Mono, monospace',fill:'#9aa08c'})).textContent = opts.tickFmt?opts.tickFmt(t):t;
+    });
+    var n = cats.length;
     var groupW = plotW/n;
     var innerGap = 3;
-    var barW = Math.min((groupW*0.7-innerGap)/2, 26);
-    var minLabelGap = n>6 ? 22 : 16;
-    var labelFont = n>6 ? 7.5 : 8.5;
+    var barW = Math.min((groupW*0.7-innerGap)/2, 24);
     cats.forEach(function(cat,i){
       var gx = left + i*groupW + groupW/2;
-      var labelYs = {};
-      [['ago',agoVals[i],GREY,-1],['set',setVals[i],GREEN,1]].forEach(function(s){
-        var val = s[1], color = s[2], side = s[3];
+      [['agosto',agoVals[i],GREY,-1],['setembro',setVals[i],GREEN,1]].forEach(function(s){
+        var seriesName=s[0], val=s[1], color=s[2], side=s[3];
         var h = (val/maxV)*plotH;
         var x = side<0 ? gx-innerGap/2-barW : gx+innerGap/2;
         var y = top+plotH-h;
         var bar = el('rect',{x:x,y:y,width:barW,height:Math.max(h,1),rx:3,fill:color});
         svg.appendChild(bar);
-        labelYs[side] = {y:y-4, cx:x+barW/2 + side*(n>6?4:0)};
-      });
-      // if bars are close in height, stack both labels above the taller bar (never let a label sit over the other bar's fill)
-      if(Math.abs(labelYs[-1].y - labelYs[1].y) < minLabelGap){
-        var topY = Math.min(labelYs[-1].y, labelYs[1].y);
-        if(labelYs[-1].y <= labelYs[1].y){ labelYs[1].y = topY - minLabelGap; }
-        else { labelYs[-1].y = topY - minLabelGap; }
-      }
-      [-1,1].forEach(function(side){
-        var val = side<0?agoVals[i]:setVals[i];
-        var lbl = el('text',{x:labelYs[side].cx,y:labelYs[side].y,'text-anchor':'middle','font-size':labelFont,'font-family':'IBM Plex Mono, monospace',fill:'#454a3c'});
-        lbl.textContent = (opts.fmt?opts.fmt(val):val);
+        var lbl = el('text',{x:x+barW/2,y:y-5,'text-anchor':'middle','font-size':'9','font-family':'IBM Plex Mono, monospace',fill:'#454a3c'});
+        lbl.textContent = opts.fmt?opts.fmt(val):val;
         svg.appendChild(lbl);
+        if(tt){
+          bar.addEventListener('mousemove', function(e){
+            var r = wrap.getBoundingClientRect();
+            showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, cat+' · '+seriesName, opts.fmt?opts.fmt(val):val);
+          });
+          bar.addEventListener('mouseleave', function(){hideTip(tt);});
+        }
       });
-      var lines = cat.split('\n');
-      lines.forEach(function(line, li){
-        var catlabel = el('text',{x:gx,y:H-14+li*10,'text-anchor':'middle','font-size':catFont,fill:'#454a3c'});
-        catlabel.textContent = line;
-        svg.appendChild(catlabel);
-      });
+      svg.appendChild(el('text',{x:gx,y:H-12,'text-anchor':'middle','font-size':'10.5',fill:'#454a3c'})).textContent = cat;
     });
     svg.appendChild(el('line',{x1:left,y1:top+plotH,x2:left+plotW,y2:top+plotH,stroke:'#dde2d5','stroke-width':1}));
   }
 
-  /* ---- horizontal bar ---- */
-  function hBar(svgId, cats, vals, colors, opts){
+  /* ---- horizontal bar (ranking) ---- */
+  function hBar(svgId, wrapId, cats, vals, colors, opts){
     opts = opts||{};
     var svg = document.getElementById(svgId);
+    var tt = wrapId ? ensureTooltip(wrapId) : null;
+    var wrap = wrapId ? document.getElementById(wrapId) : null;
     var vb = svg.viewBox.baseVal;
     var W=vb.width, H=vb.height;
-    var left=170, right=60, top=10, bottom=10;
+    var left=176, right=170, top=14, bottom=30;
     var plotW = W-left-right, plotH = H-top-bottom;
     var n = cats.length, rowH = plotH/n;
-    var maxV = Math.max.apply(null, vals)*1.15||1;
+    var maxV = Math.max.apply(null, vals)*1.18||1;
+    var ticks = opts.ticks || niceTicks(0,maxV,4);
+    ticks.forEach(function(t){
+      var x = left+(t/maxV)*plotW;
+      svg.appendChild(el('line',{x1:x,y1:top,x2:x,y2:top+plotH,stroke:'#eceee4','stroke-width':1}));
+      svg.appendChild(el('text',{x:x,y:top+plotH+16,'text-anchor':'middle','font-size':'9.5','font-family':'IBM Plex Mono, monospace',fill:'#9aa08c'})).textContent = opts.tickFmt?opts.tickFmt(t):t;
+    });
     cats.forEach(function(cat,i){
-      var y = top + i*rowH + rowH*0.22;
-      var h = rowH*0.56;
+      var y = top + i*rowH + rowH/2;
+      var h = Math.min(rowH*0.56, 24);
       var w = (vals[i]/maxV)*plotW;
-      svg.appendChild(el('text',{x:left-10,y:y+h/2+4,'text-anchor':'end','font-size':'12',fill:'#14170f','font-weight':'600'})).textContent=cat;
-      svg.appendChild(el('rect',{x:left,y:y,width:Math.max(w,2),height:h,rx:5,fill:colors[i]}));
-      var vlabel = el('text',{x:left+w+8,y:y+h/2+4,'font-size':'12','font-family':'IBM Plex Mono, monospace',fill:'#454a3c','font-weight':'600'});
+      svg.appendChild(el('text',{x:left-12,y:y+4,'text-anchor':'end','font-size':'12.5',fill:'#14170f','font-weight':'600'})).textContent=cat;
+      var bar = el('rect',{x:left,y:y-h/2,width:Math.max(w,2),height:h,rx:4,fill:colors[i]});
+      svg.appendChild(bar);
+      var vlabel = el('text',{x:left+w+10,y:y+4,'font-size':'12','font-family':'IBM Plex Mono, monospace',fill:'#454a3c','font-weight':'600'});
       vlabel.textContent = opts.fmt?opts.fmt(vals[i],i):vals[i];
       svg.appendChild(vlabel);
+      if(tt){
+        bar.addEventListener('mousemove', function(e){
+          var r = wrap.getBoundingClientRect();
+          showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, cat, opts.fmt?opts.fmt(vals[i],i):vals[i]);
+        });
+        bar.addEventListener('mouseleave', function(){hideTip(tt);});
+      }
     });
+    svg.appendChild(el('line',{x1:left,y1:top,x2:left,y2:top+plotH,stroke:'#dde2d5','stroke-width':1}));
   }
 
-  /* ---- line/area chart with tooltip ---- */
+  /* ---- line/area chart with y-gridlines, crosshair, pt-BR tooltip dates and point annotations ---- */
   function lineChart(svgId, wrapId, data, opts){
     opts = opts||{};
     var svg = document.getElementById(svgId);
@@ -600,14 +746,23 @@ footer a{color:var(--ink-muted);}
     var wrap = document.getElementById(wrapId);
     var vb = svg.viewBox.baseVal;
     var W=vb.width, H=vb.height;
-    var left=10, right=10, top=14, bottom=22;
+    var left=36, right=10, top=16, bottom=34;
     var plotW=W-left-right, plotH=H-top-bottom;
     var maxV = opts.max || Math.max.apply(null, data.map(function(d){return d[1];}))*1.15;
     var n = data.length;
     var pts = data.map(function(d,i){ return [left+(i/(n-1))*plotW, top+plotH-(d[1]/maxV)*plotH]; });
+
+    var ticks = opts.yTicks || niceTicks(0,maxV,4);
+    ticks.forEach(function(t){
+      var y = top+plotH-(t/maxV)*plotH;
+      svg.appendChild(el('line',{x1:left,y1:y,x2:left+plotW,y2:y,stroke:'#eceee4','stroke-width':1}));
+      svg.appendChild(el('text',{x:left-6,y:y+3,'text-anchor':'end','font-size':'9.5','font-family':'IBM Plex Mono, monospace',fill:'#9aa08c'})).textContent = opts.tickFmt?opts.tickFmt(t):t;
+    });
+
     if(opts.targetLine){
       var ty = top+plotH-(opts.targetLine/maxV)*plotH;
-      svg.appendChild(el('line',{x1:left,y1:ty,x2:left+plotW,y2:ty,stroke:'#a53a2c','stroke-width':1,'stroke-dasharray':'4,3'}));
+      svg.appendChild(el('line',{x1:left,y1:ty,x2:left+plotW,y2:ty,stroke:RED,'stroke-width':1.4,'stroke-dasharray':'5,3'}));
+      svg.appendChild(el('text',{x:left+plotW,y:ty-5,'text-anchor':'end','font-size':'9.5',fill:RED,'font-weight':'600'})).textContent = 'meta '+(opts.tickFmt?opts.tickFmt(opts.targetLine):opts.targetLine);
     }
     if(opts.area){
       var path = 'M'+pts[0][0]+','+(top+plotH)+' ';
@@ -617,32 +772,48 @@ footer a{color:var(--ink-muted);}
     }
     var linePath = 'M'+pts.map(function(p){return p[0]+','+p[1];}).join(' L');
     svg.appendChild(el('path',{d:linePath,fill:'none',stroke:GREEN,'stroke-width':2}));
-    // month divider
+
     var sepIdx = data.findIndex(function(d){return d[0].indexOf('09-01')>=0;});
     if(sepIdx>0){
       var sx = left+(sepIdx/(n-1))*plotW;
-      svg.appendChild(el('line',{x1:sx,y1:top,x2:sx,y2:top+plotH,stroke:'#dde2d5','stroke-width':1,'stroke-dasharray':'2,3'}));
-      svg.appendChild(el('text',{x:sx+4,y:top+10,'font-size':'9',fill:'#6c7161'})).textContent='set →';
+      svg.appendChild(el('line',{x1:sx,y1:top,x2:sx,y2:top+plotH,stroke:'#c7ccbb','stroke-width':1,'stroke-dasharray':'2,3'}));
+      svg.appendChild(el('text',{x:sx+4,y:top+10,'font-size':'9.5',fill:'#454a3c','font-weight':'600'})).textContent='setembro →';
     }
     svg.appendChild(el('line',{x1:left,y1:top+plotH,x2:left+plotW,y2:top+plotH,stroke:'#dde2d5','stroke-width':1}));
+
+    var every = opts.tickEvery || 7;
+    data.forEach(function(d,i){
+      if(i%every===0 || i===n-1){
+        svg.appendChild(el('text',{x:pts[i][0],y:top+plotH+16,'text-anchor':'middle','font-size':'9',fill:'#9aa08c'})).textContent = fmtDatePt(d[0]);
+      }
+    });
+
+    (opts.annotate||[]).forEach(function(a){
+      var idx = data.findIndex(function(d){return d[0]===a.date;});
+      if(idx<0) return;
+      var p = pts[idx];
+      svg.appendChild(el('circle',{cx:p[0],cy:p[1],r:4,fill:'#fff',stroke:RED,'stroke-width':2}));
+      var ly = a.above ? p[1]-14 : p[1]+18;
+      var t1 = el('text',{x:p[0],y:ly,'text-anchor':a.anchor||'middle','font-size':'10','font-weight':'600',fill:RED});
+      t1.textContent = a.text;
+      svg.appendChild(t1);
+    });
+
+    var crossLine = el('line',{stroke:'#9aa08c','stroke-width':1,opacity:0});
+    var crossDot = el('circle',{r:4.5,fill:GREEN,stroke:'#fff','stroke-width':2,opacity:0});
+    svg.appendChild(crossLine); svg.appendChild(crossDot);
+
     pts.forEach(function(p,i){
       var hit = el('rect',{x:p[0]-plotW/n/2,y:top,width:plotW/n,height:plotH,class:'bar-hit'});
       hit.addEventListener('mousemove', function(e){
         var r = wrap.getBoundingClientRect();
-        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, data[i][0], (opts.suffix?data[i][1]+opts.suffix:data[i][1]));
+        crossLine.setAttribute('x1',p[0]); crossLine.setAttribute('x2',p[0]); crossLine.setAttribute('y1',top); crossLine.setAttribute('y2',top+plotH); crossLine.setAttribute('opacity',1);
+        crossDot.setAttribute('cx',p[0]); crossDot.setAttribute('cy',p[1]); crossDot.setAttribute('opacity',1);
+        showTip(tt, wrap, e.clientX-r.left, e.clientY-r.top, fmtDatePt(data[i][0]), (opts.suffix?data[i][1]+opts.suffix:data[i][1]));
       });
-      hit.addEventListener('mouseleave', function(){hideTip(tt);});
+      hit.addEventListener('mouseleave', function(){ hideTip(tt); crossLine.setAttribute('opacity',0); crossDot.setAttribute('opacity',0); });
       svg.appendChild(hit);
     });
-    // x-axis month labels
-    ['08/08','22/08','08/09','22/09'].forEach(function(lbl){
-      var idx = data.findIndex(function(d){return d[0].endsWith(lbl.split('/').reverse().join('-').slice(0,0)+lbl.slice(3)+'-'+lbl.slice(0,2));});
-    });
-  }
-
-  /* ---- histogram (grouped bar by bucket) ---- */
-  function histChart(svgId, buckets, agoVals, setVals){
-    groupedBar(svgId, buckets, agoVals, setVals, {fmt:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}});
   }
 
   /* ================= DATA ================= */
@@ -709,20 +880,80 @@ footer a{color:var(--ink-muted);}
   var vol = daily.map(function(d){return [d[0], d[1]];});
   var fcr = daily.map(function(d){return [d[0], d[2]];});
 
-  lineChart('chart-vol','wrap-vol', vol, {area:true});
-  lineChart('chart-fcr','wrap-fcr', fcr, {targetLine:85, suffix:'%', max:100});
+  lineChart('chart-vol','wrap-vol', vol, {area:true, yTicks:[0,1000,2000,3000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, tickEvery:7});
+  lineChart('chart-fcr','wrap-fcr', fcr, {targetLine:85, suffix:'%', max:100, yTicks:[0,25,50,75,100], tickFmt:function(v){return v+'%';}, tickEvery:7,
+    annotate:[{date:'2026-09-19', text:'19/set: 28,6% em só 7 conversas — amostra pequena, não é queda real', anchor:'end'}]});
 
-  groupedBar('chart-cmp1', ['FCR','Resol. interna','Retenção cancel.'], [87.3,0.3,13.4], [88.8,45.0,12.9], {fmt:function(v){return v+'%';}});
-  groupedBar('chart-cmp2', ['Duração (h)','1ª resposta (h)'], [9.5,1.9], [6.4,1.9], {fmt:function(v){return v+'h';}});
+  /* -- 02: agosto vs. setembro — um dumbbell por métrica, cada um com o eixo próprio da sua escala -- */
+  var pctFmt = function(v){return v.toFixed(1)+'%';}, ppFmt = function(d){return d.toFixed(1)+'pp';};
+  dumbbell('chart-cmp1-fcr','wrap-cmp1-fcr', [{label:'', before:87.3, after:88.8}],
+    {min:80,max:92,ticks:[80,85,90],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', deltaW:60, metricName:'FCR'});
+  dumbbell('chart-cmp1-ret','wrap-cmp1-ret', [{label:'', before:13.4, after:12.9}],
+    {min:0,max:25,ticks:[0,10,20],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', deltaW:60, metricName:'Retenção de cancelamento'});
+  dumbbell('chart-cmp1-resol','wrap-cmp1-resol', [{label:'', before:0.3, after:45.0}],
+    {min:0,max:50,ticks:[0,25,50],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, neutral:true, deltaW:60, metricName:'Resolução interna'});
 
-  histChart('chart-hist', ['0-15min','15-60min','1-4h','4-8h','8-24h','24h+'], [761,6801,18904,3013,4360,3567], [1059,2733,15388,2392,3807,1926]);
+  var hFmt = function(v){return v.toFixed(1)+'h';}, hDeltaFmt = function(d){return d.toFixed(1)+'h';};
+  dumbbell('chart-cmp2-dur','wrap-cmp2-dur', [{label:'', before:9.5, after:6.4}],
+    {min:0,max:11,ticks:[0,5,10],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', deltaW:66, metricName:'Duração total'});
+  dumbbell('chart-cmp2-resp','wrap-cmp2-resp', [{label:'', before:1.9, after:1.9}],
+    {min:0,max:3,ticks:[0,1,2,3],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', deltaW:66, metricName:'1ª resposta'});
 
-  hBar('chart-dores', ['Cancelamento','Logística','Upgrade'], [2315,884,750], ['#a53a2c','#8a5a12','#1c5d8c'], {fmt:function(v,i){ var fcrs=['81,2% FCR','66,4% FCR','84,8% FCR']; return v+' · '+fcrs[i]; }});
+  groupedBar('chart-hist','wrap-hist', ['0–15min','15–60min','1–4h','4–8h','8–24h','24h+'], [761,6801,18904,3013,4360,3567], [1059,2733,15388,2392,3807,1926],
+    {ticks:[0,5000,10000,15000,20000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, fmt:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}});
 
-  var attCats = ['Suporte\n(time)','Wanessa','Winnie','Giselle','Kelly','Débora','Paulo\n(cancel.)','Amanda\n(AT)'];
-  groupedBar('chart-att-fcr', attCats, [88.4,87.0,86.6,90.3,null,null,80.7,80.6].map(function(v){return v||0;}), [84.9,86.0,83.0,85.1,82.9,90.6,84.5,82.9], {fmt:function(v){return v?v+'%':'';}});
-  groupedBar('chart-att-csat', attCats, [4.08,4.23,4.33,3.86,0,0,3.80,3.76], [4.09,4.37,3.83,3.84,4.58,3.77,3.85,3.77], {fmt:function(v){return v?v.toFixed(2):'';}});
-  groupedBar('chart-att-vol', attCats, [6102,1865,1519,2724,1,0,1608,1379], [5829,1419,1398,1714,846,449,847,799], {fmt:function(v){return v;}});
-  groupedBar('chart-att-dur', attCats, [14.4,18.9,15.4,10.7,0,0,19.8,39.0], [8.0,9.5,6.8,8.0,5.1,12.3,7.8,20.7], {fmt:function(v){return v?v+'h':'';}});
+  hBar('chart-dores','wrap-dores', ['Cancelamento','Logística','Upgrade'], [2315,884,750], [RED,'#8a5a12',NEUTRAL_C],
+    {ticks:[0,1000,2000], tickFmt:function(v){return v>=1000?(v/1000)+'k':v;}, fmt:function(v,i){ var fcrs=['81,2% FCR','66,4% FCR','84,8% FCR']; return v.toLocaleString('pt-BR')+' · '+fcrs[i]; }});
+
+  /* -- 04: por atendente — um dumbbell por métrica, eixo compartilhado entre as 8 pessoas (comparável 1:1) -- */
+  var attRowsFcr = [
+    {label:'Suporte (time)', before:88.4, after:84.9},
+    {label:'Wanessa', before:87.0, after:86.0},
+    {label:'Winnie', before:86.6, after:83.0},
+    {label:'Giselle', before:90.3, after:85.1},
+    {label:'Kelly', before:null, after:82.9},
+    {label:'Débora', before:null, after:90.6},
+    {label:'Paulo (cancel.)', before:80.7, after:84.5},
+    {label:'Amanda (AT)', before:80.6, after:82.9}
+  ];
+  dumbbell('chart-att-fcr','wrap-att-fcr', attRowsFcr, {min:78,max:93,ticks:[80,85,90],tickFmt:function(t){return t+'%';}, fmt:pctFmt, deltaFmt:ppFmt, goodDirection:'up', labelW:130, deltaW:88});
+
+  var attRowsCsat = [
+    {label:'Suporte (time)', before:4.08, after:4.09},
+    {label:'Wanessa', before:4.23, after:4.37},
+    {label:'Winnie', before:4.33, after:3.83},
+    {label:'Giselle', before:3.86, after:3.84},
+    {label:'Kelly', before:null, after:4.58},
+    {label:'Débora', before:null, after:3.77},
+    {label:'Paulo (cancel.)', before:3.80, after:3.85},
+    {label:'Amanda (AT)', before:3.76, after:3.77}
+  ];
+  var csatFmt = function(v){return v.toFixed(2);};
+  dumbbell('chart-att-csat','wrap-att-csat', attRowsCsat, {min:3.5,max:5,ticks:[3.5,4,4.5,5],tickFmt:function(t){return t.toFixed(1);}, fmt:csatFmt, deltaFmt:csatFmt, goodDirection:'up', labelW:130, deltaW:88});
+
+  var attRowsVol = [
+    {label:'Suporte (time)', before:6102, after:5829},
+    {label:'Wanessa', before:1865, after:1419},
+    {label:'Winnie', before:1519, after:1398},
+    {label:'Giselle', before:2724, after:1714},
+    {label:'Kelly', before:null, after:846},
+    {label:'Débora', before:null, after:449},
+    {label:'Paulo (cancel.)', before:1608, after:847},
+    {label:'Amanda (AT)', before:1379, after:799}
+  ];
+  var countFmt = function(v){return Math.round(v).toLocaleString('pt-BR');};
+  dumbbell('chart-att-vol','wrap-att-vol', attRowsVol, {min:0,max:6500,ticks:[0,2000,4000,6000],tickFmt:function(t){return t>=1000?(t/1000)+'k':t;}, fmt:countFmt, deltaFmt:countFmt, neutral:true, labelW:130, deltaW:88});
+
+  var attRowsDur = [
+    {label:'Suporte (time)', before:14.4, after:8.0},
+    {label:'Wanessa', before:18.9, after:9.5},
+    {label:'Winnie', before:15.4, after:6.8},
+    {label:'Giselle', before:10.7, after:8.0},
+    {label:'Kelly', before:null, after:5.1},
+    {label:'Débora', before:null, after:12.3},
+    {label:'Paulo (cancel.)', before:19.8, after:7.8},
+    {label:'Amanda (AT)', before:39.0, after:20.7}
+  ];
+  dumbbell('chart-att-dur','wrap-att-dur', attRowsDur, {min:0,max:42,ticks:[0,10,20,30,40],tickFmt:function(t){return t+'h';}, fmt:hFmt, deltaFmt:hDeltaFmt, goodDirection:'down', labelW:130, deltaW:88});
 })();
 </script>
